@@ -1,0 +1,30 @@
+﻿<h2 class="col-md-12">Sports</h2>
+
+<div class="col-md-12">
+    <div class="col-md-12">Sport</div>
+    <div class="col-md-12" ng-repeat="sport in sportsList">
+        <div class="col-md-10">
+            <a ng-href="#/sports/{{sport.Id}}">
+                <div ng-bind="sport.Caption"></div>
+            </a>
+        </div>
+        <div class="col-md-2">
+            <button ng-click="deleteSport(sport.Id)">Delete</button>
+        </div>
+    </div>
+</div>
+     
+<div class="col-md-12 spacer">
+    <div ng-click="isCreatingNewSport = !isCreatingNewSport;">
+        <a ng-show="!isCreatingNewSport">Create new meeting.</a>
+        <a ng-show="isCreatingNewSport">Hide form for new meeting.</a>
+    </div>
+
+    <div class="spacer" ng-show="isCreatingNewSport">
+        <div class="col-md-12">
+            <div>Which sport do you want to create?</div>
+            <div><input class="form-control" type="text" ng-model="newSport" placeholder="Sport name"/></div>
+            <a ng-click="createNewSport()" class="btn btn-success btn-lg active" role="button">Create</a>
+        </div>
+    </div>
+</div>

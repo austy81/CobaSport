@@ -1,0 +1,37 @@
+﻿<a ng-href="#/sports/{{sport.Id}}">
+    <h2 class="col-md-12" ng-bind="sport.Caption"></h2>
+</a>
+
+<div class="col-md-12">
+    <div class="col-md-12">Meeting</div>
+    <div class="col-md-12" ng-repeat="meeting in meetingsList">
+        <div class="col-md-10">
+            <a ng-href="#/meetings/{{meeting.Id}}">
+                <div ng-bind="meeting.Timestamp | date : 'd. M. yyyy'"></div>
+            </a>
+        </div>
+        <div class="col-md-2">
+            <button ng-click="deleteMeeting(meeting.Id)">Delete</button>
+        </div>
+    </div>
+</div>
+
+      
+
+<div class="col-md-12 spacer" ng-click="toggleIsCreatingNewMeeting()">
+    <a ng-show="!isCreatingNewMeeting">Create new meeting.</a>
+    <a ng-show="isCreatingNewMeeting">Hide form for new meeting.</a>
+</div>
+
+<div class="col-md-12" ng-show="isCreatingNewMeeting">
+    <h3>Create new meeting</h3>
+    <div class="col-md-12">Select date:</div>
+    <div class="col-md-12">
+        <p class="input-group">
+            <input type="date" class="form-control" datepicker-popup ng-model="newMeetingDate" min-date="minDate" ng-required="true" />
+        </p>
+        <button ng-click="createNewMeeting()">Create new meeting</button>
+    </div>
+ 
+    
+</div>

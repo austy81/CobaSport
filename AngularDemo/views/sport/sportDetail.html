@@ -1,0 +1,68 @@
+﻿<h2 class="col-md-12" ng-bind="'Sport detail: ' + sport.Caption"></h2>
+
+<div class="col-md-6">
+    <div class="col-md-12">
+        <h3 class="col-md-12">Meetings</h3>
+        <div class="col-md-12" ng-repeat="meeting in meetings">
+            <div class="col-md-6">
+                <a ng-href="#/meetings/{{meeting.Id}}">
+                    <div ng-bind="meeting.Timestamp | date : 'd. M. yyyy'"></div>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a ng-click="deleteMeeting(meeting.Id)" class="btn btn-danger btn-sm active" role="button">delete</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12 spacer" ng-click="isCreatingNewMeeting = !isCreatingNewMeeting;">
+        <a ng-show="!isCreatingNewMeeting">Create a new meeting.</a>
+        <a ng-show="isCreatingNewMeeting">Hide form for new meeting.</a>
+    </div>
+
+    <div class="col-md-12" ng-show="isCreatingNewMeeting">
+        <div class="spacer" ng-show="isCreatingNewMeeting">
+            <div class="col-md-12">
+                <div>Which time does it take place?</div>
+                <p class="input-group">
+                    <input type="date" class="form-control" datepicker-popup ng-model="newMeetingDate" min-date="minDate" ng-required="true" />
+                </p>
+                <a ng-click="createNewMeeting()" class="btn btn-success btn-lg active" role="button">Create</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="col-md-12">
+        <h3 class="col-md-12">Players</h3>
+        <div class="col-md-12" ng-repeat="player in sportPlayers">
+            <div class="col-md-6">
+                <a ng-href="#/players/{{player.Id}}">
+                    {{player.FirstName}}, {{player.LastName}}
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a ng-click="deletePlayer(player.Id)" class="btn btn-danger btn-sm active" role="button">delete</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12 spacer" ng-click="isCreatingNewPlayer = !isCreatingNewPlayer;">
+        <a ng-show="!isCreatingNewPlayer">Assign new player to the sport.</a>
+        <a ng-show="isCreatingNewPlayer">Hide form for new player.</a>
+    </div>
+
+    <div class="col-md-12" ng-show="isCreatingNewPlayer">
+        <div class="spacer">
+            <div class="col-md-12">
+                <div>What player do you wnat to assign?</div>
+                <select class="form-control" ng-options="player.Id as player.FirstName + ', ' + player.LastName  for player in players" ng-model="selectedPlayerId">
+                </select>
+                <a ng-click="createNewPlayer()" class="btn btn-success btn-lg active" role="button">Assign</a>
+            </div>
+        </div>
+    </div>
+</div>

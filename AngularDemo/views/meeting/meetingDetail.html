@@ -1,0 +1,23 @@
+﻿<a ng-href="#/sports/{{sport.Id}}">
+    <h2 class="col-md-12" ng-bind="'Sport: ' + sport.Caption"></h2>
+</a>
+<h2 class="col-md-12" ng-bind="'Meeting on ' + meeting.Timestamp | date : 'd. M. yyyy'"></h2>
+
+
+<div class="col-md-12">
+    <div class="col-md-12">Players</div>
+    <div class="col-md-12" ng-repeat="player in sportPlayers">
+        <div class="col-md-6">
+            <div ng-bind="player.FirstName + ' ' + player.LastName"></div>
+        </div>
+        <div class="col-md-2">
+            <button ng-click="answerYES(player.Id)">Yes</button>
+        </div>
+        <div class="col-md-2">
+            <button ng-click="answerNO(player.Id)">No</button>
+        </div>
+        <div class="col-md-2">
+            <button ng-click="answerDONTKNOW(player.Id)">Dont Know</button>
+        </div>
+    </div>
+</div>

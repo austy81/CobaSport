@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html ng-app="app" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Austerlitz Angular</title>
+    <script src="Scripts/angular.min.js"></script>
+    <script src="Scripts/angular-route.min.js"></script>
+    <script src="Scripts/jquery-1.9.1.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/angular-ui/ui-bootstrap.min.js"></script>
+    <script src="Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+
+    <script src="views/app.js"></script>
+    <script src="views/meeting/meetingDetailController.js"></script>
+    <script src="views/player/playerDetailController.js"></script>
+    <script src="views/sport/sportDetailController.js"></script>
+    <script src="views/sport/sportListController.js"></script>
+
+    <link href="Content/CobaSports.css" rel="stylesheet" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+    <body>
+        <div ng-include="'views/header.html'"></div>
+        
+        <div class="container"  ng-view>
+
+
+        </div>
+
+    </body>
+</html>

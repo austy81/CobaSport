@@ -1,0 +1,42 @@
+﻿<h2 class="col-md-12">
+    <div class="form-group">
+      <label for="sel1">Players for sport</label>
+      <select class="form-control" ng-options="item.Id as item.Caption for item in sports" ng-model="selectedSportId">
+        <option value="0">All</option>
+      </select>
+    </div>
+</h2>
+
+<div class="col-md-12">
+    <div class="col-md-12">
+        <div class="col-md-12">Players</div>
+        <div class="col-md-5">First name</div>
+        <div class="col-md-5">Last name</div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="col-md-12" ng-repeat="palyer in playersList">
+        <div class="col-md-5" ng-bind="palyer.FirstName"></div>
+        <div class="col-md-5" ng-bind="palyer.LastName"></div>
+        <div class="col-md-2">
+            <button ng-click="deleteMeeting(palyer.Id)">Delete</button>
+        </div>
+    </div>
+</div>
+
+      
+
+<div class="col-md-12 spacer" ng-click="toggleIsCreatingNewPlayer()">
+    <a ng-show="!isCreatingNewPlayer">Create new player.</a>
+    <a ng-show="isCreatingNewPlayer">Hide form for new player.</a>
+</div>
+
+<div class="col-md-12" ng-show="isCreatingNewPlayer">
+    <h3>Create new Player</h3>
+    <div class="col-md-12">First name: <input type="text" ng-model="firstName"/></div>
+    <div class="col-md-12">Last name: <input type="text" ng-model="lastName"/></div>
+    <div class="col-md-12">
+        <button ng-click="createNewPlayer()">Create new player</button>
+    </div>
+ 
+    
+</div>
