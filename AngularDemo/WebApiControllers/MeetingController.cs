@@ -16,7 +16,7 @@ namespace CobaMeetings.WebApiControllers
 
         public IEnumerable<Meeting> Get()
         {
-            var meetings = db.Meetings.ToArray();
+            var meetings = db.Meetings.OrderByDescending(x=>x.Timestamp).ToArray();
             return meetings;
         }
 
