@@ -119,6 +119,7 @@
     <Content Include="views\player\playerDetailController.js" />
     <Content Include="views\sport\sportDetail.html" />
     <Content Include="views\sport\sportDetailController.js" />
+    <Content Include="views\sport\sportEditController.js" />
     <Content Include="views\sport\sportList.html" />
     <Content Include="views\sport\sportListController.js" />
     <Content Include="Web.config" />

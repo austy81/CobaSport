@@ -14,17 +14,19 @@
     </div>
 </div>
      
-<div class="col-md-12 spacer">
-    <div ng-click="isCreatingNewSport = !isCreatingNewSport;">
-        <a ng-show="!isCreatingNewSport">Create new sport.</a>
-        <a ng-show="isCreatingNewSport">Hide form for new sport.</a>
-    </div>
-
-    <div class="spacer" ng-show="isCreatingNewSport">
-        <div class="col-md-12">
-            <div>Which sport do you want to create?</div>
-            <div><input class="form-control" type="text" ng-model="newSport" placeholder="Sport name"/></div>
-            <a ng-click="createNewSport()" class="btn btn-success btn-lg active" role="button">Create</a>
+<div>
+    <button class="btn btn-default" ng-click="editSport()">Create sport</button>
+    <script type="text/ng-template" id="sportEdit.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Sport</h3>
         </div>
-    </div>
+        <div class="modal-body">
+            <div>Sport caption:</div>
+            <input type="text" ng-model="sport.Caption" placeholder="caption"></input>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
 </div>
