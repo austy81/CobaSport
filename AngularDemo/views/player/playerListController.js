@@ -1,43 +1,43 @@
-﻿app.controller('sportListController', ['$scope', '$http', '$modal', function ($scope, $http, $modal) {
+﻿app.controller('playerListController', ['$scope', '$http', '$modal', function ($scope, $http, $modal) {
 
     var apiUrl = 'http://localhost:56513/api';
-    var apiController = '/Sport/';
+    var apiController = '/Player/';
 
-    $scope.sportsList = [];
+    $scope.playerList = [];
 
-    var getSports = function () {
+    var getPlayers = function () {
         $http.get(apiUrl + apiController)
             .success(function (data) {
-                $scope.sportsList = data;
+                $scope.playerList = data;
             });
     }
 
-    $scope.deleteSport = function (id) {
+    $scope.deletePlayer = function (id) {
         $http.delete(apiUrl + apiController + id).success(function () {
-            getSports();
+            getPlayers();
         });
     };
 
 
-    getSports();
+    getPlayers();
 
-    $scope.upsertSport = function (sport) {
+    $scope.upsertPlayer = function (player) {
         var data;
-        if (sport) {
-            data = sport;
+        if (player) {
+            data = player;
         }
         else {
-            var data = { Id: null, Caption: '' };
-            $scope.sportsList.push(data);
+            var data = { Id: null, FirstName: '', LastName: '' };
+            $scope.playerList.push(data);
         };
 
         var modalInstance = $modal.open({
             animation: true,
-            templateUrl: 'sportEdit.html',
-            controller: 'sportEditController',
+            templateUrl: 'playerEdit.html',
+            controller: 'playerEditController',
             //size: size,
             resolve: {
-                sport: function () {
+                player: function () {
                     return data;
                 }
             }
@@ -46,7 +46,7 @@
         modalInstance.result.then(function () {
             //success - nothing to do
         }, function () {
-            getSports();
+            getPlayers();
             //var index = $scope.sportsList.indexOf(data);
             //if (index > -1) {
             //    $scope.sportsList.splice(index, 1);

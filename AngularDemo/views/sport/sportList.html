@@ -9,13 +9,14 @@
             </a>
         </div>
         <div class="col-md-2">
-            <button ng-click="deleteSport(sport.Id)">Delete</button>
+            <button ng-click="deleteSport(sport.Id)" class="btn btn-warning">Delete</button>
+            <button ng-click="upsertSport(sport)" class="btn btn-primary">Edit</button>
         </div>
     </div>
 </div>
      
-<div>
-    <button class="btn btn-default" ng-click="editSport()">Create sport</button>
+<div class="col-md-12 spacer">
+    <button class="btn btn-default" ng-click="upsertSport()">Create a new sport</button>
     <script type="text/ng-template" id="sportEdit.html">
         <div class="modal-header">
             <h3 class="modal-title">Sport</h3>

@@ -26,13 +26,17 @@ namespace CobaSport.WebApiControllers
 
         public void Post([FromBody]Sport value)
         {
-            db.Sports.Add(value);
+            if (value.Id > 0)
+            {
+                db.Entry(value).State = System.Data.Entity.EntityState.Modified;
+            }
+            else
+            {
+                db.Sports.Add(value);
+            }
             db.SaveChanges();
         }
 
-        public void Put(int id, [FromBody]string value)
-        {
-        }
 
         public void Delete(int id)
         {

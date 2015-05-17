@@ -1,7 +1,8 @@
 ﻿<a ng-href="#/sports/{{sport.Id}}">
     <h2 class="col-md-12" ng-bind="'Sport: ' + sport.Caption"></h2>
 </a>
-<h2 class="col-md-12" ng-bind="'Meeting on ' + meeting.Timestamp | date : 'd. M. yyyy'"></h2>
+<h3 class="col-md-2">Meeting:</h3>
+<h2 class="col-md-10" ng-bind="meeting.Timestamp | date : 'd. M. yyyy'"></h2>
 
 
 <div class="col-md-12">

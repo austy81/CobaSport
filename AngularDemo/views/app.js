@@ -16,6 +16,10 @@ app.config([
                 templateUrl: 'views/meeting/meetingDetail.html',
                 controller: 'meetingDetailController'
             }).
+            when('/players', {
+                templateUrl: 'views/player/playerList.html',
+                controller: 'playerListController'
+            }).
             when('/players/:playerId', {
                 templateUrl: 'views/player/playerDetail.html',
                 controller: 'playerDetailController'

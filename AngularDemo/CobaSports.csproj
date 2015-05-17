@@ -117,6 +117,9 @@
     <Content Include="views\meeting\meetingDetailController.js" />
     <Content Include="views\player\playerDetail.html" />
     <Content Include="views\player\playerDetailController.js" />
+    <Content Include="views\player\playerList.html" />
+    <Content Include="views\player\playerListController.js" />
+    <Content Include="views\player\playerEditController.js" />
     <Content Include="views\sport\sportDetail.html" />
     <Content Include="views\sport\sportDetailController.js" />
     <Content Include="views\sport\sportEditController.js" />
