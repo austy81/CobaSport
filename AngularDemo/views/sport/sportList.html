@@ -9,8 +9,8 @@
             </a>
         </div>
         <div class="col-md-2">
-            <button ng-click="deleteSport(sport.Id)" class="btn btn-warning">Delete</button>
             <button ng-click="upsertSport(sport)" class="btn btn-primary">Edit</button>
+            <button ng-click="deleteSport(sport.Id)" class="btn btn-warning">Delete</button>
         </div>
     </div>
 </div>
@@ -23,7 +23,7 @@
         </div>
         <div class="modal-body">
             <div>Sport caption:</div>
-            <input type="text" ng-model="sport.Caption" placeholder="caption"></input>
+            <input type="text" ng-model="entity.Caption" placeholder="caption"></input>
         </div>
         <div class="modal-footer">
             <button class="btn btn-primary" ng-click="ok()">OK</button>

@@ -1,24 +1,24 @@
-﻿app.controller('sportEditController', ['$scope', '$http', '$modalInstance', 'sport', function ($scope, $http, $modalInstance, sport) {
+﻿app.controller('entityEditController', ['$scope', '$http', '$modalInstance', 'modalObject', function ($scope, $http, $modalInstance, modalObject) {
 
     var apiUrl = 'http://localhost:56513/api';
-    var apiController = '/Sport/';
+    var apiController = modalObject.apiController;
 
-    $scope.sport = sport;
+    $scope.entity = modalObject.entity;
 
     $scope.ok = function () {
-        $scope.upadateSport();
+        $scope.upadateEntity();
     };
 
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
 
-    $scope.upadateSport = function () {
-        var data = $scope.sport;
+    $scope.upadateEntity = function () {
+        var data = $scope.entity;
 
         $http.post(apiUrl + apiController, data)
             .success(function (data, status, headers, config) {
-                $scope.sport = data;
+                $scope.entity = data;
                 $modalInstance.close();
             })
             .error(function (data, status, headers, config) {

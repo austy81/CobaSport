@@ -34,11 +34,14 @@
         var modalInstance = $modal.open({
             animation: true,
             templateUrl: 'playerEdit.html',
-            controller: 'playerEditController',
+            controller: 'entityEditController',
             //size: size,
             resolve: {
-                player: function () {
-                    return data;
+                modalObject: function () {
+                    return {
+                        apiController: '/player/',
+                        entity: data
+                    };
                 }
             }
         });

@@ -26,7 +26,14 @@ namespace CobaSports.WebApiControllers
 
         public void Post([FromBody]Player value)
         {
-            db.Players.Add(value);
+            if (value.Id > 0)
+            {
+                db.Entry(value).State = System.Data.Entity.EntityState.Modified;
+            }
+            else
+            {
+                db.Players.Add(value);
+            }
             db.SaveChanges();
         }
 

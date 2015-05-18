@@ -34,11 +34,14 @@
         var modalInstance = $modal.open({
             animation: true,
             templateUrl: 'sportEdit.html',
-            controller: 'sportEditController',
+            controller: 'entityEditController',
             //size: size,
             resolve: {
-                sport: function () {
-                    return data;
+                modalObject: function () {
+                    return {
+                        apiController: '/sport/',
+                        entity: data
+                        };
                 }
             }
         });
