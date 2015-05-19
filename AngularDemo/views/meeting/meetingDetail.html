@@ -8,17 +8,23 @@
 <div class="col-md-12">
     <div class="col-md-12">Players</div>
     <div class="col-md-12" ng-repeat="player in sportPlayers">
-        <div class="col-md-6">
+        <div class="col-md-2">
             <div ng-bind="player.FirstName + ' ' + player.LastName"></div>
         </div>
         <div class="col-md-2">
-            <button ng-click="answerYES(player.Id)">Yes</button>
+            <div ng-bind="player.meetingPlayer.Timestamp | date : 'd. M. yyyy hh:mm'"></div>
         </div>
         <div class="col-md-2">
-            <button ng-click="answerNO(player.Id)">No</button>
+            <div ng-show="player.meetingPlayer.IsAttending">YES</div>
+            <div ng-show="!player.meetingPlayer.IsAttending && player.meetingPlayer.IsAttending != null">NO</div>
+            <div ng-show="player.meetingPlayer.IsAttending == null && player.meetingPlayer">Dont know</div>
+            <div ng-show="!player.meetingPlayer">Not answered</div>
         </div>
-        <div class="col-md-2">
-            <button ng-click="answerDONTKNOW(player.Id)">Dont Know</button>
+        <div class="col-md-6">
+            <button class="btn btn-success" ng-click="answer(player.Id, true);">Yes</button>
+            <button class="btn btn-danger" ng-click="answer(player.Id, false);">No</button>
+            <button class="btn btn-warning" ng-click="answer(player.Id, null);">Dont Know</button>
         </div>
     </div>
+    <div ng-bind="'Number of attendies: ' + totalAttenders"></div>
 </div>

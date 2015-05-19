@@ -9,7 +9,6 @@ namespace CobaSports.Models
         public int Id { get; set; }
         [Required]
         public DateTime Timestamp { get; set; }
-        [Required]
         public bool? IsAttending { get; set; }
 
         [Required]

@@ -11,7 +11,19 @@ namespace CobaSports.Models
         public CobaSportsContext()
             : base("CobaSports")
         {
-            this.Configuration.ProxyCreationEnabled = false; 
+            this.Configuration.ProxyCreationEnabled = false;
+            
+            if (!this.Database.Exists()) 
+                this.Database.Create();
+
+            if (!this.Database.CompatibleWithModel(true))
+            {
+                this.Database.Delete();
+                this.Database.Create();
+            }
+
+            //this.Configuration.AutoDetectChangesEnabled = false;
+
         }
 
 

@@ -132,8 +132,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\MeetingPlayer.cs" />
     <Compile Include="Models\Meeting.cs" />
+    <Compile Include="Models\MeetingPlayer.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\SportPlayer.cs" />
     <Compile Include="Models\Sport.cs" />

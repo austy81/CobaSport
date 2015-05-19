@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Http;
 using CobaSports.Models;
+using System;
 
 namespace CobaEnrollments.WebApiControllers
 {
@@ -14,16 +15,16 @@ namespace CobaEnrollments.WebApiControllers
             db = new CobaSportsContext();    
         }
 
-        [Route("api/player/{playerId}/meetings")]
-        public IEnumerable<Meeting> GetMeetingsByPlayerId(int playerId)
+        [Route("api/meetingplayer/player/{playerId}")]
+        public IEnumerable<MeetingPlayer> GetMeetingpPlayerByPlayerId(int playerId)
         {
-            return db.Meetings.Where(x=>x.MeetingPlayer.Any(y => y.PlayerId == playerId));
+            return db.MeetingPlayers.Where(x=>x.PlayerId == playerId);
         }
 
-        [Route("api/meeting/{meetingId}/players")]
-        public IEnumerable<Player> GetPlayersByMeetingId(int meetingId)
+        [Route("api/meetingplayer/meeting/{meetingId}")]
+        public IEnumerable<MeetingPlayer> GetMeetingPlayersByMeetingId(int meetingId)
         {
-            return db.Players.Where(x => x.MeetingPlayer.Any(y => y.MeetingId == meetingId));
+            return db.MeetingPlayers.Where(x => x.MeetingId == meetingId);
         }
 
         public MeetingPlayer Get(int id)
@@ -33,7 +34,15 @@ namespace CobaEnrollments.WebApiControllers
 
         public void Post([FromBody]MeetingPlayer value)
         {
-            db.MeetingPlayers.Add(value);
+            value.Timestamp = DateTime.Now;
+            if (value.Id > 0)
+            {
+                db.Entry(value).State = System.Data.Entity.EntityState.Modified;
+            }
+            else
+            {
+                db.MeetingPlayers.Add(value);
+            }
             db.SaveChanges();
         }
 
@@ -43,8 +52,8 @@ namespace CobaEnrollments.WebApiControllers
 
         public void Delete(int id)
         {
-            var Enrollment = db.MeetingPlayers.SingleOrDefault(x => x.Id == id);
-            db.MeetingPlayers.Remove(Enrollment);
+            var meetingPlayer = db.MeetingPlayers.SingleOrDefault(x => x.Id == id);
+            db.MeetingPlayers.Remove(meetingPlayer);
             db.SaveChanges();
         }
     }
