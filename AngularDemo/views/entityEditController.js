@@ -16,14 +16,23 @@
     $scope.upadateEntity = function () {
         var data = $scope.entity;
 
-        $http.post(apiUrl + apiController, data)
-            .success(function (data, status, headers, config) {
-                $scope.entity = data;
-                $modalInstance.close();
-            })
-            .error(function (data, status, headers, config) {
-                alert(data.message);
-            });
+        if ($scope.entity.Id)
+            $http.put(apiUrl + apiController, data)
+                    .success(function () {
+                        $modalInstance.close();
+                    })
+                    .error(function (data, status, headers, config) {
+                        alert(data.message);
+                    });
+        else
+            $http.post(apiUrl + apiController, data)
+                .success(function (data, status, headers, config) {
+                    $scope.entity.Id = data;
+                    $modalInstance.close();
+                })
+                .error(function (data, status, headers, config) {
+                    alert(data.message);
+                });
     };
 
 }]);

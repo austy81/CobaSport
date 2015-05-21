@@ -33,7 +33,8 @@ namespace CobaSport.WebApiControllers
             if (value.Id < 1) return BadRequest("Entity does not contains Id.");
 
             db.Entry(value).State = System.Data.Entity.EntityState.Modified;
-            return Ok(db.SaveChanges());
+            db.SaveChanges();
+            return Ok(value);
         }
 
 
@@ -42,7 +43,7 @@ namespace CobaSport.WebApiControllers
             var sport = db.Sports.SingleOrDefault(x => x.Id == id);
             db.Sports.Remove(sport);
             db.SaveChanges();
-            return Ok(db.SaveChanges());
+            return Ok();
         }
     }
 }
