@@ -7,42 +7,42 @@ namespace CobaSport.WebApiControllers
 {
     public class SportController : ApiController
     {
-        private readonly CobaSportsContext db;
-
-        public SportController()
-        {
-            db = new CobaSportsContext();    
-        }
+        private readonly CobaSportsContext db = new CobaSportsContext();
 
         public IEnumerable<Sport> Get()
         {
-            return db.Sports.ToArray();
+            return db.Sports;
         }
 
-        public Sport Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            return db.Sports.Find(id);
+            return Ok(db.Sports.Find(id));
         }
 
-        public void Post([FromBody]Sport value)
+        public IHttpActionResult Post([FromBody]Sport value)
         {
-            if (value.Id > 0)
-            {
-                db.Entry(value).State = System.Data.Entity.EntityState.Modified;
-            }
-            else
-            {
-                db.Sports.Add(value);
-            }
+            var savedEntity = db.Sports.Add(value);
             db.SaveChanges();
+
+            return Ok(savedEntity.Id);
+        }
+
+        public IHttpActionResult Put([FromBody]Sport value) 
+        {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+            if (value.Id < 1) return BadRequest("Entity does not contains Id.");
+
+            db.Entry(value).State = System.Data.Entity.EntityState.Modified;
+            return Ok(db.SaveChanges());
         }
 
 
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
             var sport = db.Sports.SingleOrDefault(x => x.Id == id);
             db.Sports.Remove(sport);
             db.SaveChanges();
+            return Ok(db.SaveChanges());
         }
     }
 }
