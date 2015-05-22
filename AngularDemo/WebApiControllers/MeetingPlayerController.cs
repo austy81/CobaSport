@@ -32,22 +32,20 @@ namespace CobaEnrollments.WebApiControllers
             return db.MeetingPlayers.Find(id);
         }
 
-        public void Post([FromBody]MeetingPlayer value)
+        public MeetingPlayer Post([FromBody]MeetingPlayer value)
         {
             value.Timestamp = DateTime.Now;
-            if (value.Id > 0)
-            {
-                db.Entry(value).State = System.Data.Entity.EntityState.Modified;
-            }
-            else
-            {
-                db.MeetingPlayers.Add(value);
-            }
+            db.MeetingPlayers.Add(value);
             db.SaveChanges();
+
+            return value;
         }
 
-        public void Put(int id, [FromBody]string value)
+        public void Put([FromBody]MeetingPlayer value)
         {
+            value.Timestamp = DateTime.Now;
+            db.Entry(value).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
         }
 
         public void Delete(int id)

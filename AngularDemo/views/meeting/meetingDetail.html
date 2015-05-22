@@ -21,9 +21,9 @@
             <div ng-show="!player.meetingPlayer">Not answered</div>
         </div>
         <div class="col-md-6">
-            <button class="btn btn-success" ng-click="answer(player.Id, true);">Yes</button>
-            <button class="btn btn-danger" ng-click="answer(player.Id, false);">No</button>
-            <button class="btn btn-warning" ng-click="answer(player.Id, null);">Dont Know</button>
+            <button class="btn btn-success" ng-click="answer(player, true);">Yes</button>
+            <button class="btn btn-danger" ng-click="answer(player, false);">No</button>
+            <button class="btn btn-warning" ng-click="answer(player, null);">Dont Know</button>
         </div>
     </div>
     <div ng-bind="'Number of attendies: ' + totalAttenders"></div>

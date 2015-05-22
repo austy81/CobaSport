@@ -51,20 +51,31 @@
                 });
         };
 
-        $scope.answer = function (playerId, isAttending) {
+        $scope.answer = function (player, isAttending) {
             var data = {
-                PlayerId: playerId,
+                Id: player.meetingPlayer.Id,
+                PlayerId: player.Id,
                 MeetingId: $scope.sportId,
                 IsAttending: isAttending
             };
             
-            $http.post(apiUrl + apiMeetingPlayer, data)
-                .success(function (data, status, headers, config) {
-                    getSportPlayers($scope.sportId);
-                })
-                .error(function (data, status, headers, config) {
-                    alert(data.Message);
-                });
+            if (player.meetingPlayer) {
+                $http.put(apiUrl + apiMeetingPlayer, data)
+                    .success(function (data, status, headers, config) {
+                        getSportPlayers($scope.sportId);
+                    })
+                    .error(function(data, status, headers, config) {
+                        alert(data.Message);
+                    });
+            } else {
+                $http.post(apiUrl + apiMeetingPlayer, data)
+                    .success(function (data, status, headers, config) {
+                        getSportPlayers($scope.sportId);
+                    })
+                    .error(function (data, status, headers, config) {
+                        alert(data.Message);
+                    });
+            }
         };
 
         getMeeting($scope.meetingId);
