@@ -1,8 +1,7 @@
 ﻿app.controller('entityEditController', ['$scope', '$http', '$modalInstance', 'modalObject', function ($scope, $http, $modalInstance, modalObject) {
 
-    var apiUrl = 'http://localhost:56513/api';
+    var apiUrl = 'http://localhost:56513/odata';
     var apiController = modalObject.apiController;
-
     $scope.entity = modalObject.entity;
 
     $scope.ok = function () {
@@ -27,7 +26,7 @@
         else
             $http.post(apiUrl + apiController, data)
                 .success(function (data, status, headers, config) {
-                    $scope.entity.Id = data;
+                    $scope.entity = data;
                     $modalInstance.close();
                 })
                 .error(function (data, status, headers, config) {

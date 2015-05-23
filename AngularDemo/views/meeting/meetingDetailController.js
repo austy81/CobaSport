@@ -1,6 +1,6 @@
 ﻿app.controller('meetingDetailController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
 
-        var apiUrl = 'http://localhost:56513/api';
+        var apiUrl = 'http://localhost:56513/odata';
         var apiMeeting = '/meeting/';
         var apiSport = '/sport/';
         var apiMeetingPlayer = '/meetingplayer';

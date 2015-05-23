@@ -1,14 +1,14 @@
 ﻿app.controller('sportListController', ['$scope', '$http', '$modal', function ($scope, $http, $modal) {
 
-    var apiUrl = 'http://localhost:56513/api';
-    var apiController = '/Sport/';
+    var apiUrl = 'http://localhost:56513/odata';
+    var apiController = '/Sports/';
 
     $scope.sportsList = [];
 
     var getSports = function () {
         $http.get(apiUrl + apiController)
             .success(function (data) {
-                $scope.sportsList = data;
+                $scope.sportsList = data.value;
             });
     }
 
@@ -21,14 +21,10 @@
 
     getSports();
 
-    $scope.upsertSport = function (sport) {
-        var data;
-        if (sport) {
-            data = sport;
-        }
-        else {
-            var data = { Id: null, Caption: '' };
-            $scope.sportsList.push(data);
+    $scope.upsertSport = function (entity) {
+        if (!entity) {
+            entity = { Caption: '' };
+            $scope.sportsList.push(entity);
         };
 
         var modalInstance = $modal.open({
@@ -39,8 +35,8 @@
             resolve: {
                 modalObject: function () {
                     return {
-                        apiController: '/sport/',
-                        entity: data
+                        apiController: apiController,
+                        entity: entity
                         };
                 }
             }

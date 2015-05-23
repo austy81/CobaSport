@@ -1,12 +1,12 @@
 ﻿app.controller('sportDetailController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
 
-        var apiUrl = 'http://localhost:56513/api';
-        var apiMeetings = '/meeting/';
-        var apiSports = '/sport/';
-        var apiPlayers = '/player/';
-        var apiSportPlayerCreate = '/Sportplayer/';
-        var apiSportPlayerDelete = '/sportplayer/sport/{sportId}/player/{playerId}';
-        var apiSportPlayer = '/sportplayer/sport/{sportId}/players';
+        var apiUrl = 'http://localhost:56513/odata';
+        var apiMeetings = '/Meetings/';
+        var apiSports = '/Sports/';
+        var apiPlayers = '/Players/';
+        var apiSportPlayerCreate = '/SportPlayers/';
+        var apiSportPlayerDelete = '/SportPlayers/sport/{sportId}/player/{playerId}';
+        var apiSportPlayer = '/SportPlayers/sport/{sportId}/players';
 
         $scope.meetings = [];
         $scope.players = [];

@@ -1,6 +1,6 @@
 ﻿app.controller('playerListController', ['$scope', '$http', '$modal', function ($scope, $http, $modal) {
 
-    var apiUrl = 'http://localhost:56513/api';
+    var apiUrl = 'http://localhost:56513/odata';
     var apiController = '/Player/';
 
     $scope.playerList = [];
