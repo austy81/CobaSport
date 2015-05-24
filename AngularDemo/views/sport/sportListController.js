@@ -1,4 +1,4 @@
-﻿app.controller('sportListController', ['$scope', '$http', '$modal', function ($scope, $http, $modal) {
+﻿app.controller('sportListController', ['$scope', '$http', '$modal', 'Sport', function ($scope, $http, $modal, Sport) {
 
     var apiUrl = 'http://localhost:56513/odata';
     var apiController = '/Sports/';
@@ -6,18 +6,21 @@
     $scope.sportsList = [];
 
     var getSports = function () {
-        $http.get(apiUrl + apiController)
-            .success(function (data) {
-                $scope.sportsList = data.value;
-            });
-    }
+        Sport.query(function (data) { $scope.sportsList = data.value; });
+    };
+
+    //var getSports = function () {
+    //    $http.get(apiUrl + apiController)
+    //        .success(function (data) {
+    //            $scope.sportsList = data.value;
+    //        });
+    //}
 
     $scope.deleteSport = function (id) {
         $http.delete(apiUrl + apiController + id).success(function () {
             getSports();
         });
     };
-
 
     getSports();
 
