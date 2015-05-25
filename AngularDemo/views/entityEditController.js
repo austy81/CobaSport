@@ -1,7 +1,5 @@
 ﻿app.controller('entityEditController', ['$scope', '$http', '$modalInstance', 'modalObject', function ($scope, $http, $modalInstance, modalObject) {
 
-    //var apiUrl = 'http://localhost:56513/odata';
-    //var apiController = modalObject.apiController;
     $scope.entity = modalObject.entity;
 
     $scope.ok = function () {
