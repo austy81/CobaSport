@@ -16,10 +16,11 @@
     //        });
     //}
 
-    $scope.deleteSport = function (id) {
-        $http.delete(apiUrl + apiController + id).success(function () {
-            getSports();
-        });
+    $scope.deleteSport = function(id) {
+        //$http.delete(apiUrl + apiController + id).success(function() {
+        //    getSports();
+        //});
+        Sport.delete({ Id: id }, function() { getSports(); });
     };
 
     getSports();
@@ -34,26 +35,29 @@
             animation: true,
             templateUrl: 'sportEdit.html',
             controller: 'entityEditController',
-            //size: size,
             resolve: {
                 modalObject: function () {
                     return {
-                        apiController: apiController,
+                        apiController: Sport,
                         entity: entity
                         };
                 }
             }
         });
 
-        modalInstance.result.then(function () {
-            //success - nothing to do
-        }, function () {
+        var success = function(data) {
+            entity.Id = data.Id;
+        };
+
+        var error = function() {
             getSports();
             //var index = $scope.sportsList.indexOf(data);
             //if (index > -1) {
             //    $scope.sportsList.splice(index, 1);
             //};
-        });
+        };
+
+        modalInstance.result.then(success, error);
     };
 
 }]);
