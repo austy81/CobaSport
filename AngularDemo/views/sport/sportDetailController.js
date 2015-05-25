@@ -1,10 +1,5 @@
-﻿app.controller('sportDetailController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+﻿app.controller('sportDetailController', ['$scope', '$http', '$routeParams', 'Sport', 'Meeting', 'Player', 'SportPlayer', function($scope, $http, $routeParams, Sport, Meeting, Player, SportPlayer) {
 
-        var apiUrl = 'http://localhost:56513/odata';
-        var apiMeetings = '/Meetings/';
-        var apiSports = '/Sports/';
-        var apiPlayers = '/Players/';
-        var apiSportPlayerCreate = '/SportPlayers/';
         var apiSportPlayerDelete = '/SportPlayers/sport/{sportId}/player/{playerId}';
         var apiSportPlayer = '/SportPlayers/sport/{sportId}/players';
 
@@ -12,44 +7,39 @@
         $scope.players = [];
         $scope.sportPlayers = [];
         $scope.sport = {};
-        $scope.isCreatingNewMeeting = false;
         $scope.sportId = $routeParams.sportId;
 
         var getSport = function(sportId) {
-            $http.get(apiUrl + apiSports + sportId)
-                .success(function(data) {
-                    $scope.sport = data;
-                });
+            Sport.query({ Id: sportId }, function (data) {
+                $scope.sport = data;
+            });
         };
 
         var getPlayers = function () {
-            $http.get(apiUrl + apiPlayers)
-                .success(function (data) {
-                    $scope.players = data;
-                });
+            Player.query(function (data) {
+                $scope.players = data.value;
+            });
         };
 
         var getMeetings = function(sportId) {
-            $http.get(apiUrl + apiMeetings)
-                .success(function(data) {
-                    $scope.meetings = [];
-                    var index;
-                    for (index = 0; index < data.length; ++index) {
-                        if (data[index].SportId == sportId)
-                            $scope.meetings.push(data[index]);
-                    }
-                });
+            Meeting.query(function (data) {
+                $scope.meetings = [];
+                var index;
+                for (index = 0; index < data.length; ++index) {
+                    if (data[index].SportId == sportId)
+                        $scope.meetings.push(data[index]);
+                }
+            });
         };
 
         var getSportPlayers = function(sportId) {
-            $http.get(apiUrl + apiSportPlayer.replace('{sportId}',sportId))
-                .success(function (data) {
+            SportPlayer.query(function (data) {
                     $scope.sportPlayers = data;
                 });
         };
 
         $scope.deleteMeeting = function(id) {
-            $http.delete(apiUrl + apiMeetings + id).success(function () {
+            Meeting.delete({ Id: id },function () {
                 getMeetings($scope.sportId);
             });
         };
@@ -61,19 +51,35 @@
             });
         };
 
-        $scope.createNewMeeting = function() {
-            var data = {
-                Timestamp: $scope.newMeetingDate,
-                SportId: $scope.sportId
+        $scope.upsertMeeting = function (entity) {
+            if (!entity) {
+                entity = { Timestamp: '' };
+                $scope.meetings.push(entity);
             };
-            $scope.newMeeting = '';
-            $http.post(apiUrl + apiMeetings, data)
-                .success(function(data, status, headers, config) {
-                    getMeetings($scope.sportId);
-                })
-                .error(function(data, status, headers, config) {
 
-                });
+            var modalInstance = $modal.open({
+                animation: true,
+                templateUrl: 'meetingEdit.html',
+                controller: 'entityEditController',
+                resolve: {
+                    modalObject: function () {
+                        return {
+                            apiController: Meeting,
+                            entity: entity
+                        };
+                    }
+                }
+            });
+
+            var success = function (data) {
+                entity.Id = data.Id;
+            };
+
+            var error = function () {
+                getMeetings();
+            };
+
+            modalInstance.result.then(success, error);
         };
 
         $scope.createNewPlayer = function () {
@@ -96,16 +102,6 @@
         getSportPlayers($scope.sportId);
         getSport($scope.sportId);
         getPlayers();
-
-        $scope.today = function () {
-            $scope.newMeetingDate = new Date();
-        };
-        $scope.today();
-
-        $scope.toggleMin = function () {
-            $scope.minDate = $scope.minDate ? null : new Date();
-        };
-        $scope.toggleMin();
 
     }
 ]);

@@ -1,0 +1,46 @@
+﻿<#@ template language="C#" #>
+<#@ parameter name="entityNameSingular" type="System.String" #>
+<#@ output extension=".html" #>
+<#    Write(entityNameSingular); #>
+
+<!--
+    EntityCapital
+    EntityLower
+    -->
+
+<h2 class="col-md-12">EntityCapitals</h2>
+
+<div class="col-md-12 spacer">
+    <button class="btn btn-success" ng-click="upsertEntityCapital()">Create a new EntityLower</button>
+    <script type="text/ng-template" id="EntityLowerEdit.html">
+        <div class="modal-header">
+            <h3 class="modal-title">EntityCapital</h3>
+        </div>
+        <div class="modal-body">
+            <div>EntityCapital propertyName:</div>
+            <input type="text" ng-model="entity.Property" placeholder="Property"></input>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+</div>
+
+<div class="col-md-12">
+    <div class="col-md-12">EntityCapital</div>
+    <div class="col-md-12" ng-repeat="EntityLower in EntityLowersList">
+        <div class="col-md-8">
+            <a ng-href="#/EntityLowers/{{EntityLower.Id}}">
+                <div ng-bind="EntityLower.Property"></div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <button ng-click="upsertEntityCapital(EntityLower)" class="btn btn-primary">Edit</button>
+            <button ng-click="deleteEntityCapital(EntityLower.Id)" class="btn btn-warning">Delete</button>
+        </div>
+    </div>
+</div>
+     
+
+     

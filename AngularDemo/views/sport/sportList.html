@@ -1,6 +1,6 @@
 ﻿<h2 class="col-md-12">Sports</h2>
 
-<div class="col-md-12">
+<div class="col-md-12 spacer">
     <button class="btn btn-success" ng-click="upsertSport()">Create a new sport</button>
     <script type="text/ng-template" id="sportEdit.html">
         <div class="modal-header">
@@ -17,15 +17,15 @@
     </script>
 </div>
 
-<div class="col-md-12 spacer">
+<div class="col-md-12">
     <div class="col-md-12">Sport</div>
     <div class="col-md-12" ng-repeat="sport in sportsList">
-        <div class="col-md-10">
+        <div class="col-md-8">
             <a ng-href="#/sports/{{sport.Id}}">
                 <div ng-bind="sport.Caption"></div>
             </a>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
             <button ng-click="upsertSport(sport)" class="btn btn-primary">Edit</button>
             <button ng-click="deleteSport(sport.Id)" class="btn btn-warning">Delete</button>
         </div>
