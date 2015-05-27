@@ -9,17 +9,20 @@ namespace CobaSports.Models
 {
     public class SportPlayer
     {
-        public int Id { get; set; }
-        
         [Key]
+        public int Id { get; set; }
+
+        [ForeignKey("Sport")] 
         [Column(Order = 10)]
-        //[Required]
+        [Required]
+        [Index("IX_Sport_Player", 10, IsUnique=true)] 
         public int SportId { get; set; }
         public Sport Sport { get; set; }
         
-        [Key]
+        [ForeignKey("Player")] 
         [Column(Order = 20)]
-        //[Required]
+        [Required]
+        [Index("IX_Sport_Player", 20, IsUnique = true)]
         public int PlayerId { get; set; }
         public Player Player { get; set; }
     }
