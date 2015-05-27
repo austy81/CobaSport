@@ -125,7 +125,7 @@ namespace CobaSports.Controllers
         // DELETE: odata/SportPlayers(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] int key)
         {
-            SportPlayer sportPlayer = await db.SportPlayer.FindAsync(key);
+            SportPlayer sportPlayer = await db.SportPlayer.Where(x=>x.Id == key).FirstOrDefaultAsync();
             if (sportPlayer == null)
             {
                 return NotFound();

@@ -120,14 +120,9 @@
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\npm.js" />
-    <Content Include="views\entityList.html.html">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>entityList.html.tt</DependentUpon>
-    </Content>
     <Content Include="views\header.html" />
-    <Content Include="views\meeting\meetings.html" />
-    <Content Include="views\meeting\meetingsController.js" />
+    <Content Include="views\meeting\meetingList.html" />
+    <Content Include="views\meeting\meetingListController.js" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular-route.min.js" />
@@ -170,10 +165,6 @@
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
-    <Compile Include="views\entityList.html.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>entityList.html.html</LastGenOutput>
-    </Compile>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -35,13 +35,20 @@
 
 <div class="col-md-6">
     <div class="col-md-12 spacer">
-        <button class="btn btn-success" ng-click="insertSportPlayer()">Create a new meeting</button>
-        <script type="text/ng-template" id="sportPlayerEdit.html">
+        <button class="btn btn-success" ng-click="insertSportPlayer()">Assign new player</button>
+        <script type="text/ng-template" id="sportPlayerInsert.html">
             <div class="modal-header">
                 <h3 class="modal-title">Sport player</h3>
             </div>
             <div class="modal-body">
-                
+                <div>Select player:</div>
+                <select class="form-control" ng-required="true" ng-model="entity.PlayerId">
+                    <option ng-selected="{{true}}"
+                            ng-repeat="player in selects.players"
+                            value="{{player.Id}}">
+                      {{player.FirstName}}, {{player.LastName}}
+                    </option>
+                </select>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" ng-click="ok()">OK</button>
@@ -52,14 +59,14 @@
 
     <div class="col-md-12">
         <h3 class="col-md-12">Sport players</h3>
-        <div class="col-md-12" ng-repeat="player in sportPlayers">
+        <div class="col-md-12" ng-repeat="sportPlayer in sportPlayers">
             <div class="col-md-6">
                 <a ng-href="#/players/{{player.Id}}">
-                    {{player.FirstName}}, {{player.LastName}}
+                    {{sportPlayer.Player.FirstName}}, {{sportPlayer.Player.LastName}}
                 </a>
             </div>
             <div class="col-md-6">
-                <a ng-click="deletePlayer(player.Id)" class="btn btn-danger btn-sm active" role="button">delete</a>
+                <a ng-click="deleteSportPlayer(sportPlayer.Id)" class="btn btn-danger btn-sm active" role="button">Unasign</a>
             </div>
         </div>
     </div>

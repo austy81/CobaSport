@@ -2,15 +2,13 @@
 
     $scope.sportsList = [];
 
-    var getSports = function () {
-        Sport.query(function (data) { $scope.sportsList = data.value; });
-    };
+    var sportsLoaded = function(data) { $scope.sportsList = data.value; };
 
     $scope.deleteSport = function(id) {
-        Sport.delete({ Id: id }, function() { getSports(); });
+        Sport.delete({ Id: id }, function () { Sport.query(sportsLoaded); });
     };
 
-    getSports();
+    Sport.query(sportsLoaded);
 
     $scope.upsertSport = function (entity) {
         if (!entity) {
@@ -32,15 +30,15 @@
             }
         });
 
-        var success = function(data) {
+        var upsertSuccess = function(data) {
             entity.Id = data.Id;
         };
 
-        var error = function() {
-            getSports();
+        var upsertError = function() {
+            Sport.query(sportsLoaded);
         };
 
-        modalInstance.result.then(success, error);
+        modalInstance.result.then(upsertSuccess, upsertError);
     };
 
 }]);

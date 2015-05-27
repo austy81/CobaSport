@@ -1,7 +1,4 @@
-﻿app.controller('sportDetailController', ['$scope', '$http', '$routeParams', 'Sport', 'Meeting', 'Player', 'SportPlayer', function($scope, $http, $routeParams, Sport, Meeting, Player, SportPlayer) {
-
-        var apiSportPlayerDelete = '/SportPlayers/sport/{sportId}/player/{playerId}';
-        var apiSportPlayer = '/SportPlayers/sport/{sportId}/players';
+﻿app.controller('sportDetailController', ['$scope', '$http', '$routeParams', '$modal', 'Sport', 'Meeting', 'Player', 'SportPlayer', function($scope, $http, $routeParams, $modal, Sport, Meeting, Player, SportPlayer) {
 
         $scope.meetings = [];
         $scope.players = [];
@@ -9,33 +6,41 @@
         $scope.sport = {};
         $scope.sportId = $routeParams.sportId;
 
+        var sportLoaded = function(data) {
+            $scope.sport = data;
+        };
+
+        var playersLoaded = function(data) {
+            $scope.players = data.value;
+        };
+
+        var meetingsLoaded = function(data) {
+            $scope.meetings = [];
+            var index;
+            for (index = 0; index < data.length; ++index) {
+                if (data[index].SportId == sportId)
+                    $scope.meetings.push(data[index]);
+            }
+        };
+
+        var sportPlayersLoaded = function(data) {
+            $scope.sportPlayers = data.value;
+        };
+
         var getSport = function(sportId) {
-            Sport.query({ Id: sportId }, function (data) {
-                $scope.sport = data;
-            });
+            Sport.query({ Id: sportId }, sportLoaded);
         };
 
         var getPlayers = function () {
-            Player.query(function (data) {
-                $scope.players = data.value;
-            });
+            Player.query(playersLoaded);
         };
 
         var getMeetings = function(sportId) {
-            Meeting.query(function (data) {
-                $scope.meetings = [];
-                var index;
-                for (index = 0; index < data.length; ++index) {
-                    if (data[index].SportId == sportId)
-                        $scope.meetings.push(data[index]);
-                }
-            });
+            Meeting.query(meetingsLoaded);
         };
 
         var getSportPlayers = function(sportId) {
-            SportPlayer.query(function (data) {
-                    $scope.sportPlayers = data;
-                });
+            SportPlayer.query({ $select : 'Id,Player,SportId,PlayerId', $expand: 'Player' }, sportPlayersLoaded);
         };
 
         $scope.deleteMeeting = function(id) {
@@ -44,16 +49,13 @@
             });
         };
 
-        $scope.deletePlayer = function (playerId) {
-            var url = apiUrl + apiSportPlayerDelete.replace('{playerId}', playerId).replace('{sportId}',$scope.sportId);
-            $http.delete(url).success(function () {
-                getSportPlayers($scope.sportId);
-            });
+        $scope.deleteSportPlayer = function (id) {
+            SportPlayer.delete({ Id: id }, function () { getSportPlayers($scope.sportId); });
         };
 
         $scope.upsertMeeting = function (entity) {
             if (!entity) {
-                entity = { Timestamp: '' };
+                entity = { Timestamp: new Date() };
                 $scope.meetings.push(entity);
             };
 
@@ -82,21 +84,36 @@
             modalInstance.result.then(success, error);
         };
 
-        $scope.createNewPlayer = function () {
-            var data = {
-                PlayerId: $scope.selectedPlayerId,
-                SportId: $scope.sportId
-            };
-            $scope.selectedPlayerId = '';
-            $http.post(apiUrl + apiSportPlayerCreate, data)
-                .success(function (data, status, headers, config) {
-                    getSportPlayers($scope.sportId);
-                })
-                .error(function (data, status, headers, config) {
-                    alert(data.Message);
+        $scope.insertSportPlayer = function () {
+            var entity;
+            entity = { SportId: $scope.sportId, PlayerId: 0 };
+            $scope.sportPlayers.push(entity);
+
+            var modalInstance = $modal.open({
+                animation: true,
+                templateUrl: 'sportPlayerInsert.html',
+                controller: 'entityEditController',
+                resolve: {
+                    modalObject: function () {
+                        return {
+                            apiController: SportPlayer,
+                            entity: entity,
+                            selects: { players: $scope.players }
+                        };
+                    }
+                }
             });
-        }
-        
+
+            var success = function (data) {
+                entity.Id = data.Id;
+            };
+
+            var error = function () {
+                getSportPlayers($scope.sportId);
+            };
+
+            modalInstance.result.then(success, error);
+        };
 
         getMeetings($scope.sportId);
         getSportPlayers($scope.sportId);
