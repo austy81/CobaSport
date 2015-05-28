@@ -8,7 +8,7 @@
                 <h3 class="modal-title">Meeting</h3>
             </div>
             <div class="modal-body">
-                <div>Sport caption:</div>
+                <div>Meeting date:</div>
                 <input type="date" class="form-control" datepicker-popup ng-model="entity.Timestamp" min-date="minDate" ng-required="true" />
             </div>
             <div class="modal-footer">
@@ -43,9 +43,7 @@
             <div class="modal-body">
                 <div>Select player:</div>
                 <select class="form-control" ng-required="true" ng-model="entity.PlayerId">
-                    <option ng-selected="{{true}}"
-                            ng-repeat="player in selects.players"
-                            value="{{player.Id}}">
+                    <option ng-repeat="player in selects.players" value="{{player.Id}}">
                       {{player.FirstName}}, {{player.LastName}}
                     </option>
                 </select>

@@ -8,9 +8,9 @@
         </div>
         <div class="modal-body">
             <div>First name:</div>
-            <input type="text" ng-model="entity.FirstName" placeholder="first name"></input>
+            <input type="text" ng-model="entity.FirstName" placeholder="first name" />
             <div>Last name:</div>
-            <input type="text" ng-model="entity.LastName" placeholder="last name"></input>
+            <input type="text" ng-model="entity.LastName" placeholder="last name" />
         </div>
         <div class="modal-footer">
             <button class="btn btn-primary" ng-click="ok()">OK</button>
@@ -22,12 +22,12 @@
 <div class="col-md-12">
     <div class="col-md-12">Players</div>
     <div class="col-md-12" ng-repeat="player in playerList">
-        <div class="col-md-10">
+        <div class="col-md-8">
             <a ng-href="#/players/{{player.Id}}">
                 <div ng-bind="player.FirstName + ', ' + player.LastName"></div>
             </a>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
             <button ng-click="upsertPlayer(player)" class="btn btn-primary">Edit</button>
             <button ng-click="deletePlayer(player.Id)" class="btn btn-warning">Delete</button>
         </div>
