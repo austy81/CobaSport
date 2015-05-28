@@ -1,11 +1,6 @@
-﻿app.controller('meetingDetailController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+﻿app.controller('meetingDetailController', ['$scope', '$http', '$routeParams', 'SportPlayer', 'MeetingPlayer', 'Meeting' ,'Sport',
+    function ($scope, $http, $routeParams, SportPlayer, MeetingPlayer, Meeting, Sport) {
 
-        var apiUrl = 'http://localhost:56513/odata';
-        var apiMeeting = '/meeting/';
-        var apiSport = '/sport/';
-        var apiMeetingPlayer = '/meetingplayer';
-        var apiSportsPlayers = '/sportplayer/sport/{sportId}/players';
-        var apiMeetingPlayers = '/meetingplayer/meeting/{meetingId}';
 
         $scope.meetingId = $routeParams.meetingId;
         $scope.sportId = null;
@@ -17,83 +12,80 @@
 
 
         var getSportPlayers = function(sportId) {
-            var requestUrl = apiUrl + apiSportsPlayers.replace('{sportId}', sportId);
-            $http.get(requestUrl)
-                .success(function(data) {
-                    $scope.sportPlayers = data;
-                    getMeetingPlayers($scope.meetingId);
-                });
+            SportPlayer.query({ $expand: 'Player,Player/MeetingPlayer', $filter: 'SportId eq ' + sportId }, sportPlayersLoaded);
+        };
+        var sportPlayersLoaded = function (data) {
+            $scope.sportPlayers = data.value;
+            //getMeetingPlayers($scope.meetingId);
         };
 
-        var getMeetingPlayers = function (meetingId) {
-            var requestUrl = apiUrl + apiMeetingPlayers.replace('{meetingId}', meetingId);
-            $http.get(requestUrl)
-                .success(function(data) {
-                    $scope.meetingPlayers = data;
-                    mergeSportsPlayersWithMeetingPlayers(data);
-                });
-        };
+        //var getMeetingPlayers = function (meetingId) {
+        //    MeetingPlayer.query({ $filter: 'MeetingId eq ' + meetingId }, meetingPlayersLoaded);
+        //};
+        //var meetingPlayersLoaded = function (data) {
+        //    $scope.meetingPlayers = data.value;
+        //    mergeSportsPlayersWithMeetingPlayers(data.value);
+        //};
 
         var getMeeting = function(meetingId) {
-            $http.get(apiUrl + apiMeeting + meetingId)
-                .success(function(data) {
-                    $scope.meeting = data;
-                    $scope.sportId = data.SportId;
-                    getSport($scope.sportId);
-                    getSportPlayers($scope.sportId);
-                });
+            Meeting.query({Id:meetingId},meetingLoaded);
+        };
+        var meetingLoaded = function(data) {
+            $scope.meeting = data;
+            $scope.sportId = data.SportId;
+            getSport($scope.sportId);
+            getSportPlayers($scope.sportId);
         };
 
         var getSport = function (sportId) {
-            $http.get(apiUrl + apiSport + sportId)
-                .success(function (data) {
-                    $scope.sport = data;
-                });
+            Sport.query({Id: sportId}, sportLoaded);
+        };
+        var sportLoaded = function(data) {
+            $scope.sport = data;
         };
 
         $scope.answer = function (player, isAttending) {
+            var MeetingPlayerId = null;
+            if (player.MeetingPlayer)
+                if (player.MeetingPlayer.length > 0)
+                    MeetingPlayerId = player.MeetingPlayer[0].Id;
+
             var data = {
-                Id: player.meetingPlayer.Id,
-                PlayerId: player.Id,
+                Id: MeetingPlayerId,
+                PlayerId: player.Player.Id,
                 MeetingId: $scope.sportId,
                 IsAttending: isAttending
             };
-            
-            if (player.meetingPlayer) {
-                $http.put(apiUrl + apiMeetingPlayer, data)
-                    .success(function (data, status, headers, config) {
-                        getSportPlayers($scope.sportId);
-                    })
-                    .error(function(data, status, headers, config) {
-                        alert(data.Message);
-                    });
+            var success = function() {
+                getSportPlayers($scope.sportId);
+            };
+            var error = function() {
+                alert(data.Message);
+            };
+
+            if (data.Id) {
+                MeetingPlayer.update({ Id: data.Id }, data, success, error);
             } else {
-                $http.post(apiUrl + apiMeetingPlayer, data)
-                    .success(function (data, status, headers, config) {
-                        getSportPlayers($scope.sportId);
-                    })
-                    .error(function (data, status, headers, config) {
-                        alert(data.Message);
-                    });
+                MeetingPlayer.save(data, success, error);
             }
         };
 
         getMeeting($scope.meetingId);
         
-        var mergeSportsPlayersWithMeetingPlayers = function (meetingPlayers) {
-            $scope.totalAttenders = 0;
-            for (var meetingIndex = 0; meetingIndex < meetingPlayers.length; meetingIndex++) {
-                var meetingPlayer = meetingPlayers[meetingIndex];
-                for (var sportIndex = 0; sportIndex < $scope.sportPlayers.length; sportIndex++)
-                {
-                    var sportPlayer = $scope.sportPlayers[sportIndex];
-                    if (sportPlayer.Id == meetingPlayer.PlayerId) {
-                        sportPlayer.meetingPlayer = meetingPlayer;
-                        if (meetingPlayer.IsAttending) $scope.totalAttenders++;
-                    }
-                }
-            }
-        };
+        //var mergeSportsPlayersWithMeetingPlayers = function (meetingPlayers) {
+        //    $scope.totalAttenders = 0;
+        //    for (var meetingIndex = 0; meetingIndex < meetingPlayers.length; meetingIndex++) {
+        //        var meetingPlayer = meetingPlayers[meetingIndex];
+        //        for (var sportIndex = 0; sportIndex < $scope.sportPlayers.length; sportIndex++)
+        //        {
+        //            var sportPlayer = $scope.sportPlayers[sportIndex];
+        //            if (sportPlayer.Id == meetingPlayer.PlayerId) {
+        //                sportPlayer.meetingPlayer = meetingPlayer;
+        //                if (meetingPlayer.IsAttending) $scope.totalAttenders++;
+        //            }
+        //        }
+        //    }
+        //};
 
     }
 ]);
