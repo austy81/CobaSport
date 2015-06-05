@@ -15,6 +15,6 @@ namespace CobaSports.Models
         public int SportId { get; set; }
         public virtual Sport Sport { get; set; }
 
-        public virtual ICollection<MeetingPlayer> MeetingPlayer { get; set; }
+        public virtual ICollection<MeetingPlayer> MeetingPlayers { get; set; }
     }
 }

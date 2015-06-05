@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <div>Meeting date:</div>
-                <input type="date" class="form-control" datepicker-popup ng-model="entity.Timestamp" min-date="minDate" ng-required="true" />
+                <input type="date" class="form-control" datepicker-popup ng-model="entity.Timestamp" ng-required="true" />
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" ng-click="ok()">OK</button>
@@ -20,7 +20,7 @@
 
     <div class="col-md-12">
         <h3 class="col-md-12">Meetings</h3>
-        <div class="col-md-12" ng-repeat="meeting in meetings">
+        <div class="col-md-12" ng-repeat="meeting in sport.Meetings">
             <div class="col-md-6">
                 <a ng-href="#/meetings/{{meeting.Id}}">
                     <div ng-bind="meeting.Timestamp | date : 'd. M. yyyy'"></div>
@@ -42,11 +42,7 @@
             </div>
             <div class="modal-body">
                 <div>Select player:</div>
-                <select class="form-control" ng-required="true" ng-model="entity.PlayerId">
-                    <option ng-repeat="player in selects.players" value="{{player.Id}}">
-                      {{player.FirstName}}, {{player.LastName}}
-                    </option>
-                </select>
+                <select class="form-control" ng-required="true" ng-model="entity.PlayerId" ng-options="item.Id as item.FirstName + ', ' + item.LastName for item in selects.players"></select>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" ng-click="ok()">OK</button>
@@ -57,9 +53,9 @@
 
     <div class="col-md-12">
         <h3 class="col-md-12">Sport players</h3>
-        <div class="col-md-12" ng-repeat="sportPlayer in sportPlayers">
+        <div class="col-md-12" ng-repeat="sportPlayer in sport.SportPlayers">
             <div class="col-md-6">
-                <a ng-href="#/players/{{player.Id}}">
+                <a ng-href="#/players/{{sportPlayer.PlayerId}}">
                     {{sportPlayer.Player.FirstName}}, {{sportPlayer.Player.LastName}}
                 </a>
             </div>

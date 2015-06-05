@@ -16,7 +16,7 @@ namespace CobaSports.Models
         [MaxLength(20)]
         public string LastName { get; set; }
 
-        public virtual ICollection<SportPlayer> SportPlayer { get; set; }
-        public virtual ICollection<MeetingPlayer> MeetingPlayer { get; set; }
+        public virtual ICollection<SportPlayer> SportPlayers { get; set; }
+        public virtual ICollection<MeetingPlayer> MeetingPlayers { get; set; }
     }
 }

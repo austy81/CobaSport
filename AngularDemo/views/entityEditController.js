@@ -1,7 +1,7 @@
 ﻿app.controller('entityEditController', ['$scope', '$http', '$modalInstance', 'modalObject', function ($scope, $http, $modalInstance, modalObject) {
 
     $scope.entity = modalObject.entity;
-    $scope.selects = modalObject.selects
+    $scope.selects = modalObject.selects;
 
     $scope.ok = function () {
         $scope.upadateEntity();

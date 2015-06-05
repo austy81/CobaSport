@@ -141,14 +141,14 @@ namespace CobaSports.Controllers
         [EnableQuery]
         public IQueryable<MeetingPlayer> GetMeetingPlayer([FromODataUri] int key)
         {
-            return db.Players.Where(m => m.Id == key).SelectMany(m => m.MeetingPlayer);
+            return db.Players.Where(m => m.Id == key).SelectMany(m => m.MeetingPlayers);
         }
 
         // GET: odata/Players(5)/SportPlayer
         [EnableQuery]
         public IQueryable<SportPlayer> GetSportPlayer([FromODataUri] int key)
         {
-            return db.Players.Where(m => m.Id == key).SelectMany(m => m.SportPlayer);
+            return db.Players.Where(m => m.Id == key).SelectMany(m => m.SportPlayers);
         }
 
         protected override void Dispose(bool disposing)

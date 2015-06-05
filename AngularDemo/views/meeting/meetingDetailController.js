@@ -1,47 +1,56 @@
-﻿app.controller('meetingDetailController', ['$scope', '$http', '$routeParams', 'SportPlayer', 'MeetingPlayer', 'Meeting' ,'Sport',
-    function ($scope, $http, $routeParams, SportPlayer, MeetingPlayer, Meeting, Sport) {
-
+﻿app.controller('meetingDetailController', ['$scope', '$http', '$routeParams', '$location', 'SportPlayer', 'MeetingPlayer', 'Meeting', 'Sport',
+    function ($scope, $http, $routeParams, $location, SportPlayer, MeetingPlayer, Meeting, Sport) {
 
         $scope.meetingId = $routeParams.meetingId;
-        $scope.sportId = null;
-        $scope.sport = {};
+        $scope.selectedMeeting = {};
         $scope.meeting = {};
-        $scope.sportPlayers = [];
-        $scope.meetingPlayers = [];
+        $scope.meetingsSelect = [];
         $scope.totalAttenders = 0;
+        $scope.totalDontKnowers = 0;
+        $scope.totalNoers = 0;
+        
 
-
-        var getSportPlayers = function(sportId) {
-            SportPlayer.query({ $expand: 'Player,Player/MeetingPlayer', $filter: 'SportId eq ' + sportId }, sportPlayersLoaded);
-        };
-        var sportPlayersLoaded = function (data) {
-            $scope.sportPlayers = data.value;
-            //getMeetingPlayers($scope.meetingId);
-        };
-
-        //var getMeetingPlayers = function (meetingId) {
-        //    MeetingPlayer.query({ $filter: 'MeetingId eq ' + meetingId }, meetingPlayersLoaded);
-        //};
-        //var meetingPlayersLoaded = function (data) {
-        //    $scope.meetingPlayers = data.value;
-        //    mergeSportsPlayersWithMeetingPlayers(data.value);
-        //};
+        $scope.$watch('selectedMeeting', function (newValue, oldValue) {
+            if (newValue.Id) {
+                $location.path("/meetings/" + newValue.Id);
+            };
+        });
 
         var getMeeting = function(meetingId) {
-            Meeting.query({Id:meetingId},meetingLoaded);
+            Meeting.query({ $select: 'Id,Timestamp,Sport,Sport/SportPlayers/Player,Sport/Meetings,MeetingPlayers,MeetingPlayers/Player', $expand: 'Sport,Sport/SportPlayers/Player,Sport/Meetings,MeetingPlayers,MeetingPlayers/Player', $filter: 'Id eq ' + meetingId }, meetingLoaded);
         };
         var meetingLoaded = function(data) {
-            $scope.meeting = data;
-            $scope.sportId = data.SportId;
-            getSport($scope.sportId);
-            getSportPlayers($scope.sportId);
+            $scope.meeting = data.value[0];
+            $scope.meetingsSelect = jQuery.extend(true, [], $scope.meeting.Sport.Meetings);
+            $scope.selectedMeeting = $scope.meeting;
+            $scope.totalAttenders = getTotalAttenders($scope.meeting.MeetingPlayers);
+            $scope.totalDontKnowers = getDontKnowers($scope.meeting.MeetingPlayers);
+            $scope.totalNoers = getNoers($scope.meeting.MeetingPlayers);
+            $scope.totalNotAnswered = $scope.meeting.Sport.SportPlayers.length - $scope.totalAttenders - $scope.totalDontKnowers - $scope.totalNoers;
         };
 
-        var getSport = function (sportId) {
-            Sport.query({Id: sportId}, sportLoaded);
+        var getTotalAttenders = function (meetingPlayers) {
+            var result = 0;
+            for (index = 0; index < meetingPlayers.length; index++) {
+                if (meetingPlayers[index].IsAttending) result++;
+            };
+            return result;
         };
-        var sportLoaded = function(data) {
-            $scope.sport = data;
+
+        var getDontKnowers = function (meetingPlayers) {
+            var result = 0;
+            for (index = 0; index < meetingPlayers.length; index++) {
+                if (meetingPlayers[index].IsAttending == null) result++;
+            };
+            return result;
+        };
+
+        var getNoers = function (meetingPlayers) {
+            var result = 0;
+            for (index = 0; index < meetingPlayers.length; index++) {
+                if (meetingPlayers[index].IsAttending == false) result++;
+            };
+            return result;
         };
 
         $scope.answer = function (player, isAttending) {
@@ -50,28 +59,38 @@
                 if (player.MeetingPlayer.length > 0)
                     MeetingPlayerId = player.MeetingPlayer[0].Id;
 
-            var data = {
-                Id: MeetingPlayerId,
+            var entity = {
                 PlayerId: player.Player.Id,
-                MeetingId: $scope.sportId,
+                MeetingId: $scope.meetingId,
                 IsAttending: isAttending
             };
-            var success = function() {
-                getSportPlayers($scope.sportId);
+            if (MeetingPlayerId) entity.Id = MeetingPlayerId;
+
+            var success = function(entity) {
+                getMeeting($scope.meeting.Id);
             };
-            var error = function() {
-                alert(data.Message);
+            var error = function (data) {
+                alert(data.statusText);
             };
 
-            if (data.Id) {
-                MeetingPlayer.update({ Id: data.Id }, data, success, error);
+            if (entity.Id) {
+                MeetingPlayer.update({ Id: entity.Id }, entity, success, error);
             } else {
-                MeetingPlayer.save(data, success, error);
+                MeetingPlayer.save(entity, success, error);
             }
         };
 
-        getMeeting($scope.meetingId);
-        
+        $scope.getMeetingPlayer = function (playerId) {
+            
+            var index;
+            if ($scope.meeting.MeetingPlayers) {
+                for (index = 0; index < $scope.meeting.MeetingPlayers.length; index++) {
+                    if ($scope.meeting.MeetingPlayers[index].PlayerId == playerId) return $scope.meeting.MeetingPlayers[index];
+                };
+            };
+            return false;
+        };
+
         //var mergeSportsPlayersWithMeetingPlayers = function (meetingPlayers) {
         //    $scope.totalAttenders = 0;
         //    for (var meetingIndex = 0; meetingIndex < meetingPlayers.length; meetingIndex++) {
@@ -86,6 +105,8 @@
         //        }
         //    }
         //};
+
+        getMeeting($scope.meetingId);
 
     }
 ]);

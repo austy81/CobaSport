@@ -20,7 +20,7 @@ namespace CobaSports.Controllers
         private CobaSportsContext db = new CobaSportsContext();
 
         // GET: odata/Meetings
-        [EnableQuery]
+        [EnableQuery(MaxExpansionDepth = 3)]
         public IQueryable<Meeting> GetMeetings()
         {
             return db.Meetings;
@@ -73,6 +73,9 @@ namespace CobaSports.Controllers
         // POST: odata/Meetings
         public async Task<IHttpActionResult> Post(Meeting meeting)
         {
+            meeting.Timestamp = meeting.Timestamp.AddHours(12); //Dirty trick to work with UTC times
+            meeting.Timestamp = meeting.Timestamp.Date;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -141,7 +144,7 @@ namespace CobaSports.Controllers
         [EnableQuery]
         public IQueryable<MeetingPlayer> GetMeetingPlayer([FromODataUri] int key)
         {
-            return db.Meetings.Where(m => m.Id == key).SelectMany(m => m.MeetingPlayer);
+            return db.Meetings.Where(m => m.Id == key).SelectMany(m => m.MeetingPlayers);
         }
 
         // GET: odata/Meetings(5)/Sport

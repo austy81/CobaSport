@@ -73,11 +73,13 @@ namespace CobaSports.Controllers
         // POST: odata/MeetingPlayers
         public async Task<IHttpActionResult> Post(MeetingPlayer meetingPlayer)
         {
+            meetingPlayer.Timestamp = DateTime.Now.Date;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
+            
             db.MeetingPlayers.Add(meetingPlayer);
             await db.SaveChangesAsync();
 

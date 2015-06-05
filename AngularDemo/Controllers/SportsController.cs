@@ -141,7 +141,7 @@ namespace CobaSports.Controllers
         [EnableQuery]
         public IQueryable<SportPlayer> GetSportPlayer([FromODataUri] int key)
         {
-            return db.Sports.Where(m => m.Id == key).SelectMany(m => m.SportPlayer);
+            return db.Sports.Where(m => m.Id == key).SelectMany(m => m.SportPlayers);
         }
 
         protected override void Dispose(bool disposing)
