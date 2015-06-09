@@ -6,8 +6,7 @@ namespace CobaSports.Models
     public class Sport
     {
         public int Id { get; set; }
-        [Required]
-        [MaxLength(250)]
+        [Required, MaxLength(250)]
         public string Caption { get; set; }
 
         public virtual ICollection<SportPlayer> SportPlayers { get; set; }

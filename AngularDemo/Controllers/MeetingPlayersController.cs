@@ -49,6 +49,8 @@ namespace CobaSports.Controllers
                 return NotFound();
             }
 
+
+            patch.TrySetPropertyValue("Timestamp", DateTime.Now);
             patch.Put(meetingPlayer);
 
             try
@@ -73,7 +75,7 @@ namespace CobaSports.Controllers
         // POST: odata/MeetingPlayers
         public async Task<IHttpActionResult> Post(MeetingPlayer meetingPlayer)
         {
-            meetingPlayer.Timestamp = DateTime.Now.Date;
+            meetingPlayer.Timestamp = DateTime.Now;
 
             if (!ModelState.IsValid)
             {

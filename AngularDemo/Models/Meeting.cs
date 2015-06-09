@@ -8,10 +8,11 @@ namespace CobaSports.Models
     public class Meeting
     {
         public int Id { get; set; }
-        [Required]
-        public DateTime Timestamp { get; set; }
         
-        [Range(1,int.MaxValue)]
+        [Required, Column(TypeName = "datetime2")]
+        public DateTime Timestamp { get; set; }
+
+        [Required, ForeignKey("Sport")] 
         public int SportId { get; set; }
         public virtual Sport Sport { get; set; }
 

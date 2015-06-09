@@ -9,11 +9,11 @@ namespace CobaSports.Models
     public class Player
     {
         public int Id { get; set; }
-        [Required]
-        [MaxLength(20)]
+
+        [Required, MaxLength(20)]
         public string FirstName { get; set; }
-        [Required]
-        [MaxLength(20)]
+
+        [Required, MaxLength(20)]
         public string LastName { get; set; }
 
         public virtual ICollection<SportPlayer> SportPlayers { get; set; }

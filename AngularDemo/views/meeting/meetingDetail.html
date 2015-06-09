@@ -1,5 +1,5 @@
-﻿<a ng-href="#/sports/{{sport.Id}}">
-    <h2 class="col-md-12" ng-bind="'Sport: ' + sport.Caption"></h2>
+﻿<a ng-href="#/sports/{{meeting.Sport.Id}}">
+    <h2 class="col-md-12" ng-bind="'Sport: ' + meeting.Sport.Caption"></h2>
 </a>
 <h3 class="col-md-12 form-inline">
     <label>
@@ -15,18 +15,15 @@
             <div ng-bind="player.Player.FirstName + ' ' + player.Player.LastName"></div>
         </div>
         <div class="col-md-2">
-            <div ng-bind="getMeetingPlayerTimestamp(player.Player) | date : 'd. M. yyyy hh:mm'"></div>
+            <div ng-bind="getMeetingPlayer(player.Player.Id).Timestamp | date : 'd. M. yyyy hh:mm:ss'"></div>
         </div>
         <div class="col-md-2">
-            <div ng-show="getMeetingPlayer(player.Player.Id).IsAttending">YES</div>
-            <div ng-show="getMeetingPlayer(player.Player.Id) && getMeetingPlayer(player.Player.Id).IsAttending == false">NO</div>
-            <div ng-show="getMeetingPlayer(player.Player.Id) && getMeetingPlayer(player.Player.Id).IsAttending == null">Dont know</div>
-            <div ng-show="!getMeetingPlayer(player.Player.Id)">Not Answered</div>
+            <div ng-bind="getAttendance(player.Player.Id)"></div>
         </div>
         <div class="col-md-6">
-            <button class="btn btn-success" ng-click="answer(player, true);">Yes</button>
-            <button class="btn btn-danger" ng-click="answer(player, false);">No</button>
-            <button class="btn btn-warning" ng-click="answer(player, null);">Dont Know</button>
+            <button class="btn btn-success" ng-disabled="getAttendance(player.Player.Id) == 'Yes'" ng-click="answer(player, true);">Yes</button>
+            <button class="btn btn-danger" ng-disabled="getAttendance(player.Player.Id) == 'No'" ng-click="answer(player, false);">No</button>
+            <button class="btn btn-warning" ng-disabled="getAttendance(player.Player.Id) == 'Dont know'" ng-click="answer(player, null);">Dont Know</button>
         </div>
     </div>
     <div class="col-md-4 spacer">

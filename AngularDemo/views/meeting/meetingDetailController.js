@@ -17,7 +17,7 @@
         });
 
         var getMeeting = function(meetingId) {
-            Meeting.query({ $select: 'Id,Timestamp,Sport,Sport/SportPlayers/Player,Sport/Meetings,MeetingPlayers,MeetingPlayers/Player', $expand: 'Sport,Sport/SportPlayers/Player,Sport/Meetings,MeetingPlayers,MeetingPlayers/Player', $filter: 'Id eq ' + meetingId }, meetingLoaded);
+            Meeting.query({ $select: 'Id,Timestamp,Sport,Sport/SportPlayers/Player,Sport/Meetings,MeetingPlayers,MeetingPlayers/Id,MeetingPlayers/Player', $expand: 'Sport,Sport/SportPlayers/Player,Sport/Meetings,MeetingPlayers,MeetingPlayers/Player', $filter: 'Id eq ' + meetingId }, meetingLoaded);
         };
         var meetingLoaded = function(data) {
             $scope.meeting = data.value[0];
@@ -53,18 +53,38 @@
             return result;
         };
 
-        $scope.answer = function (player, isAttending) {
-            var MeetingPlayerId = null;
-            if (player.MeetingPlayer)
-                if (player.MeetingPlayer.length > 0)
-                    MeetingPlayerId = player.MeetingPlayer[0].Id;
+        $scope.getAttendance = function(playerId) {
+            var meetingPlayer = $scope.getMeetingPlayer(playerId);
+            if (meetingPlayer) {
+                if (meetingPlayer.IsAttending == true) return 'Yes';
+                if (meetingPlayer.IsAttending == false) return 'No';
+                if (meetingPlayer.IsAttending == null) return 'Dont know';
+            }
+            return 'Not answered';
 
-            var entity = {
-                PlayerId: player.Player.Id,
-                MeetingId: $scope.meetingId,
-                IsAttending: isAttending
-            };
-            if (MeetingPlayerId) entity.Id = MeetingPlayerId;
+        };
+
+        $scope.answer = function(player, isAttending) {
+
+            var entity = {};
+            var meetingPlayer = $scope.getMeetingPlayer(player.Player.Id);
+            if (meetingPlayer) {
+                entity = meetingPlayer;
+                entity.Player = undefined;
+            } else {
+                entity =  {
+                    PlayerId: player.PlayerId,
+                    MeetingId: $scope.meeting.Id,
+                };
+
+            }
+            entity.IsAttending = isAttending;
+
+            //entity = {
+            //    Id: player.Id,
+            //    PlayerId: player.PlayerId,
+            //    MeetingId: player.MeetingId,
+            //};
 
             var success = function(entity) {
                 getMeeting($scope.meeting.Id);

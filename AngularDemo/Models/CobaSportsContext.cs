@@ -12,8 +12,8 @@ namespace CobaSports.Models
             : base("CobaSports")
         {
             this.Configuration.ProxyCreationEnabled = false;
-            
-            if (!this.Database.Exists()) 
+
+            if (!this.Database.Exists())
                 this.Database.Create();
 
             if (!this.Database.CompatibleWithModel(true))
