@@ -54,11 +54,7 @@
     <div class="col-md-12">
         <h3 class="col-md-12">Sport players</h3>
         <div class="col-md-12" ng-repeat="sportPlayer in sport.SportPlayers">
-            <div class="col-md-6">
-                <a ng-href="#/players/{{sportPlayer.PlayerId}}">
-                    {{sportPlayer.Player.FirstName}}, {{sportPlayer.Player.LastName}}
-                </a>
-            </div>
+            <div class="col-md-6" ng-bind="sportPlayer.Player.FirstName + ', ' + sportPlayer.Player.LastName"></div>
             <div class="col-md-6">
                 <a ng-click="deleteSportPlayer(sportPlayer.Id)" class="btn btn-danger btn-sm active" role="button">Unasign</a>
             </div>

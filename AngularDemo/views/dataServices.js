@@ -3,7 +3,7 @@
     'query': { method: 'GET', isArray: false }
 };
 var key = { Id: '@_Id' };
-var oDataUrl = 'http://localhost:56513/odata/';
+var oDataUrl = '/odata/';
 var idParam = '(:Id)';
 
 angular.module('app.services', [])
