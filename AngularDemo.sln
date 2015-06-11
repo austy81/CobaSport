@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CobaSports", "AngularDemo\C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FD8C97C3-E666-4075-9F21-95145A5A701E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{BAC9A264-47DC-4255-9146-AE096A6BD9A3}"
+	ProjectSection(SolutionItems) = preProject
+		SQL\Backup_CobaSports_LIVE.bat = SQL\Backup_CobaSports_LIVE.bat
+		SQL\Backup_CobaSports_LIVE.sql = SQL\Backup_CobaSports_LIVE.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
