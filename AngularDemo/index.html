@@ -27,11 +27,26 @@
 
 </head>
     <body>
-        <div ng-include="'views/header.html'">
+        <header>
+            <div ng-include="'views/header.html'">
+
+            </div>
+        </header>
+        <div class="container" style="margin-bottom: 80px">
+            <div ng-view>
+
+            </div>
+            <h1 ng-show="false">
+                This browser is not supported. Use something sane. Preferably Chrome or Firefox. IE 10 or later is also acceptable.
+            </h1>
 
         </div>
-        <div class="container" ng-view>
-
-        </div>
+        <footer>
+            <div class="navbar navbar-fixed-bottom panel-footer">
+                <div class="container">
+                    by <a href="mailto:jan.austerlitz@commerzbank.com">Jan Austerlitz</a>
+                </div>
+            </div>
+        </footer>
     </body>
 </html>
