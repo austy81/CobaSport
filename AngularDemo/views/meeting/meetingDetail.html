@@ -10,20 +10,20 @@
 
 <div class="col-md-12">
     <div class="col-md-12">Players</div>
-    <div class="col-md-12" ng-repeat="player in meeting.Sport.SportPlayers">
+    <div class="col-md-12" ng-repeat="player in sportAndMeetingPlayers">
         <div class="col-md-3">
-            <div ng-bind="player.Player.FirstName + ' ' + player.Player.LastName"></div>
+            <div ng-bind="player.FirstName + ' ' + player.LastName"></div>
         </div>
         <div class="col-md-3">
-            <div ng-bind="getMeetingPlayer(player.Player.Id).Timestamp | date : 'd. M. yyyy hh:mm:ss'"></div>
+            <div ng-bind="getMeetingPlayer(player.Id).Timestamp | date : 'd. M. yyyy hh:mm:ss'"></div>
         </div>
         <div class="col-md-2">
-            <div ng-bind="getAttendance(player.Player.Id)"></div>
+            <div ng-bind="getAttendance(player.Id)"></div>
         </div>
         <div class="col-md-4">
-            <button class="btn btn-success" ng-disabled="getAttendance(player.Player.Id) == 'Yes'" ng-click="answer(player, true);">Yes</button>
-            <button class="btn btn-danger" ng-disabled="getAttendance(player.Player.Id) == 'No'" ng-click="answer(player, false);">No</button>
-            <button class="btn btn-warning" ng-disabled="getAttendance(player.Player.Id) == 'Dont know'" ng-click="answer(player, null);">Dont Know</button>
+            <button class="btn btn-success" ng-disabled="getAttendance(player.Id) == 'Yes'" ng-click="answer(player, true);">Yes</button>
+            <button class="btn btn-danger" ng-disabled="getAttendance(player.Id) == 'No'" ng-click="answer(player, false);">No</button>
+            <button class="btn btn-warning" ng-disabled="getAttendance(player.Id) == 'Dont know'" ng-click="answer(player, null);">Dont Know</button>
         </div>
     </div>
     <div class="col-md-4 spacer">

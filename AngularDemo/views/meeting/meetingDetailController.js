@@ -17,11 +17,16 @@
         });
 
         var getMeeting = function(meetingId) {
-            Meeting.query({ $select: 'Id,Timestamp,Sport,Sport/SportPlayers/Player,Sport/Meetings,MeetingPlayers,MeetingPlayers/Id,MeetingPlayers/Player', $expand: 'Sport,Sport/SportPlayers/Player,Sport/Meetings,MeetingPlayers,MeetingPlayers/Player', $filter: 'Id eq ' + meetingId }, meetingLoaded);
+            Meeting.query(
+                {
+                    $select: 'Id,Timestamp,Sport,Sport/SportPlayers/Player,Sport/Meetings,MeetingPlayers,MeetingPlayers/Id,MeetingPlayers/Player',
+                    $expand: 'Sport,Sport/SportPlayers/Player,Sport/Meetings,MeetingPlayers,MeetingPlayers/Player', $filter: 'Id eq ' + meetingId
+                }, meetingLoaded);
         };
         var meetingLoaded = function(data) {
             $scope.meeting = data.value[0];
             $scope.meetingsSelect = jQuery.extend(true, [], $scope.meeting.Sport.Meetings);
+            $scope.sportAndMeetingPlayers = mergeSportAndMeetingPlayers($scope.meeting.Sport.SportPlayers, $scope.meeting.MeetingPlayers);
             $scope.selectedMeeting = $scope.meeting;
             $scope.totalAttenders = getTotalAttenders($scope.meeting.MeetingPlayers);
             $scope.totalDontKnowers = getDontKnowers($scope.meeting.MeetingPlayers);
@@ -29,7 +34,30 @@
             $scope.totalNotAnswered = $scope.meeting.Sport.SportPlayers.length - $scope.totalAttenders - $scope.totalDontKnowers - $scope.totalNoers;
         };
 
+        var mergeSportAndMeetingPlayers = function(sportPlayers, meetingPlayers) {
+            var result = [];
+            var index;
+            for (index = 0; index < sportPlayers.length; index++) {
+                result.push(sportPlayers[index].Player);
+            };
+
+            for (index = 0; index < meetingPlayers.length; index++) {
+                if (indexOfByObjectId(result, meetingPlayers[index].Player.Id) < 0)
+                    result.push(meetingPlayers[index].Player);
+            };
+            return result;
+        };
+
+        var indexOfByObjectId = function(arr, Id) {
+            var index;
+            for (index = 0; index < arr.length; index++) {
+                if (arr[index].Id == Id) return index;
+            };
+            return -1;
+        };
+
         var getTotalAttenders = function (meetingPlayers) {
+            var index;
             var result = 0;
             for (index = 0; index < meetingPlayers.length; index++) {
                 if (meetingPlayers[index].IsAttending) result++;
@@ -67,13 +95,13 @@
         $scope.answer = function(player, isAttending) {
 
             var entity = {};
-            var meetingPlayer = $scope.getMeetingPlayer(player.Player.Id);
+            var meetingPlayer = $scope.getMeetingPlayer(player.Id);
             if (meetingPlayer) {
                 entity = meetingPlayer;
                 entity.Player = undefined;
             } else {
                 entity =  {
-                    PlayerId: player.PlayerId,
+                    PlayerId: player.Id,
                     MeetingId: $scope.meeting.Id,
                 };
 
