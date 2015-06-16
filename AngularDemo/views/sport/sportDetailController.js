@@ -6,21 +6,44 @@
 
         var sportLoaded = function (data) {
             if (data.value) {
+                data.value[0].SportPlayers.sort(comparePlayerLastName);
+                data.value[0].Meetings.sort(compareMeetingTimestamp);
                 $scope.sport = data.value[0];
             } else {
                 alert('Wrong data received from server');
             };
         };
+
+        var comparePlayerLastName = function(sportPlayerA, sportPlayerB) {
+            if (sportPlayerA.Player.LastName < sportPlayerB.Player.LastName) return -1;
+            if (sportPlayerA.Player.LastName > sportPlayerB.Player.LastName) return 1;
+            return 0;
+        };
+
+        var compareMeetingTimestamp = function (meetingA, meetingB) {
+            if (meetingA.Timestamp < meetingB.Timestamp) return 1;
+            if (meetingA.Timestamp > meetingB.Timestamp) return -1;
+            return 0;
+        }
+
         var getSport = function () {
             var sportId = $scope.sportId;
-            Sport.query({ $select: 'Id,Caption,SportPlayers,Meetings', $expand: 'SportPlayers/Player,Meetings', $filter: 'Id eq ' + sportId }, sportLoaded);
+            Sport.query({
+                $select: 'Id,Caption,SportPlayers,Meetings',
+                $expand: 'SportPlayers($expand=Player),Meetings',
+                $filter: 'Id eq ' + sportId
+            }, sportLoaded);
         };
 
         var playersLoaded = function(data) {
             $scope.selectboxPlayers = data.value;
         };
         var getSelectboxPlayers = function () {
-            Player.query({ $expand: 'SportPlayers', $filter: 'SportPlayers/all (s: s/SportId ne ' + $scope.sportId + ')' }, playersLoaded);
+            Player.query({
+                $expand: 'SportPlayers',
+                $filter: 'SportPlayers/all (s: s/SportId ne ' + $scope.sportId + ')',
+                $orderby: 'LastName'
+            }, playersLoaded);
         };
 
         $scope.deleteMeeting = function (id) {

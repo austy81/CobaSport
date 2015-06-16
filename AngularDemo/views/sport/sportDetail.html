@@ -2,7 +2,6 @@
 
 <div class="col-md-6">
     <div class="col-md-12 spacer">
-        <button class="btn btn-success" ng-click="upsertMeeting()">Create a new meeting</button>
         <script type="text/ng-template" id="meetingEdit.html">
             <div class="modal-header">
                 <h3 class="modal-title">Meeting</h3>
@@ -19,23 +18,31 @@
     </div>
 
     <div class="col-md-12">
-        <h3 class="col-md-12">Meetings</h3>
-        <div class="col-md-12" ng-repeat="meeting in sport.Meetings">
-            <div class="col-md-6">
-                <a ng-href="#/meetings/{{meeting.Id}}">
-                    <div ng-bind="meeting.Timestamp | date : 'd. M. yyyy'"></div>
-                </a>
-            </div>
-            <div class="col-md-6">
-                <a ng-click="deleteMeeting(meeting.Id)" class="btn btn-danger btn-sm active" role="button">delete</a>
-            </div>
-        </div>
+        <h2>Meetings</h2>
+        <button class="btn btn-success btn-sm" ng-click="upsertMeeting()">Create a new meeting</button>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tr ng-repeat="meeting in sport.Meetings | filter: searchText">
+                <td>
+                    <a ng-href="#/meetings/{{meeting.Id}}" ng-bind="meeting.Timestamp | date : 'd. M. yyyy' | filter: searchtext "></a>
+                </td>
+                <td>
+                    <a ng-click="deleteMeeting(meeting.Id)" class="btn btn-danger btn-sm active" role="button">delete</a>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 
 <div class="col-md-6">
     <div class="col-md-12 spacer">
-        <button class="btn btn-success" ng-click="insertSportPlayer()">Assign new player</button>
+        <formHeader formHeader title="Sport players" buttonaction="insertSportPlayer()" buttonlabel="Assign a new player">
+        </formHeader>
         <script type="text/ng-template" id="sportPlayerInsert.html">
             <div class="modal-header">
                 <h3 class="modal-title">Sport player</h3>
@@ -52,12 +59,20 @@
     </div>
 
     <div class="col-md-12">
-        <h3 class="col-md-12">Sport players</h3>
-        <div class="col-md-12" ng-repeat="sportPlayer in sport.SportPlayers">
-            <div class="col-md-6" ng-bind="sportPlayer.Player.FirstName + ', ' + sportPlayer.Player.LastName"></div>
-            <div class="col-md-6">
-                <a ng-click="deleteSportPlayer(sportPlayer.Id)" class="btn btn-danger btn-sm active" role="button">Unasign</a>
-            </div>
-        </div>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tr ng-repeat="sportPlayer in sport.SportPlayers | filter: searchText">
+                <td ng-bind="sportPlayer.Player.FirstName + ', ' + sportPlayer.Player.LastName">
+                </td>
+                <td>
+                    <a ng-click="deleteSportPlayer(sportPlayer.Id)" class="btn btn-danger btn-sm active" role="button">Unasign</a>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>

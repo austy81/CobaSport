@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Web.Http;
-using System.Web.Http.OData.Builder;
-using System.Web.Http.OData.Extensions;
+﻿using System.Web.Http;
+using System.Web.OData.Builder;
+using System.Web.OData.Extensions;
 using CobaSports.Models;
 
 namespace CobaSports
@@ -14,7 +10,7 @@ namespace CobaSports
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services    
-            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
+            var builder = new ODataConventionModelBuilder();
       
             builder.EntitySet<Sport>("Sports");
             builder.EntitySet<Player>("Players");
@@ -22,7 +18,7 @@ namespace CobaSports
             builder.EntitySet<MeetingPlayer>("MeetingPlayers"); 
             builder.EntitySet<SportPlayer>("SportPlayers");
 
-            config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
+            config.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
 
             // Web API routes
             //config.MapHttpAttributeRoutes();

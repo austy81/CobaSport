@@ -2,7 +2,16 @@
 
     $scope.sportsList = [];
 
-    var sportsLoaded = function(data) { $scope.sportsList = data.value; };
+    var sportsLoaded = function (data) {
+        data.value.sort(compareCaption);
+        $scope.sportsList = data.value;
+    };
+
+    var compareCaption = function(sportA, sportB) {
+        if (sportA.Caption < sportB.Caption) return -1;
+        if (sportA.Caption > sportB.Caption) return 1;
+        return 0;
+    };
 
     $scope.deleteSport = function(id) {
         Sport.delete({ Id: id }, function () { Sport.query(sportsLoaded); });
@@ -18,7 +27,7 @@
 
         var modalInstance = $modal.open({
             animation: true,
-            templateUrl: 'sportEdit.html',
+            templateUrl: 'views/sport/sportEdit.html',
             controller: 'entityEditController',
             resolve: {
                 modalObject: function () {

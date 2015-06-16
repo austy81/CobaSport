@@ -4,7 +4,8 @@
     $scope.playerList = [];
 
     var getPlayers = function () {
-        Player.query(function(data) {
+        Player.query(function (data) {
+            data.value.sort(compareLastName);
             $scope.playerList = data.value;
         });
     }
@@ -13,6 +14,12 @@
         Player.delete({ Id: id }, function() {
             getPlayers();
         });
+    };
+
+    var compareLastName = function (playerA, playerB) {
+        if (playerA.LastName < playerB.LastName) return -1;
+        if (playerA.LastName > playerB.LastName) return 1;
+        return 0;
     };
 
     getPlayers();

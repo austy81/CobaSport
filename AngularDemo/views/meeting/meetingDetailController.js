@@ -19,20 +19,32 @@
         var getMeeting = function(meetingId) {
             Meeting.query(
                 {
-                    $select: 'Id,Timestamp,Sport,Sport/SportPlayers/Player,Sport/Meetings,MeetingPlayers,MeetingPlayers/Id,MeetingPlayers/Player',
-                    $expand: 'Sport,Sport/SportPlayers/Player,Sport/Meetings,MeetingPlayers,MeetingPlayers/Player', $filter: 'Id eq ' + meetingId
+                    $select: 'Id,Timestamp',
+                    $expand: '' +
+                        'Sport ($expand=' +
+                            'SportPlayers(' +
+                                '$expand=Player)' +
+                            ',Meetings)' +
+                        ',MeetingPlayers (' +
+                            '$expand=Player)',
+                    $filter: 'Id eq ' + meetingId
                 }, meetingLoaded);
         };
         var meetingLoaded = function(data) {
             $scope.meeting = data.value[0];
+            $scope.meeting.Sport.Meetings.sort(compareMeetingTimestamp);
             $scope.meetingsSelect = jQuery.extend(true, [], $scope.meeting.Sport.Meetings);
             $scope.sportAndMeetingPlayers = mergeSportAndMeetingPlayers($scope.meeting.Sport.SportPlayers, $scope.meeting.MeetingPlayers);
             $scope.selectedMeeting = $scope.meeting;
-            $scope.totalAttenders = getTotalAttenders($scope.meeting.MeetingPlayers);
-            $scope.totalDontKnowers = getDontKnowers($scope.meeting.MeetingPlayers);
-            $scope.totalNoers = getNoers($scope.meeting.MeetingPlayers);
-            $scope.totalNotAnswered = $scope.meeting.Sport.SportPlayers.length - $scope.totalAttenders - $scope.totalDontKnowers - $scope.totalNoers;
+            setMeetingPlayersCounts($scope.meeting.MeetingPlayers);
+            $scope.totalNotAnswered = $scope.sportAndMeetingPlayers.length - $scope.totalAttenders - $scope.totalDontKnowers - $scope.totalNoers;
         };
+
+        var compareMeetingTimestamp = function (meetingA, meetingB) {
+            if (meetingA.Timestamp < meetingB.Timestamp) return 1;
+            if (meetingA.Timestamp > meetingB.Timestamp) return -1;
+            return 0;
+        }
 
         var mergeSportAndMeetingPlayers = function(sportPlayers, meetingPlayers) {
             var result = [];
@@ -45,6 +57,13 @@
                 if (indexOfByObjectId(result, meetingPlayers[index].Player.Id) < 0)
                     result.push(meetingPlayers[index].Player);
             };
+
+            result.sort(function (playerA, playerB) {
+                if (playerA.LastName < playerB.LastName) return -1;
+                if (playerA.LastName > playerB.LastName) return 1;
+                return 0;
+            });
+
             return result;
         };
 
@@ -56,29 +75,18 @@
             return -1;
         };
 
-        var getTotalAttenders = function (meetingPlayers) {
+        var setMeetingPlayersCounts = function (meetingPlayers) {
             var index;
-            var result = 0;
-            for (index = 0; index < meetingPlayers.length; index++) {
-                if (meetingPlayers[index].IsAttending) result++;
-            };
-            return result;
-        };
 
-        var getDontKnowers = function (meetingPlayers) {
-            var result = 0;
-            for (index = 0; index < meetingPlayers.length; index++) {
-                if (meetingPlayers[index].IsAttending == null) result++;
-            };
-            return result;
-        };
+            $scope.totalAttenders = 0;
+            $scope.totalDontKnowers = 0;
+            $scope.totalNoers = 0;
 
-        var getNoers = function (meetingPlayers) {
-            var result = 0;
             for (index = 0; index < meetingPlayers.length; index++) {
-                if (meetingPlayers[index].IsAttending == false) result++;
+                if (meetingPlayers[index].IsAttending) $scope.totalAttenders++;
+                if (meetingPlayers[index].IsAttending == null) $scope.totalDontKnowers++;
+                if (meetingPlayers[index].IsAttending == false) $scope.totalNoers++;
             };
-            return result;
         };
 
         $scope.getAttendance = function(playerId) {

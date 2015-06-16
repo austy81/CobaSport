@@ -1,34 +1,25 @@
-﻿<h2 class="col-md-12">Sports</h2>
-
-<div class="col-md-12 spacer">
-    <button class="btn btn-success" ng-click="upsertSport()">Create a new sport</button>
-    <script type="text/ng-template" id="sportEdit.html">
-        <div class="modal-header">
-            <h3 class="modal-title">Sport</h3>
-        </div>
-        <div class="modal-body">
-            <div>Sport caption:</div>
-            <input type="text" ng-model="entity.Caption" placeholder="caption"></input>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-        </div>
-    </script>
-</div>
+﻿
+<formHeader formHeader title="Sports" buttonaction="upsertSport()" buttonlabel="Create a new sport">
+</formHeader>
 
 <div class="col-md-12">
-    <div class="col-md-12">Sport</div>
-    <div class="col-md-12" ng-repeat="sport in sportsList">
-        <div class="col-md-8">
-            <a ng-href="#/sports/{{sport.Id}}">
-                <div ng-bind="sport.Caption"></div>
-            </a>
-        </div>
-        <div class="col-md-4">
-            <button ng-click="upsertSport(sport)" class="btn btn-primary">Edit</button>
-            <!--<button ng-click="deleteSport(sport.Id)" class="btn btn-warning">Delete</button>-->
-        </div>
-    </div>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Sport</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tr ng-repeat="sport in sportsList | filter: searchText">
+            <td><a ng-href="#/sports/{{sport.Id}}">
+                    <div ng-bind="sport.Caption"></div>
+                </a>
+            </td>
+            <td>
+                <button ng-click="upsertSport(sport)" class="btn btn-primary">Edit</button>
+
+            </td>
+        </tr>
+    </table>
 </div>
      

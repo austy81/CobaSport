@@ -1,35 +1,41 @@
-﻿<h2 class="col-md-12">All Players</h2>
-
-<div class="col-md-12 spacer">
-    <button class="btn btn-success" ng-click="upsertPlayer()">Create a new player</button>
-    <script type="text/ng-template" id="playerEdit.html">
-        <div class="modal-header">
-            <h3 class="modal-title">Player</h3>
-        </div>
-        <div class="modal-body">
-            <div>First name:</div>
-            <input type="text" ng-model="entity.FirstName" placeholder="first name" />
-            <div>Last name:</div>
-            <input type="text" ng-model="entity.LastName" placeholder="last name" />
-            <div>Email:</div>
-            <input type="text" ng-model="entity.Email" placeholder="email" />
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-        </div>
-    </script>
-</div>
-
-<div class="col-md-12">
-    <div class="col-md-12">Players</div>
-    <div class="col-md-12" ng-repeat="player in playerList">
-        <div class="col-md-8">
-            <div ng-bind="player.FirstName + ', ' + player.LastName"></div>
-        </div>
-        <div class="col-md-4">
+﻿<formHeader formHeader title="Players" buttonaction="upsertPlayer()" buttonlabel="Create a new player">
+</formHeader>
+    
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tr ng-repeat="player in playerList | filter:searchText">
+        <td ng-bind="player.FirstName"/>
+        <td ng-bind="player.LastName"/>
+        <td ng-bind="player.Email"/>
+        <td>
             <button ng-click="upsertPlayer(player)" class="btn btn-primary">Edit</button>
             <button ng-click="deletePlayer(player.Id)" class="btn btn-warning">Delete</button>
-        </div>
+        </td>
+    </tr>
+</table>
+    
+<script type="text/ng-template" id="playerEdit.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Player</h3>
     </div>
-</div>
+    <div class="modal-body">
+        <div>First name:</div>
+        <input type="text" ng-model="entity.FirstName" placeholder="first name" />
+        <div>Last name:</div>
+        <input type="text" ng-model="entity.LastName" placeholder="last name" />
+        <div>Email:</div>
+        <input type="text" ng-model="entity.Email" placeholder="email" />
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
