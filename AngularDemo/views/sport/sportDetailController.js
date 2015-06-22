@@ -8,11 +8,28 @@
             if (data.value) {
                 data.value[0].SportPlayers.sort(comparePlayerLastName);
                 data.value[0].Meetings.sort(compareMeetingTimestamp);
+                AddNextAttribute(data.value[0].Meetings);
                 $scope.sport = data.value[0];
             } else {
                 alert('Wrong data received from server');
             };
         };
+
+        var AddNextAttribute = function(meetings) {
+            var index, closestIndex, currentDiff, closestDiff;
+            var tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() - 1);
+            for (index = 0; index < meetings.length; index++) {
+                currentDiff = tomorrow - new Date(meetings[index].Timestamp);
+                if (!closestDiff && currentDiff < 0) closestDiff = currentDiff;
+                if (currentDiff >= closestDiff && currentDiff < 0) {
+                    closestIndex = index;
+                    closestDiff = closestDiff;
+                }
+            }
+            if (closestIndex)
+                meetings[closestIndex].Next = true;
+        }
 
         var comparePlayerLastName = function(sportPlayerA, sportPlayerB) {
             if (sportPlayerA.Player.LastName < sportPlayerB.Player.LastName) return -1;

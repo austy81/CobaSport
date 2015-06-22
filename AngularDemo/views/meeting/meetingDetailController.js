@@ -89,15 +89,23 @@
             };
         };
 
-        $scope.getAttendance = function(playerId) {
+        $scope.getAttendanceClass = function(playerId) {
             var meetingPlayer = $scope.getMeetingPlayer(playerId);
             if (meetingPlayer) {
-                if (meetingPlayer.IsAttending == true) return 'Yes';
-                if (meetingPlayer.IsAttending == false) return 'No';
-                if (meetingPlayer.IsAttending == null) return 'Dont know';
+                if (meetingPlayer.IsAttending == true) return 'AttYes';
+                if (meetingPlayer.IsAttending == false) return 'AttNo';
+                if (meetingPlayer.IsAttending == null) return 'AttDontKnow';
             }
-            return 'Not answered';
+            return 'AttNotAnswered';
+        };
 
+        $scope.getAttendanceLabel = function (playerId) {
+            var attendanceClass = $scope.getAttendanceClass(playerId);
+            if (attendanceClass == 'AttYes') return 'Yes';
+            if (attendanceClass == 'AttNo') return 'No';
+            if (attendanceClass == 'AttDontKnow') return 'Dont know';
+            if (attendanceClass == 'AttNotAnswered') return 'Not answered';
+            return '';
         };
 
         $scope.answer = function(player, isAttending) {
