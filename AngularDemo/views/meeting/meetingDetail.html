@@ -23,12 +23,12 @@
     <tr ng-repeat="player in sportAndMeetingPlayers | filter:searchText" ng-class="getAttendanceClass(player.Id)">
         <td ng-bind="player.FirstName"/>
         <td ng-bind="player.LastName"/>
-        <td ng-bind="getMeetingPlayer(player.Id).Timestamp | date : 'd. M. yyyy hh:mm:ss'"/>
+        <td ng-bind="getMeetingPlayer(player.Id).Timestamp | date : 'd. M. yyyy H:mm:ss'"/>
         <td ng-bind="getAttendanceLabel(player.Id)"/>
         <td>
-            <button class="btn btn-success" ng-disabled="getAttendance(player.Id) == 'Yes'" ng-click="answer(player, true);">Yes</button>
-            <button class="btn btn-danger" ng-disabled="getAttendance(player.Id) == 'No'" ng-click="answer(player, false);">No</button>
-            <button class="btn btn-warning" ng-disabled="getAttendance(player.Id) == 'Dont know'" ng-click="answer(player, null);">Dont Know</button>
+            <button class="btn btn-success" ng-disabled="getAttendanceClass(player.Id) == 'AttYes'" ng-click="answer(player, true);">Yes</button>
+            <button class="btn btn-danger" ng-disabled="getAttendanceClass(player.Id) == 'AttNo'" ng-click="answer(player, false);">No</button>
+            <button class="btn btn-warning" ng-disabled="getAttendanceClass(player.Id) == 'AttDontKnow'" ng-click="answer(player, null);">Dont Know</button>
         </td>
     </tr>
 </table>

@@ -7,6 +7,8 @@
         <thead>
             <tr>
                 <th>Sport</th>
+                <th>Meetings#</th>
+                <th>Players#</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -15,6 +17,8 @@
                     <div ng-bind="sport.Caption"></div>
                 </a>
             </td>
+            <td ng-bind="sport.Meetings.length"></td>
+            <td ng-bind="sport.SportPlayers.length"></td>
             <td>
                 <button ng-click="upsertSport(sport)" class="btn btn-primary">Edit</button>
 

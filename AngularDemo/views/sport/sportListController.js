@@ -17,7 +17,7 @@
         Sport.delete({ Id: id }, function () { Sport.query(sportsLoaded); });
     };
 
-    Sport.query(sportsLoaded);
+    Sport.query({ $expand: 'SportPlayers,Meetings' }, sportsLoaded);
 
     $scope.upsertSport = function (entity) {
         if (!entity) {
