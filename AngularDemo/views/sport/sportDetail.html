@@ -29,7 +29,7 @@
             </thead>
             <tr ng-repeat="meeting in sport.Meetings | filter: searchText">
                 <td ng-class="meeting.Next ? 'AttYes' : ''">
-                    <a ng-href="#/meetings/{{meeting.Id}}" ng-bind="meeting.Timestamp | date : 'd. M. yyyy' | filter: searchtext "></a>
+                    <a ng-href="#/meetings/{{meeting.Id}}" ng-bind="meeting.Timestamp | date : 'EEE d. M. yyyy' | filter: searchtext "></a>
                     <div ng-class="meeting.Next ? ['glyphicon', 'glyphicon-star-empty'] : []" ng-show="meeting.Next" title="Next meeting"></div>
                 </td>
                 <td ng-class="meeting.Next ? 'AttYes' : ''">

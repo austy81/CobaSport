@@ -3,7 +3,7 @@
 </a>
 <h3 class="col-md-12 form-inline">
     <label>
-        Meeting: <select class="input-lg" ng-required="true" ng-model="selectedMeeting" ng-options="meeting.Timestamp | date : 'd. M. yyyy' for meeting in meetingsSelect track by meeting.Id"></select>
+        Meeting: <select class="input-lg" ng-required="true" ng-model="selectedMeeting" ng-options="meeting.Timestamp | date : 'EEE d. M. yyyy' for meeting in meetingsSelect track by meeting.Id"></select>
     </label>
 </h3>
 
@@ -23,7 +23,7 @@
     <tr ng-repeat="player in sportAndMeetingPlayers | filter:searchText" ng-class="getAttendanceClass(player.Id)">
         <td ng-bind="player.FirstName"/>
         <td ng-bind="player.LastName"/>
-        <td ng-bind="getMeetingPlayer(player.Id).Timestamp | date : 'd. M. yyyy H:mm:ss'"/>
+        <td ng-bind="getMeetingPlayer(player.Id).Timestamp | date : 'EEE d. M. yyyy H:mm:ss'"/>
         <td ng-bind="getAttendanceLabel(player.Id)"/>
         <td>
             <button class="btn btn-success" ng-disabled="getAttendanceClass(player.Id) == 'AttYes'" ng-click="answer(player, true);">Yes</button>

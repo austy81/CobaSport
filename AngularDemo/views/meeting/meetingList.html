@@ -7,7 +7,7 @@
     <div class="col-md-12" ng-repeat="meeting in meetingsList">
         <div class="col-md-8">
             <a ng-href="#/meetings/{{meeting.Id}}">
-                <div ng-bind="meeting.Timestamp | date : 'd. M. yyyy'"></div>
+                <div ng-bind="meeting.Timestamp | date : 'EEE d. M. yyyy'"></div>
             </a>
         </div>
         <div class="col-md-4">
