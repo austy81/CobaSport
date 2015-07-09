@@ -92,19 +92,19 @@
         $scope.getAttendanceClass = function(playerId) {
             var meetingPlayer = $scope.getMeetingPlayer(playerId);
             if (meetingPlayer) {
-                if (meetingPlayer.IsAttending == true) return 'AttYes';
-                if (meetingPlayer.IsAttending == false) return 'AttNo';
-                if (meetingPlayer.IsAttending == null) return 'AttDontKnow';
+                if (meetingPlayer.IsAttending == true) return 'success';
+                if (meetingPlayer.IsAttending == false) return 'danger';
+                if (meetingPlayer.IsAttending == null) return 'warning';
             }
-            return 'AttNotAnswered';
+            return 'active';
         };
 
         $scope.getAttendanceLabel = function (playerId) {
             var attendanceClass = $scope.getAttendanceClass(playerId);
-            if (attendanceClass == 'AttYes') return 'Yes';
-            if (attendanceClass == 'AttNo') return 'No';
-            if (attendanceClass == 'AttDontKnow') return 'Dont know';
-            if (attendanceClass == 'AttNotAnswered') return 'Not answered';
+            if (attendanceClass == 'success') return 'Yes';
+            if (attendanceClass == 'danger') return 'No';
+            if (attendanceClass == 'warning') return 'Dont know';
+            if (attendanceClass == 'active') return 'Not answered';
             return '';
         };
 

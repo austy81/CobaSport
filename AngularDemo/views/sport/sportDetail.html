@@ -27,12 +27,12 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <tr ng-repeat="meeting in sport.Meetings | filter: searchText">
-                <td ng-class="meeting.Next ? 'AttYes' : ''">
+            <tr ng-repeat="meeting in sport.Meetings | filter: searchText" ng-class="meeting.Class">
+                <td>
                     <a ng-href="#/meetings/{{meeting.Id}}" ng-bind="meeting.Timestamp | date : 'EEE d. M. yyyy' | filter: searchtext "></a>
-                    <div ng-class="meeting.Next ? ['glyphicon', 'glyphicon-star-empty'] : []" ng-show="meeting.Next" title="Next meeting"></div>
+                    <div class="glyphicon glyphicon-star-empty" ng-show="meeting.Class == 'success'" title="Next meeting"></div>
                 </td>
-                <td ng-class="meeting.Next ? 'AttYes' : ''">
+                <td>
                     <a ng-click="deleteMeeting(meeting.Id)" class="btn btn-danger btn-sm active" role="button">delete</a>
                 </td>
             </tr>
@@ -71,7 +71,7 @@
                 <td ng-bind="sportPlayer.Player.FirstName + ', ' + sportPlayer.Player.LastName">
                 </td>
                 <td>
-                    <a ng-click="deleteSportPlayer(sportPlayer.Id)" class="btn btn-danger btn-sm active" role="button">Unasign</a>
+                    <a ng-click="deleteSportPlayer(sportPlayer.Id)" class="btn btn-warning btn-sm active" role="button">Unasign</a>
                 </td>
             </tr>
         </table>

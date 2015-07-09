@@ -46,9 +46,11 @@
         }
 
         $scope.deletePlayer = function (id) {
-            $http.delete(apiUrl + apiController + id).success(function() {
-                getPlayers($scope.selectedSportId);
-            });
+            if (confirm("Are you sure to delete this player?")) {
+                $http.delete(apiUrl + apiController + id).success(function() {
+                    getPlayers($scope.selectedSportId);
+                });
+            }
         }
 
         $scope.createNewPlayer = function() {

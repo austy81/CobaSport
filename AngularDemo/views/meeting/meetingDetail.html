@@ -26,9 +26,9 @@
         <td ng-bind="getMeetingPlayer(player.Id).Timestamp | date : 'EEE d. M. yyyy H:mm:ss'"/>
         <td ng-bind="getAttendanceLabel(player.Id)"/>
         <td>
-            <button class="btn btn-success" ng-disabled="getAttendanceClass(player.Id) == 'AttYes'" ng-click="answer(player, true);">Yes</button>
-            <button class="btn btn-danger" ng-disabled="getAttendanceClass(player.Id) == 'AttNo'" ng-click="answer(player, false);">No</button>
-            <button class="btn btn-warning" ng-disabled="getAttendanceClass(player.Id) == 'AttDontKnow'" ng-click="answer(player, null);">Dont Know</button>
+            <button class="btn btn-success" ng-disabled="getAttendanceClass(player.Id) == 'success'" ng-click="answer(player, true);">Yes</button>
+            <button class="btn btn-danger" ng-disabled="getAttendanceClass(player.Id) == 'danger'" ng-click="answer(player, false);">No</button>
+            <button class="btn btn-warning" ng-disabled="getAttendanceClass(player.Id) == 'warning'" ng-click="answer(player, null);">Dont Know</button>
         </td>
     </tr>
 </table>
@@ -36,16 +36,20 @@
 <div class="col-md-4 spacer">
     <table class="table table-condensed">
         <tr>
-            <td>Number of YES: </td><td ng-bind="totalAttenders"></td>
+            <th>Summary</th>
+            <th>#</th>
         </tr>
-        <tr>
-            <td>Number of NO: </td><td ng-bind="totalNoers"></td>
+        <tr class="success">
+            <td>YES</td><td ng-bind="totalAttenders"></td>
         </tr>
-        <tr>
-            <td>Number of Dont Know: </td><td ng-bind="totalDontKnowers"></td>
+        <tr class="danger">
+            <td>NO</td><td ng-bind="totalNoers"></td>
         </tr>
-        <tr>
-            <td>Number of Not Answered: </td><td ng-bind="totalNotAnswered"></td>
+        <tr class="warning">
+            <td>Dont Know</td><td ng-bind="totalDontKnowers"></td>
+        </tr>
+        <tr class="active">
+            <td>Not Answered</td><td ng-bind="totalNotAnswered"></td>
         </tr>
     </table>
 </div>

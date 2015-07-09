@@ -10,10 +10,12 @@
         });
     }
 
-    $scope.deletePlayer = function(id) {
-        Player.delete({ Id: id }, function() {
-            getPlayers();
-        });
+    $scope.deletePlayer = function (id) {
+        if (confirm("Are you sure to delete this player?")) {
+            Player.delete({ Id: id }, function() {
+                getPlayers();
+            });
+        }
     };
 
     var compareLastName = function (playerA, playerB) {
