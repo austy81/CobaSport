@@ -1,4 +1,4 @@
-﻿app.controller('meetingDetailController', ['$scope', '$http', '$routeParams', '$location', 'SportPlayer', 'MeetingPlayer', 'Meeting', 'Sport',
+﻿angular.module('app').controller('meetingDetailController', ['$scope', '$http', '$routeParams', '$location', 'SportPlayer', 'MeetingPlayer', 'Meeting', 'Sport',
     function ($scope, $http, $routeParams, $location, SportPlayer, MeetingPlayer, Meeting, Sport) {
 
         $scope.meetingId = $routeParams.meetingId;

@@ -1,4 +1,4 @@
-﻿app.controller('playerListController', ['$scope', '$http', '$modal', 'Player', function ($scope, $http, $modal, Player) {
+﻿angular.module('app').controller('playerListController', ['$scope', '$http', '$modal', 'Player', function ($scope, $http, $modal, Player) {
 
 
     $scope.playerList = [];
