@@ -5,7 +5,8 @@
     $scope.authenticate = function (provider) {
         $auth.authenticate(provider)
             .then(function (response) {
-                $scope.test = response;
+                $scope.test = $auth.getPayload();
+
             });
     };
 

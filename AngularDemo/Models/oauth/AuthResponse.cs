@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CobaSports.Models.oauth
 {
-    public class GoogleAuth
+    public class AuthResponse
     {
         public string clientId { get; set; }
         public string code { get; set; }

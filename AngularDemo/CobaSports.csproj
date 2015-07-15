@@ -58,6 +58,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OAuth2">
+      <HintPath>..\packages\OAuth2.0.8.34\lib\OAuth2.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.0\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -170,9 +176,10 @@
     </Compile>
     <Compile Include="Models\Meeting.cs" />
     <Compile Include="Models\MeetingPlayer.cs" />
-    <Compile Include="Models\oauth\GoogleAuth.cs" />
+    <Compile Include="Models\oauth\AuthResponse.cs" />
     <Compile Include="Models\oauth\GoogleTokenRequest.cs" />
     <Compile Include="Models\oauth\GoogleTokenResponse.cs" />
+    <Compile Include="Models\oauth\Token.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\SportPlayer.cs" />
     <Compile Include="Models\Sport.cs" />
