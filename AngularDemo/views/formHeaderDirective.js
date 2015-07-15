@@ -1,9 +1,10 @@
-﻿app.controller('formHeaderController', [
+﻿angular.module('app').controller('formHeaderController', [
         '$scope', function($scope) {
             $scope.searchtext
         }
-    ]);
-app.directive('formheader', function () {
+]);
+
+angular.module('app').directive('formheader', function () {
     return {
         restrict: 'E',
         scope: {

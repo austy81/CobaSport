@@ -1,4 +1,4 @@
-﻿app.controller('sportDetailController', ['$scope', '$http', '$routeParams', '$modal', 'Sport', 'Meeting', 'Player', 'SportPlayer', function($scope, $http, $routeParams, $modal, Sport, Meeting, Player, SportPlayer) {
+﻿angular.module('app').controller('sportDetailController', ['$scope', '$http', '$routeParams', '$modal', 'Sport', 'Meeting', 'Player', 'SportPlayer', function ($scope, $http, $routeParams, $modal, Sport, Meeting, Player, SportPlayer) {
 
         $scope.selectboxPlayers = [];
         $scope.sport = {};

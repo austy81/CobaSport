@@ -7,6 +7,11 @@
     </label>
 </h3>
 
+<div>
+    <div>Create email for players:</div>
+    <a ng-href="mailto:{{playersEmails}}">Link to email</a>
+</div>
+
 <input class="form-inline col-md-8" ng-model="$parent.searchText" placeholder="filter" />
 <button class="btn btn-sm btn-danger btn-sm" style="margin-left: 10px" ng-click="$parent.searchText = ''">X</button>
 

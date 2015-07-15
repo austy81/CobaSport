@@ -1,4 +1,4 @@
-﻿app.controller('meetingDetailController', ['$scope', '$http', '$routeParams', '$location', 'SportPlayer', 'MeetingPlayer', 'Meeting', 'Sport',
+﻿angular.module('app').controller('meetingDetailController', ['$scope', '$http', '$routeParams', '$location', 'SportPlayer', 'MeetingPlayer', 'Meeting', 'Sport',
     function ($scope, $http, $routeParams, $location, SportPlayer, MeetingPlayer, Meeting, Sport) {
 
         $scope.meetingId = $routeParams.meetingId;
@@ -8,6 +8,7 @@
         $scope.totalAttenders = 0;
         $scope.totalDontKnowers = 0;
         $scope.totalNoers = 0;
+        $scope.playersEmails = '';
         
 
         $scope.$watch('selectedMeeting', function (newValue, oldValue) {
@@ -63,6 +64,8 @@
                 if (playerA.LastName > playerB.LastName) return 1;
                 return 0;
             });
+
+            $scope.playersEmails = playersEmails(result);
 
             return result;
         };
@@ -154,6 +157,21 @@
             };
             return false;
         };
+
+        var playersEmails = function (sportAndMeetingPlayers) {
+
+            var index;
+            var emails = '';
+            if (sportAndMeetingPlayers) {
+                for (index = 0; index < sportAndMeetingPlayers.length; index++) {
+                    var email = sportAndMeetingPlayers[index].Email;
+                    if (email) emails = emails + ';' + email;
+                };
+            };
+            return emails;
+
+        }
+        
 
         //var mergeSportsPlayersWithMeetingPlayers = function (meetingPlayers) {
         //    $scope.totalAttenders = 0;

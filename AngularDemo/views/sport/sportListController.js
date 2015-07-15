@@ -1,6 +1,13 @@
-﻿app.controller('sportListController', ['$scope', '$modal', 'Sport', function ($scope, $modal, Sport) {
+﻿angular.module('app').controller('sportListController', ['$scope', '$modal', 'Sport', '$auth', function ($scope, $modal, Sport, $auth) {
 
     $scope.sportsList = [];
+
+    $scope.authenticate = function (provider) {
+        $auth.authenticate(provider)
+            .then(function (response) {
+                $scope.test = response;
+            });
+    };
 
     var sportsLoaded = function (data) {
         data.value.sort(compareCaption);
@@ -17,7 +24,7 @@
         Sport.delete({ Id: id }, function () { Sport.query(sportsLoaded); });
     };
 
-    Sport.query({ $expand: 'SportPlayers,Meetings' }, sportsLoaded);
+    Sport.query({ $expand: 'SportPlayers($select=Id),Meetings($select=Id)' }, sportsLoaded);
 
     $scope.upsertSport = function (entity) {
         if (!entity) {
