@@ -22,9 +22,9 @@ namespace CobaSports.Controllers
             var googleTokenRequest = new NameValueCollection();
             googleTokenRequest.Add("client_id",auth.clientId);
             googleTokenRequest.Add("code", auth.code);
-            googleTokenRequest.Add("client_secret", "");
+            googleTokenRequest.Add("client_secret", "lOMh8456jeSTDgbGea4hzCOR");
             googleTokenRequest.Add("grant_type", "authorization_code");
-            googleTokenRequest.Add("redirect_uri", "");
+            googleTokenRequest.Add("redirect_uri", "http://localhost:56513");
             googleTokenRequest.Add("scope", "");
 
             string requestPayload = String.Join("&", googleTokenRequest.AllKeys.Select(a => a + "=" + HttpUtility.UrlEncode(googleTokenRequest[a])));
@@ -32,15 +32,18 @@ namespace CobaSports.Controllers
             using (var client = new HttpClient())
             {
                 //FIRST VERSION
-                client.BaseAddress = new Uri("http://www.googleapis.com/");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+                HttpContent content = new StringContent(requestPayload);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+                client.BaseAddress = new Uri("https://www.googleapis.com/");
+                //client.DefaultRequestHeaders.Accept.Clear();
+                //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
 
-                HttpResponseMessage response = await client.PostAsync("api/products", requestPayload,MediaTypeFormater);
+                HttpResponseMessage response = await client.PostAsync("oauth2/v3/token", content);
                 if (response.IsSuccessStatusCode)
                 {
-                    // Get the URI of the created resource.
-                    Uri gizmoUrl = response.Headers.Location;
+                    string tokenResponse = await response.Content.ReadAsStringAsync();
+                    if (tokenResponse.Length > 0)
+                    { }
                 }
 
                 //OTHER VERSION
@@ -52,7 +55,7 @@ namespace CobaSports.Controllers
                 //string statusCode = response.StatusCode.ToString();
             }
 
-            return db.Players.FirstOrDefault(x => x.Email == email);
+            return db.Players.FirstOrDefault(x => x.Email == "");
         }
     }
 }
