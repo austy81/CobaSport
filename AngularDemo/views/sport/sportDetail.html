@@ -33,7 +33,7 @@
                     <div class="glyphicon glyphicon-star-empty" ng-show="meeting.Class == 'success'" title="Next meeting"></div>
                 </td>
                 <td>
-                    <a ng-click="deleteMeeting(meeting.Id)" class="btn btn-danger btn-sm active" role="button">delete</a>
+                    <a confirm="Are you sure to delete meeting {{meeting.Timestamp | date : 'EEE d. M. yyyy'}}?" ng-click="deleteMeeting(meeting.Id)" class="btn btn-danger btn-sm active" role="button">delete</a>
                 </td>
             </tr>
         </table>
@@ -71,7 +71,7 @@
                 <td ng-bind="sportPlayer.Player.FirstName + ', ' + sportPlayer.Player.LastName">
                 </td>
                 <td>
-                    <a ng-click="deleteSportPlayer(sportPlayer.Id)" class="btn btn-warning btn-sm active" role="button">Unasign</a>
+                    <a confirm="Do you really want to unassign player {{sportPlayer.Player.FirstName}} {{sportPlayer.Player.LastName}}" ng-click="deleteSportPlayer(sportPlayer.Id)" class="btn btn-warning btn-sm active" role="button">Unasign</a>
                 </td>
             </tr>
         </table>

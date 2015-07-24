@@ -2,23 +2,15 @@
 
     $scope.sportsList = [];
 
-    $scope.authenticate = function (provider) {
-        $auth.authenticate(provider)
-            .then(function (response) {
-                $scope.test = $auth.getPayload();
-
-            });
+    var compareCaption = function (sportA, sportB) {
+        if (sportA.Caption < sportB.Caption) return -1;
+        if (sportA.Caption > sportB.Caption) return 1;
+        return 0;
     };
 
     var sportsLoaded = function (data) {
         data.value.sort(compareCaption);
         $scope.sportsList = data.value;
-    };
-
-    var compareCaption = function(sportA, sportB) {
-        if (sportA.Caption < sportB.Caption) return -1;
-        if (sportA.Caption > sportB.Caption) return 1;
-        return 0;
     };
 
     $scope.deleteSport = function(id) {

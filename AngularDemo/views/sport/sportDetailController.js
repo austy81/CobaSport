@@ -72,21 +72,17 @@
             }, playersLoaded);
         };
 
-        $scope.deleteMeeting = function (id) {
-            if (confirm("Are you sure to delete meeting?")) {
-                Meeting.delete({ Id: id }, function() {
-                    getSport();
-                });
-            }
+        $scope.deleteMeeting = function(id) {
+            Meeting.delete({ Id: id }, function() {
+                getSport();
+            });
         };
 
         $scope.deleteSportPlayer = function (id) {
-            if (confirm("Are you sure to unassign this player?")) {
-                SportPlayer.delete({ Id: id }, function() {
-                    getSport();
-                    getSelectboxPlayers();
-                });
-            }
+            SportPlayer.delete({ Id: id }, function() {
+                getSport();
+                getSelectboxPlayers();
+            });
         };
 
         $scope.upsertMeeting = function (entity) {

@@ -17,14 +17,14 @@ namespace CobaSports.Controllers
         [EnableQuery]
         public IQueryable<SportPlayer> GetSportPlayers()
         {
-            return db.SportPlayer;
+            return db.SportPlayers;
         }
 
         // GET: odata/SportPlayers(5)
         [EnableQuery]
         public SingleResult<SportPlayer> GetSportPlayer([FromODataUri] int key)
         {
-            return SingleResult.Create(db.SportPlayer.Where(sportPlayer => sportPlayer.Id == key));
+            return SingleResult.Create(db.SportPlayers.Where(sportPlayer => sportPlayer.Id == key));
         }
 
         // PUT: odata/SportPlayers(5)
@@ -37,7 +37,7 @@ namespace CobaSports.Controllers
                 return BadRequest(ModelState);
             }
 
-            SportPlayer sportPlayer = await db.SportPlayer.FindAsync(key);
+            SportPlayer sportPlayer = await db.SportPlayers.FindAsync(key);
             if (sportPlayer == null)
             {
                 return NotFound();
@@ -72,7 +72,7 @@ namespace CobaSports.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.SportPlayer.Add(sportPlayer);
+            db.SportPlayers.Add(sportPlayer);
             await db.SaveChangesAsync();
 
             return Created(sportPlayer);
@@ -89,7 +89,7 @@ namespace CobaSports.Controllers
                 return BadRequest(ModelState);
             }
 
-            SportPlayer sportPlayer = await db.SportPlayer.FindAsync(key);
+            SportPlayer sportPlayer = await db.SportPlayers.FindAsync(key);
             if (sportPlayer == null)
             {
                 return NotFound();
@@ -119,13 +119,13 @@ namespace CobaSports.Controllers
         // DELETE: odata/SportPlayers(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] int key)
         {
-            SportPlayer sportPlayer = await db.SportPlayer.Where(x=>x.Id == key).FirstOrDefaultAsync();
+            SportPlayer sportPlayer = await db.SportPlayers.Where(x=>x.Id == key).FirstOrDefaultAsync();
             if (sportPlayer == null)
             {
                 return NotFound();
             }
 
-            db.SportPlayer.Remove(sportPlayer);
+            db.SportPlayers.Remove(sportPlayer);
             await db.SaveChangesAsync();
 
             return StatusCode(HttpStatusCode.NoContent);
@@ -135,14 +135,14 @@ namespace CobaSports.Controllers
         [EnableQuery]
         public SingleResult<Player> GetPlayer([FromODataUri] int key)
         {
-            return SingleResult.Create(db.SportPlayer.Where(m => m.Id == key).Select(m => m.Player));
+            return SingleResult.Create(db.SportPlayers.Where(m => m.Id == key).Select(m => m.Player));
         }
 
         // GET: odata/SportPlayers(5)/Sport
         [EnableQuery]
         public SingleResult<Sport> GetSport([FromODataUri] int key)
         {
-            return SingleResult.Create(db.SportPlayer.Where(m => m.Id == key).Select(m => m.Sport));
+            return SingleResult.Create(db.SportPlayers.Where(m => m.Id == key).Select(m => m.Sport));
         }
 
         protected override void Dispose(bool disposing)
@@ -156,7 +156,7 @@ namespace CobaSports.Controllers
 
         private bool SportPlayerExists(int key)
         {
-            return db.SportPlayer.Count(e => e.Id == key) > 0;
+            return db.SportPlayers.Count(e => e.Id == key) > 0;
         }
     }
 }

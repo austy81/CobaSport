@@ -1,7 +1,12 @@
 ﻿angular.module('app').controller('playerListController', ['$scope', '$http', '$modal', 'Player', function ($scope, $http, $modal, Player) {
 
-
     $scope.playerList = [];
+
+    var compareLastName = function (playerA, playerB) {
+        if (playerA.LastName < playerB.LastName) return -1;
+        if (playerA.LastName > playerB.LastName) return 1;
+        return 0;
+    };
 
     var getPlayers = function () {
         Player.query(function (data) {
@@ -10,18 +15,10 @@
         });
     }
 
-    $scope.deletePlayer = function (id) {
-        if (confirm("Are you sure to delete this player?")) {
-            Player.delete({ Id: id }, function() {
-                getPlayers();
-            });
-        }
-    };
-
-    var compareLastName = function (playerA, playerB) {
-        if (playerA.LastName < playerB.LastName) return -1;
-        if (playerA.LastName > playerB.LastName) return 1;
-        return 0;
+    $scope.deletePlayer = function(id) {
+        Player.delete({ Id: id }, function() {
+            getPlayers();
+        });
     };
 
     getPlayers();
@@ -48,7 +45,7 @@
         });
 
         modalInstance.result.then(function () {
-            //success - nothing to do
+            getPlayers();
         }, function () {
             //error
             getPlayers();

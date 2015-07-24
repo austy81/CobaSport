@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Common;
+using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
 using System.Text;
@@ -20,19 +22,19 @@ namespace CobaSports.Models
             {
                 this.Database.Delete();
                 this.Database.Create();
+                //throw new InvalidOperationException("The database is not compatible with the entity model.");
             }
 
             //this.Configuration.AutoDetectChangesEnabled = false;
 
         }
 
-
-
         public DbSet<MeetingPlayer> MeetingPlayers { get; set; }
         public DbSet<Meeting> Meetings { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Sport> Sports { get; set; }
-        public DbSet<SportPlayer> SportPlayer { get; set; }
+        public DbSet<SportPlayer> SportPlayers { get; set; }
+        public DbSet<LocalUserInfo> LocalUserInfoes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

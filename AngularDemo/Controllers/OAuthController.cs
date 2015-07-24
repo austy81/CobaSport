@@ -3,10 +3,12 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.Caching;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using CobaSports.App_Start;
 using CobaSports.Models;
 using CobaSports.Models.oauth;
 using Newtonsoft.Json;
@@ -26,12 +28,31 @@ namespace CobaSports.Controllers
         {
             if (authResponse == null) return null;
 
+            var demoToken = new Token()
+            {
+                token = "666",
+                userInfo = new UserInfo()
+                {
+                    Email="hausterlitz@gmail.com",
+                    FirstName = "Honza",
+                    LastName = "Austerlitz",
+                    Id = "abc",
+                    ProviderName = "Google"
+                }
+            };
+
+            SessionCache.AddOrUpdate(demoToken);
+
+            return demoToken;
+
+            
+
             var authRoot = new AuthorizationRoot();
 
             OAuth2Client client;
             try
             {
-                client = (OAuth2Client)authRoot.Clients.Single(c => c.Configuration.ClientId == authResponse.clientId);
+                client = (OAuth2Client) authRoot.Clients.Single(c => c.Configuration.ClientId == authResponse.clientId);
             }
             catch
             {
@@ -48,18 +69,37 @@ namespace CobaSports.Controllers
             tokenRequest.Add("redirect_uri", client.Configuration.RedirectUri);
             tokenRequest.Add("scope", client.Configuration.Scope);
 
+            UserInfo userInfo;
             try
             {
-                var userInfo = client.GetUserInfo(tokenRequest);
-
-                var token = new Token() { token = client.AccessToken };
-                return token;
+                userInfo = client.GetUserInfo(tokenRequest);
             }
-            catch 
+            catch (Exception ex)
             {
                 return null;
             }
+
+            var token = new Token()
+                {
+                    token = client.AccessToken,
+                    userInfo = userInfo
+                };
+
+
+            if (userInfo != null)
+            {
+                Player player =
+                    db.Players.FirstOrDefault(
+                        x => x.LocalUserInfos.Any(ui => 
+                            ui.ProviderName.ToLower() == client.Name.ToLower() && 
+                            ui.Id == userInfo.Id));
+
+                token.player = player;
+            }
+            return token;
         }
+
+    }
 
         //[Route("auth/google")]
         //public async Task<Player> AuthenticateGoogle([FromBody] GoogleAuth auth)
@@ -103,5 +143,5 @@ namespace CobaSports.Controllers
 
         //    return db.Players.FirstOrDefault(x => x.Email == "");
         //}
-    }
+    //}
 }
