@@ -1,8 +1,13 @@
-﻿angular.module('app').controller("authController", ["$scope", "$auth", "$confirm",
-    function ($scope, $auth, $confirm) {
-        $scope.delete = function() {
-            
-        }
+﻿angular.module('app').controller("authController", ["$scope", "$auth", "$confirm", "$http",
+    function ($scope, $auth, $confirm, $http) {
+        $scope.logout = function () {
+            var token = $auth.getToken();
+            $auth.logout().then(function() {
+                    // send a request to your server to perform server-side logout
+                    $http.post('/auth/logout', token);
+                }
+            );
+        };
 
         $scope.authenticate = function(provider) {
             $auth.authenticate(provider)

@@ -8,6 +8,7 @@ using CobaSports.Models;
 
 namespace CobaSports.Controllers
 {
+    [AuthWebApi("GET")]
     public class SportsController : ODataController
     {
         private CobaSportsContext db = new CobaSportsContext();
@@ -128,13 +129,6 @@ namespace CobaSports.Controllers
             await db.SaveChangesAsync();
 
             return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // GET: odata/Sports(5)/SportPlayer
-        [EnableQuery]
-        public IQueryable<SportPlayer> GetSportPlayer([FromODataUri] int key)
-        {
-            return db.Sports.Where(m => m.Id == key).SelectMany(m => m.SportPlayers);
         }
 
         protected override void Dispose(bool disposing)

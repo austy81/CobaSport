@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.Caching;
@@ -8,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using CobaSports.App_Start;
 using CobaSports.Models;
 using CobaSports.Models.oauth;
 using Newtonsoft.Json;
@@ -23,14 +23,15 @@ namespace CobaSports.Controllers
     {
         private CobaSportsContext db = new CobaSportsContext();
 
-        [Route("auth/google")]
+        [Route("auth/login"), HttpPost]
         public Token Authenticate([FromBody] AuthResponse authResponse)
         {
             if (authResponse == null) return null;
-
+            Random rnd = new Random();
+            
             var demoToken = new Token()
             {
-                token = "666",
+                token = rnd.Next(100, 999).ToString(),
                 userInfo = new UserInfo()
                 {
                     Email="hausterlitz@gmail.com",
@@ -99,7 +100,16 @@ namespace CobaSports.Controllers
             return token;
         }
 
+        [Route("auth/logout"), HttpPost]
+        public IHttpActionResult Logout([FromBodyAttribute] string token )
+        {
+            if (!SessionCache.Remove(token)) return NotFound();
+            
+            return Ok();
+        }
+
     }
+
 
         //[Route("auth/google")]
         //public async Task<Player> AuthenticateGoogle([FromBody] GoogleAuth auth)

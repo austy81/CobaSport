@@ -181,6 +181,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AuthWebApiAttribute.cs" />
     <Compile Include="App_Start\SessionCache.cs" />
     <Compile Include="Controllers\MeetingPlayersController.cs" />
     <Compile Include="Controllers\MeetingsController.cs" />

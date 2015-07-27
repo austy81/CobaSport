@@ -2,9 +2,9 @@
 using System.Runtime.Caching;
 using CobaSports.Models.oauth;
 
-namespace CobaSports.App_Start
+namespace CobaSports
 {
-    public class SessionCache
+    public static class SessionCache
     {
         private static MemoryCache cache { get; set; }
         private static readonly CacheItemPolicy policy = new CacheItemPolicy() {SlidingExpiration = new TimeSpan(0, 1, 0, 0)};
@@ -25,6 +25,15 @@ namespace CobaSports.App_Start
         public static Token Get(string tokenValue)
         {
             return (Token)cache.Get(tokenValue);
+        }
+
+        public static bool Remove(string tokenValue)
+        {
+            if (tokenValue == null) return false;
+            if (!cache.Contains(tokenValue)) return false;
+
+            cache.Remove(tokenValue);
+            return true;
         }
 
     }
