@@ -51,7 +51,7 @@ namespace CobaSports
             string tokenValue = request.Headers.Authorization.Parameter;
             if (tokenValue == null) return false;
 
-            Token sessionObject = SessionCache.Get(tokenValue);
+            ServerSessionObject sessionObject = SessionCache.GetServerSessionObject(tokenValue);
             if (sessionObject != null)
             {
                 var claims = new List<Claim>();

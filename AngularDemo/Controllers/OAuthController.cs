@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.SessionState;
 using CobaSports.Models;
 using CobaSports.Models.oauth;
 using Newtonsoft.Json;
@@ -24,14 +26,14 @@ namespace CobaSports.Controllers
         private CobaSportsContext db = new CobaSportsContext();
 
         [Route("auth/login"), HttpPost]
-        public Token Authenticate([FromBody] AuthResponse authResponse)
+        public ClientSessionObject Authenticate([FromBody] AuthResponse authResponse)
         {
             if (authResponse == null) return null;
             Random rnd = new Random();
-            
-            var demoToken = new Token()
+            var demoToken = new ServerSessionObject()
             {
                 token = rnd.Next(100, 999).ToString(),
+                sessionId = Guid.NewGuid().ToString(),
                 userInfo = new UserInfo()
                 {
                     Email="hausterlitz@gmail.com",
@@ -41,11 +43,8 @@ namespace CobaSports.Controllers
                     ProviderName = "Google"
                 }
             };
-
             SessionCache.AddOrUpdate(demoToken);
-
-            return demoToken;
-
+            return SessionCache.GetClientSessionObject(demoToken.sessionId); ;
             
 
             var authRoot = new AuthorizationRoot();
@@ -80,12 +79,12 @@ namespace CobaSports.Controllers
                 return null;
             }
 
-            var token = new Token()
+            var serverSessionObject = new ServerSessionObject()
                 {
+                    sessionId = Guid.NewGuid().ToString(),
                     token = client.AccessToken,
                     userInfo = userInfo
                 };
-
 
             if (userInfo != null)
             {
@@ -95,16 +94,39 @@ namespace CobaSports.Controllers
                             ui.ProviderName.ToLower() == client.Name.ToLower() && 
                             ui.Id == userInfo.Id));
 
-                token.player = player;
+                serverSessionObject.player = player;
             }
-            return token;
+            SessionCache.AddOrUpdate(serverSessionObject);
+            return SessionCache.GetClientSessionObject(serverSessionObject.sessionId);
         }
 
         [Route("auth/logout"), HttpPost]
-        public IHttpActionResult Logout([FromBodyAttribute] string token )
+        public IHttpActionResult Logout([FromBodyAttribute] string sessionId )
         {
-            if (!SessionCache.Remove(token)) return NotFound();
-            
+            if (!SessionCache.Remove(sessionId)) return NotFound();
+            return Ok();
+        }
+
+        [Route("auth/createPlayer"), HttpPost]
+        public IHttpActionResult CreatePlayer([FromBodyAttribute] string sessionId)
+        {
+            var serverSessionObject = SessionCache.GetServerSessionObject(sessionId);
+            if (serverSessionObject == null) return NotFound();
+
+
+
+            var player = new Player()
+            {
+                Email = serverSessionObject.userInfo.Email,
+                FirstName = serverSessionObject.userInfo.FirstName,
+                LastName = serverSessionObject.userInfo.LastName,
+                
+            };
+            player.LocalUserInfos = new List<UserInfo>() {serverSessionObject.userInfo};
+
+            db.Players.Add(player);
+            db.SaveChanges();
+
             return Ok();
         }
 

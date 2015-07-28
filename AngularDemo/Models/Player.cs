@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+using OAuth2.Models;
 
 namespace CobaSports.Models
 {
@@ -21,7 +19,7 @@ namespace CobaSports.Models
 
         public virtual ICollection<SportPlayer> SportPlayers { get; set; }
         public virtual ICollection<MeetingPlayer> MeetingPlayers { get; set; }
-        public virtual ICollection<LocalUserInfo> LocalUserInfos { get; set; }
+        public virtual ICollection<UserInfo> LocalUserInfos { get; set; }
 
     }
 }

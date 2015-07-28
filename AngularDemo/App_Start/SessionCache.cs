@@ -14,25 +14,38 @@ namespace CobaSports
             cache = new MemoryCache("SessionCache");
         }
 
-        public static void AddOrUpdate(Token token)
+        public static void AddOrUpdate(ServerSessionObject serverSessionObject)
         {
-            if (cache.Contains(token.token))
-                cache.Remove(token.token);
+            if (cache.Contains(serverSessionObject.sessionId))
+                cache.Remove(serverSessionObject.sessionId);
 
-            cache.Add(token.token,token,policy);
+            cache.Add(serverSessionObject.sessionId,serverSessionObject,policy);
         }
 
-        public static Token Get(string tokenValue)
+        public static ServerSessionObject GetServerSessionObject(string sessionId)
         {
-            return (Token)cache.Get(tokenValue);
+            var serverSessionObject = (ServerSessionObject)cache.Get(sessionId);
+            return serverSessionObject;
         }
 
-        public static bool Remove(string tokenValue)
+        public static ClientSessionObject GetClientSessionObject(string sessionId)
         {
-            if (tokenValue == null) return false;
-            if (!cache.Contains(tokenValue)) return false;
+            var serverSessionObject = GetServerSessionObject(sessionId);
+            if (serverSessionObject == null) return null;
 
-            cache.Remove(tokenValue);
+            var clientSessionObject = new ClientSessionObject();
+            clientSessionObject.token = serverSessionObject.sessionId;
+            clientSessionObject.playerId = serverSessionObject.player != null ? serverSessionObject.player.Id : (int?)null;
+            
+            return (clientSessionObject);
+        }
+
+        public static bool Remove(string sessionId)
+        {
+            if (sessionId == null) return false;
+            if (!cache.Contains(sessionId)) return false;
+
+            cache.Remove(sessionId);
             return true;
         }
 

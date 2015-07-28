@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
 using System.Text;
+using OAuth2.Models;
 
 namespace CobaSports.Models
 {
@@ -34,7 +35,7 @@ namespace CobaSports.Models
         public DbSet<Player> Players { get; set; }
         public DbSet<Sport> Sports { get; set; }
         public DbSet<SportPlayer> SportPlayers { get; set; }
-        public DbSet<LocalUserInfo> LocalUserInfoes { get; set; }
+        public DbSet<UserInfo> LocalUserInfoes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

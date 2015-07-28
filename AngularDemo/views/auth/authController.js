@@ -23,7 +23,7 @@
                             if (response.data.userInfo) {
                                 $confirm({ text: "Welcome " + response.data.userInfo.FirstName + " !!! Do you want access to CoBa Sports application?" })
                                     .then(function () {
-                                        alert('YES');
+                                        $http.post('/auth/createPlayer', $auth.getToken());
                                     });
                                 return;
                             }
