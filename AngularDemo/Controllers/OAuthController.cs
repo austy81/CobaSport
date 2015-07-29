@@ -23,12 +23,12 @@ namespace CobaSports.Controllers
 {
     public class OAuthController : ApiController
     {
-        private CobaSportsContext db = new CobaSportsContext();
+        private readonly CobaSportsContext db = new CobaSportsContext();
 
         [Route("auth/login"), HttpPost]
-        public ClientSessionObject Authenticate([FromBody] AuthResponse authResponse)
+        public IHttpActionResult Authenticate([FromBody] AuthResponse authResponse)
         {
-            if (authResponse == null) return null;
+            if (authResponse == null) return BadRequest();
             Random rnd = new Random();
             var demoToken = new ServerSessionObject()
             {
@@ -44,7 +44,7 @@ namespace CobaSports.Controllers
                 }
             };
             SessionCache.AddOrUpdate(demoToken);
-            return SessionCache.GetClientSessionObject(demoToken.sessionId); ;
+            return Ok(SessionCache.GetClientSessionObject(demoToken.sessionId));
             
 
             var authRoot = new AuthorizationRoot();
@@ -54,11 +54,11 @@ namespace CobaSports.Controllers
             {
                 client = (OAuth2Client) authRoot.Clients.Single(c => c.Configuration.ClientId == authResponse.clientId);
             }
-            catch
+            catch(Exception ex)
             {
-                return null;
+                return InternalServerError(ex);
             }
-            if (client == null) return null;
+            if (client == null) return InternalServerError();
 
 
             var tokenRequest = new NameValueCollection();
@@ -76,7 +76,7 @@ namespace CobaSports.Controllers
             }
             catch (Exception ex)
             {
-                return null;
+                return InternalServerError(ex);
             }
 
             var serverSessionObject = new ServerSessionObject()
@@ -97,37 +97,38 @@ namespace CobaSports.Controllers
                 serverSessionObject.player = player;
             }
             SessionCache.AddOrUpdate(serverSessionObject);
-            return SessionCache.GetClientSessionObject(serverSessionObject.sessionId);
+            return Ok(SessionCache.GetClientSessionObject(serverSessionObject.sessionId));
         }
 
         [Route("auth/logout"), HttpPost]
-        public IHttpActionResult Logout([FromBodyAttribute] string sessionId )
+        public IHttpActionResult Logout([FromBody] string sessionId)
         {
-            if (!SessionCache.Remove(sessionId)) return NotFound();
+            if (!SessionCache.Remove(sessionId)) return BadRequest();
             return Ok();
         }
 
         [Route("auth/createPlayer"), HttpPost]
-        public IHttpActionResult CreatePlayer([FromBodyAttribute] string sessionId)
+        public IHttpActionResult CreatePlayer([FromBody] ClientSessionObject clientSession)
         {
-            var serverSessionObject = SessionCache.GetServerSessionObject(sessionId);
+            if (clientSession == null) return BadRequest();
+            if (clientSession.sessionId == null) return BadRequest();
+
+            var serverSessionObject = SessionCache.GetServerSessionObject(clientSession.sessionId);
             if (serverSessionObject == null) return NotFound();
 
-
-
-            var player = new Player()
+            var player = new Player
             {
                 Email = serverSessionObject.userInfo.Email,
                 FirstName = serverSessionObject.userInfo.FirstName,
                 LastName = serverSessionObject.userInfo.LastName,
-                
+                LocalUserInfos = new List<UserInfo>() {serverSessionObject.userInfo},
             };
-            player.LocalUserInfos = new List<UserInfo>() {serverSessionObject.userInfo};
+
 
             db.Players.Add(player);
             db.SaveChanges();
 
-            return Ok();
+            return Ok(player);
         }
 
     }

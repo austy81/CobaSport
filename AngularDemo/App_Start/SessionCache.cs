@@ -24,6 +24,7 @@ namespace CobaSports
 
         public static ServerSessionObject GetServerSessionObject(string sessionId)
         {
+            if (sessionId == null) return null;
             var serverSessionObject = (ServerSessionObject)cache.Get(sessionId);
             return serverSessionObject;
         }
@@ -34,7 +35,8 @@ namespace CobaSports
             if (serverSessionObject == null) return null;
 
             var clientSessionObject = new ClientSessionObject();
-            clientSessionObject.token = serverSessionObject.sessionId;
+            clientSessionObject.token = serverSessionObject.token;
+            clientSessionObject.sessionId = serverSessionObject.sessionId;
             clientSessionObject.playerId = serverSessionObject.player != null ? serverSessionObject.player.Id : (int?)null;
             
             return (clientSessionObject);

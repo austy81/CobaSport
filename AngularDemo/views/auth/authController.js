@@ -3,8 +3,8 @@
         $scope.logout = function () {
             var token = $auth.getToken();
             $auth.logout().then(function() {
-                    // send a request to your server to perform server-side logout
-                    $http.post('/auth/logout', token);
+                // send a request to your server to perform server-side logout
+                $http.post('/auth/logout', { 'sessionId': $auth.getToken() });
                 }
             );
         };
@@ -14,18 +14,17 @@
                 .then(function(response) {
                     if (response.data) {
                         if (response.data.token) {
-                            $auth.setToken(response.data.token);
-                            if (response.data.player) {
-                                alert("Welcome back " + response.data.FirstName + " !!!");
-                                return;
-                            }
-
-                            if (response.data.userInfo) {
-                                $confirm({ text: "Welcome " + response.data.userInfo.FirstName + " !!! Do you want access to CoBa Sports application?" })
+                            $auth.setToken(response.data.sessionId);
+                            if (response.data.playerId) {
+                                alert("Welcome back!");
+                            } else {
+                                $confirm({ text: "Welcome!!! Do you want access to CoBa Sports application?" })
                                     .then(function () {
-                                        $http.post('/auth/createPlayer', $auth.getToken());
+                                        $http.post('/auth/createPlayer', { sessionId: $auth.getToken() })
+                                            .success(function(player) {
+                                                alert('Your player has been successfully created.');
+                                            });
                                     });
-                                return;
                             }
                             return;
                         }
