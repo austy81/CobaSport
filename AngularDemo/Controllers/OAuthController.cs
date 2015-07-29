@@ -29,22 +29,22 @@ namespace CobaSports.Controllers
         public IHttpActionResult Authenticate([FromBody] AuthResponse authResponse)
         {
             if (authResponse == null) return BadRequest();
-            Random rnd = new Random();
-            var demoToken = new ServerSessionObject()
-            {
-                token = rnd.Next(100, 999).ToString(),
-                sessionId = Guid.NewGuid().ToString(),
-                userInfo = new UserInfo()
-                {
-                    Email="hausterlitz@gmail.com",
-                    FirstName = "Honza",
-                    LastName = "Austerlitz",
-                    Id = "abc",
-                    ProviderName = "Google"
-                }
-            };
-            SessionCache.AddOrUpdate(demoToken);
-            return Ok(SessionCache.GetClientSessionObject(demoToken.sessionId));
+            //Random rnd = new Random();
+            //var demoToken = new ServerSessionObject()
+            //{
+            //    token = rnd.Next(100, 999).ToString(),
+            //    sessionId = Guid.NewGuid().ToString(),
+            //    userInfo = new UserInfo()
+            //    {
+            //        Email="hausterlitz@gmail.com",
+            //        FirstName = "Honza",
+            //        LastName = "Austerlitz",
+            //        Id = "abc",
+            //        ProviderName = "Google"
+            //    }
+            //};
+            //SessionCache.AddOrUpdate(demoToken);
+            //return Ok(SessionCache.GetClientSessionObject(demoToken.sessionId));
             
 
             var authRoot = new AuthorizationRoot();
@@ -90,7 +90,7 @@ namespace CobaSports.Controllers
             {
                 Player player =
                     db.Players.FirstOrDefault(
-                        x => x.LocalUserInfos.Any(ui => 
+                        x => x.UserInfos.Any(ui => 
                             ui.ProviderName.ToLower() == client.Name.ToLower() && 
                             ui.Id == userInfo.Id));
 
@@ -101,9 +101,10 @@ namespace CobaSports.Controllers
         }
 
         [Route("auth/logout"), HttpPost]
-        public IHttpActionResult Logout([FromBody] string sessionId)
+        public IHttpActionResult Logout([FromBody] ClientSessionObject clientSession)
         {
-            if (!SessionCache.Remove(sessionId)) return BadRequest();
+            if (clientSession == null) return BadRequest();
+            if (!SessionCache.Remove(clientSession.sessionId)) return BadRequest();
             return Ok();
         }
 
@@ -121,14 +122,14 @@ namespace CobaSports.Controllers
                 Email = serverSessionObject.userInfo.Email,
                 FirstName = serverSessionObject.userInfo.FirstName,
                 LastName = serverSessionObject.userInfo.LastName,
-                LocalUserInfos = new List<UserInfo>() {serverSessionObject.userInfo},
+                UserInfos = new List<UserInfo>() {serverSessionObject.userInfo},
             };
 
 
             db.Players.Add(player);
             db.SaveChanges();
 
-            return Ok(player);
+            return Ok(player.Id);
         }
 
     }

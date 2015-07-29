@@ -19,12 +19,12 @@ namespace CobaSports.Models
             if (!this.Database.Exists())
                 this.Database.Create();
 
-            if (!this.Database.CompatibleWithModel(true))
-            {
-                this.Database.Delete();
-                this.Database.Create();
-                //throw new InvalidOperationException("The database is not compatible with the entity model.");
-            }
+            //if (!this.Database.CompatibleWithModel(true))
+            //{
+            //    this.Database.Delete();
+            //    this.Database.Create();
+            //    //throw new InvalidOperationException("The database is not compatible with the entity model.");
+            //}
 
             //this.Configuration.AutoDetectChangesEnabled = false;
 

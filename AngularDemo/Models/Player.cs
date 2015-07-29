@@ -19,7 +19,6 @@ namespace CobaSports.Models
 
         public virtual ICollection<SportPlayer> SportPlayers { get; set; }
         public virtual ICollection<MeetingPlayer> MeetingPlayers { get; set; }
-        public virtual ICollection<UserInfo> LocalUserInfos { get; set; }
-
+        public virtual ICollection<UserInfo> UserInfos { get; set; }
     }
 }

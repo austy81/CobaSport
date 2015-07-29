@@ -1,4 +1,4 @@
-﻿angular.module('app', ['ngRoute', 'ui.bootstrap', 'ngResource', 'app.services', 'ngAnimate', 'angular-loading-bar', 'satellizer']);
+﻿angular.module('app', ['ngRoute', 'ui.bootstrap', 'ngResource', 'app.services', 'ngAnimate', 'angular-loading-bar', 'satellizer', 'ngCookies']);
 
 angular.module('app')
     .config([
