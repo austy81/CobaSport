@@ -25,15 +25,16 @@
                 <tr>
                     <th>Date</th>
                     <th>Action</th>
+                    <th>Next</th>
                 </tr>
             </thead>
-            <tr ng-repeat="meeting in sport.Meetings | filter: searchText" ng-class="meeting.Class">
+            <tr ng-repeat="meeting in sport.Meetings | filter: searchText" ng-class="meeting.Class" unihref="/meetings/{{meeting.Id}}">
+                <td ng-bind="meeting.Timestamp | date : 'EEE d. M. yyyy' | filter: searchtext "></td>
                 <td>
-                    <a ng-href="#/meetings/{{meeting.Id}}" ng-bind="meeting.Timestamp | date : 'EEE d. M. yyyy' | filter: searchtext "></a>
-                    <div class="glyphicon glyphicon-star-empty" ng-show="meeting.Class == 'success'" title="Next meeting"></div>
+                    <button confirm="Are you sure to delete meeting {{meeting.Timestamp | date : 'EEE d. M. yyyy'}}?" ng-click="deleteMeeting(meeting.Id)" class="btn btn-danger btn-sm active" role="button">delete</button>
                 </td>
                 <td>
-                    <a confirm="Are you sure to delete meeting {{meeting.Timestamp | date : 'EEE d. M. yyyy'}}?" ng-click="deleteMeeting(meeting.Id)" class="btn btn-danger btn-sm active" role="button">delete</a>
+                    <div class="glyphicon glyphicon-star-empty" ng-show="meeting.Class == 'success'" title="Next meeting"></div>
                 </td>
             </tr>
         </table>
@@ -67,7 +68,7 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <tr ng-repeat="sportPlayer in sport.SportPlayers | filter: searchText">
+            <tr ng-repeat="sportPlayer in sport.SportPlayers | filter: searchText" unihref="/players/{{sportPlayer.Player.Id}}">
                 <td ng-bind="sportPlayer.Player.FirstName + ', ' + sportPlayer.Player.LastName">
                 </td>
                 <td>

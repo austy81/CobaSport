@@ -10,7 +10,7 @@
             <th>Actions</th>
         </tr>
     </thead>
-    <tr ng-repeat="player in playerList | filter:searchText">
+    <tr ng-repeat="player in playerList | filter:searchText" ng-click="redirectToPlayer(player.Id);" class="clickable">
         <td ng-bind="player.FirstName"/>
         <td ng-bind="player.LastName"/>
         <td ng-bind="player.Email"/>

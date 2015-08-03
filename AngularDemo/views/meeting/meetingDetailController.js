@@ -87,8 +87,8 @@
 
             for (index = 0; index < meetingPlayers.length; index++) {
                 if (meetingPlayers[index].IsAttending) $scope.totalAttenders++;
-                if (meetingPlayers[index].IsAttending == null) $scope.totalDontKnowers++;
-                if (meetingPlayers[index].IsAttending == false) $scope.totalNoers++;
+                if (meetingPlayers[index].IsAttending === null) $scope.totalDontKnowers++;
+                if (meetingPlayers[index].IsAttending === false) $scope.totalNoers++;
             };
         };
 

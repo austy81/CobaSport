@@ -1,19 +1,22 @@
 ﻿<nav class="navbar navbar-default">
-    <div class="container">
+    <div class="container" ng-controller="authController">
         <h1>Coba Sports</h1>
-        <a ng-href="#/sports"><button type="button" class="btn btn-default navbar-btn">Sports</button></a>
-        <a ng-href="#/players"><button type="button" class="btn btn-default navbar-btn">Players</button></a>
+        <div class="col-md-9">
+            <a type="button" class="btn btn-default navbar-btn" href="#/sports">Sports</a>
+            <a type="button" class="btn btn-default navbar-btn" href="#/players">Players</a>
+            <a type="button" class="btn btn-success navbar-btn" ng-show="loggedIn().Id" ng-href="#/players/{{loggedIn().Id}}">My page</a>
+        </div>
 
-        <div ng-controller="authController">
+        <div class="col-md-3">
+            <button ng-click="authenticate('google')" ng-show="!loggedIn()">Sign in with Google</button>
             <!--<button ng-click="authenticate('facebook')">Sign in with Facebook</button>-->
-            <button ng-click="authenticate('google')">Sign in with Google</button>
             <!--<button ng-click="authenticate('github')">Sign in with GitHub</button>
             <button ng-click="authenticate('linkedin')">Sign in with LinkedIn</button>
             <button ng-click="authenticate('twitter')">Sign in with Twitter</button>
             <button ng-click="authenticate('foursquare')">Sign in with Foursquare</button>
             <button ng-click="authenticate('yahoo')">Sign in with Yahoo</button>
             <button ng-click="authenticate('live')">Sign in with Windows Live</button>-->
-            <button ng-click="logout()">Logout</button>
+            <button ng-click="logout()" ng-show="loggedIn().Id">Logout</button>
         </div>
     </div>
 </nav>

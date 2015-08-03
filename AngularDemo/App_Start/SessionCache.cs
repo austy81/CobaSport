@@ -16,38 +16,38 @@ namespace CobaSports
 
         public static void AddOrUpdate(ServerSessionObject serverSessionObject)
         {
-            if (cache.Contains(serverSessionObject.sessionId))
-                cache.Remove(serverSessionObject.sessionId);
+            if (cache.Contains(serverSessionObject.token))
+                cache.Remove(serverSessionObject.token);
 
-            cache.Add(serverSessionObject.sessionId,serverSessionObject,policy);
+            cache.Add(serverSessionObject.token,serverSessionObject,policy);
         }
 
-        public static ServerSessionObject GetServerSessionObject(string sessionId)
+        public static ServerSessionObject GetServerSessionObject(string token)
         {
-            if (sessionId == null) return null;
-            var serverSessionObject = (ServerSessionObject)cache.Get(sessionId);
+            if (token == null) return null;
+            var serverSessionObject = (ServerSessionObject)cache.Get(token);
             return serverSessionObject;
         }
 
-        public static ClientSessionObject GetClientSessionObject(string sessionId)
+        public static ClientSessionObject GetClientSessionObject(string token)
         {
-            var serverSessionObject = GetServerSessionObject(sessionId);
+            var serverSessionObject = GetServerSessionObject(token);
             if (serverSessionObject == null) return null;
 
             var clientSessionObject = new ClientSessionObject();
             clientSessionObject.token = serverSessionObject.token;
-            clientSessionObject.sessionId = serverSessionObject.sessionId;
-            clientSessionObject.playerId = serverSessionObject.player != null ? serverSessionObject.player.Id : (int?)null;
+            //clientSessionObject.sessionId = serverSessionObject.sessionId;
+            clientSessionObject.player = serverSessionObject.player;
             
             return (clientSessionObject);
         }
 
-        public static bool Remove(string sessionId)
+        public static bool Remove(string token)
         {
-            if (sessionId == null) return false;
-            if (!cache.Contains(sessionId)) return false;
+            if (token == null) return false;
+            if (!cache.Contains(token)) return false;
 
-            cache.Remove(sessionId);
+            cache.Remove(token);
             return true;
         }
 

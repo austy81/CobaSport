@@ -1,5 +1,5 @@
-﻿angular.module('app').controller("authController", ["$scope", "$auth", "$confirm", "$http", "$cookies",
-    function ($scope, $auth, $confirm, $http, $cookies) {
+﻿angular.module('app').controller("authController", ["$scope", "$auth", "$confirm", "$http", "$cookies", "Player",
+    function ($scope, $auth, $confirm, $http, $cookies, Player) {
         $scope.logout = function () {
             $auth.logout().then(function() {
                 // send a request to your server to perform server-side logout
@@ -11,13 +11,21 @@
             );
         };
 
+        $scope.loggedIn = function() {
+            var sessionObject = $cookies.getObject('session');
+            if (sessionObject && sessionObject.player && sessionObject.player.Id)
+                return sessionObject.player;
+
+            return null;
+        };
+
         $scope.authenticate = function(provider) {
             $auth.authenticate(provider)
                 .then(function(response) {
                     if (response.data) {
                         if (response.data.token) {
                             $cookies.putObject('session', response.data);
-                            if (response.data.playerId) {
+                            if (response.data.player) {
                                 alert("Welcome back!");
                             } else {
                                 $confirm({ text: "Welcome!!! Do you want access to CoBa Sports application?" })
@@ -26,9 +34,11 @@
                                             .success(function (playerId) {
                                                 var session = $cookies.getObject('session');
                                                 session.playerId = playerId;
-
                                                 $cookies.putObject('session', session);
-                                                alert('Your player has been successfully created.');
+
+                                                Player.query({ Id: session.player.Id }, function (player) {
+                                                    alert('Player ' + player.FirstName + ' ' + player.LastName + ' has been successfully created.');
+                                                });
                                             });
                                     });
                             }

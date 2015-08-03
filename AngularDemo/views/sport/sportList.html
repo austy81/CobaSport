@@ -15,16 +15,12 @@
             <th>Action</th>
         </tr>
         </thead>
-        <tr ng-repeat="sport in sportsList | filter: searchText">
-            <td><a ng-href="#/sports/{{sport.Id}}">
-                    <div ng-bind="sport.Caption"></div>
-                </a>
-            </td>
+        <tr ng-repeat="sport in sportsList | filter: searchText" unihref="sports/{{sport.Id}}">
+            <td><div ng-bind="sport.Caption"></div></td>
             <td ng-bind="sport.Meetings.length"></td>
             <td ng-bind="sport.SportPlayers.length"></td>
             <td>
                 <button ng-click="upsertSport(sport)" class="btn btn-primary">Edit</button>
-
             </td>
         </tr>
     </table>

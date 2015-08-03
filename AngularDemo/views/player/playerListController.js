@@ -1,4 +1,4 @@
-﻿angular.module('app').controller('playerListController', ['$scope', '$http', '$modal', 'Player', function ($scope, $http, $modal, Player) {
+﻿angular.module('app').controller('playerListController', ['$scope', '$modal', 'Player', '$location', function ($scope, $modal, Player, $location) {
 
     $scope.playerList = [];
 
@@ -19,6 +19,10 @@
         Player.delete({ Id: id }, function() {
             getPlayers();
         });
+    };
+
+    $scope.redirectToPlayer = function(playerId) {
+        $location.path('/players/' + playerId);
     };
 
     getPlayers();

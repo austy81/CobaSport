@@ -923,6 +923,7 @@
     <Content Include="views\formHeader.html" />
     <Content Include="views\formHeaderDirective.js" />
     <Content Include="views\header.html" />
+    <Content Include="views\hrefDirective.js" />
     <Content Include="views\meeting\meetingList.html" />
     <Content Include="views\meeting\meetingListController.js" />
     <Content Include="Scripts\angular-mocks.js" />

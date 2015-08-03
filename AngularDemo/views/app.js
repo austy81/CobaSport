@@ -21,10 +21,10 @@ angular.module('app')
                     templateUrl: 'views/player/playerList.html',
                     controller: 'playerListController'
                 })
-                //.when('/players/:playerId', {
-                //    templateUrl: 'views/player/playerDetail.html',
-                //    controller: 'playerDetailController'
-                //})
+                .when('/players/:playerId', {
+                    templateUrl: 'views/player/playerDetail.html',
+                    controller: 'playerDetailController'
+                })
                 .otherwise({
                     redirectTo: '/sports'
                 });

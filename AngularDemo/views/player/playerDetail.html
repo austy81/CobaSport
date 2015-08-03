@@ -1,43 +1,35 @@
-﻿<h2 class="col-md-12">
-    <div class="form-group">
-      <label for="sel1">Players for sport</label>
-      <select class="form-control" ng-options="item.Id as item.Caption for item in sports" ng-model="selectedSportId">
-        <option value="0">All</option>
-      </select>
-    </div>
-</h2>
+﻿<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Atribute</th>
+        <th>Value</th>
+    </tr>
+    </thead>
+    <tr> <td>First name</td> <td ng-bind="player.FirstName"/> </tr>
+    <tr> <td>Last name</td> <td ng-bind="player.LastName"/> </tr>
+    <tr> <td>Email</td> <td ng-bind="player.Email"/> </tr>
+</table>
 
-<div class="col-md-12">
-    <div class="col-md-12">
-        <div class="col-md-12">Players</div>
-        <div class="col-md-5">First name</div>
-        <div class="col-md-5">Last name</div>
-        <
-        <div class="col-md-2"></div>
-    </div>
-    <div class="col-md-12" ng-repeat="palyer in playersList">
-        <div class="col-md-5" ng-bind="palyer.FirstName"></div>
-        <div class="col-md-5" ng-bind="palyer.LastName"></div>
-        <div class="col-md-2">
-            <button class="danger" ng-click="deleteMeeting(palyer.Id)">Delete</button>
-        </div>
-    </div>
-</div>
+<h3>Assigned sports</h3>
+<ul>
+    <li ng-repeat="sportPlayer in player.SportPlayers" ng-bind="sportPlayer.Sport.Caption"></li>
+</ul>
 
-      
+<h3>Answered meetings</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Sport</th>
+            <th>Meeting</th>
+            <th>Answer</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+    <tr ng-repeat="meetingPlayer in player.MeetingPlayers">
+        <td ng-bind="meetingPlayer.Meeting.Sport.Caption"></td>
+        <td ng-bind="meetingPlayer.Meeting.Timestamp | date : 'EEE d. M. yyyy'"></td>
+        <td ng-bind="meetingPlayer.IsAttending"></td>
+        <td ng-bind="meetingPlayer.Timestamp| date : 'EEE d. M. yyyy hh:mm'"></td>
+    </tr>
+</table>
 
-<div class="col-md-12 spacer" ng-click="toggleIsCreatingNewPlayer()">
-    <a ng-show="!isCreatingNewPlayer">Create new player.</a>
-    <a ng-show="isCreatingNewPlayer">Hide form for new player.</a>
-</div>
-
-<div class="col-md-12" ng-show="isCreatingNewPlayer">
-    <h3>Create new Player</h3>
-    <div class="col-md-12">First name: <input type="text" ng-model="firstName"/></div>
-    <div class="col-md-12">Last name: <input type="text" ng-model="lastName"/></div>
-    <div class="col-md-12">
-        <button ng-click="createNewPlayer()">Create new player</button>
-    </div>
- 
-    
-</div>

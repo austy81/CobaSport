@@ -29,22 +29,23 @@ namespace CobaSports.Controllers
         public IHttpActionResult Authenticate([FromBody] AuthResponse authResponse)
         {
             if (authResponse == null) return BadRequest();
-            //Random rnd = new Random();
-            //var demoToken = new ServerSessionObject()
-            //{
-            //    token = rnd.Next(100, 999).ToString(),
-            //    sessionId = Guid.NewGuid().ToString(),
-            //    userInfo = new UserInfo()
-            //    {
-            //        Email="hausterlitz@gmail.com",
-            //        FirstName = "Honza",
-            //        LastName = "Austerlitz",
-            //        Id = "abc",
-            //        ProviderName = "Google"
-            //    }
-            //};
-            //SessionCache.AddOrUpdate(demoToken);
-            //return Ok(SessionCache.GetClientSessionObject(demoToken.sessionId));
+            Random rnd = new Random();
+            var demoToken = new ServerSessionObject()
+            {
+                token = rnd.Next(100, 999).ToString(),
+                //sessionId = Guid.NewGuid().ToString(),
+                userInfo = new UserInfo()
+                {
+                    Email = "hausterlitz@gmail.com",
+                    FirstName = "Honza",
+                    LastName = "Austerlitz",
+                    Id = Guid.NewGuid().ToString(),
+                    ProviderName = "Google"
+                },
+                player = db.Players.FirstOrDefault(x=>x.Email=="hausterlitz@gmail.com")
+            };
+            SessionCache.AddOrUpdate(demoToken);
+            return Ok(SessionCache.GetClientSessionObject(demoToken.token));
             
 
             var authRoot = new AuthorizationRoot();
@@ -81,7 +82,7 @@ namespace CobaSports.Controllers
 
             var serverSessionObject = new ServerSessionObject()
                 {
-                    sessionId = Guid.NewGuid().ToString(),
+                    //sessionId = Guid.NewGuid().ToString(),
                     token = client.AccessToken,
                     userInfo = userInfo
                 };
@@ -97,14 +98,14 @@ namespace CobaSports.Controllers
                 serverSessionObject.player = player;
             }
             SessionCache.AddOrUpdate(serverSessionObject);
-            return Ok(SessionCache.GetClientSessionObject(serverSessionObject.sessionId));
+            return Ok(SessionCache.GetClientSessionObject(serverSessionObject.token));
         }
 
         [Route("auth/logout"), HttpPost]
         public IHttpActionResult Logout([FromBody] ClientSessionObject clientSession)
         {
             if (clientSession == null) return BadRequest();
-            if (!SessionCache.Remove(clientSession.sessionId)) return BadRequest();
+            if (!SessionCache.Remove(clientSession.token)) return BadRequest();
             return Ok();
         }
 
@@ -112,9 +113,9 @@ namespace CobaSports.Controllers
         public IHttpActionResult CreatePlayer([FromBody] ClientSessionObject clientSession)
         {
             if (clientSession == null) return BadRequest();
-            if (clientSession.sessionId == null) return BadRequest();
+            if (clientSession.token == null) return BadRequest();
 
-            var serverSessionObject = SessionCache.GetServerSessionObject(clientSession.sessionId);
+            var serverSessionObject = SessionCache.GetServerSessionObject(clientSession.token);
             if (serverSessionObject == null) return NotFound();
 
             var player = new Player
@@ -124,12 +125,15 @@ namespace CobaSports.Controllers
                 LastName = serverSessionObject.userInfo.LastName,
                 UserInfos = new List<UserInfo>() {serverSessionObject.userInfo},
             };
-
+            
 
             db.Players.Add(player);
             db.SaveChanges();
 
-            return Ok(player.Id);
+            serverSessionObject.player = player;
+            SessionCache.AddOrUpdate(serverSessionObject);
+
+            return Ok(SessionCache.GetClientSessionObject(clientSession.token));
         }
 
     }

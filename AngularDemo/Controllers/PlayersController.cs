@@ -14,7 +14,7 @@ namespace CobaSports.Controllers
         private CobaSportsContext db = new CobaSportsContext();
 
         // GET: odata/Players
-        [EnableQuery]
+        [EnableQuery(MaxExpansionDepth = 3)]
         public IQueryable<Player> GetPlayers()
         {
             return db.Players;
