@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using OAuth2.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CobaSports.Models
 {
-    public class LocalUserInfo
+    public class UserInfoLocal
     {
-   
+
         public string Id { get; set; }
 
         public string ProviderName { get; set; }

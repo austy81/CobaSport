@@ -1,19 +1,14 @@
-﻿<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Atribute</th>
-        <th>Value</th>
-    </tr>
-    </thead>
-    <tr> <td>First name</td> <td ng-bind="player.FirstName"/> </tr>
-    <tr> <td>Last name</td> <td ng-bind="player.LastName"/> </tr>
-    <tr> <td>Email</td> <td ng-bind="player.Email"/> </tr>
-</table>
+﻿<h2>
+    <div ng-bind="player.FirstName + ' ' + player.LastName"></div>
+    <small ng-bind="player.Email"></small>
+</h2>
 
-<h3>Assigned sports</h3>
-<ul>
-    <li ng-repeat="sportPlayer in player.SportPlayers" ng-bind="sportPlayer.Sport.Caption"></li>
-</ul>
+<h3 class="spacer">Assigned sports</h3>
+<table class="table table-striped">
+    <tr class="h3" ng-repeat="sportPlayer in player.SportPlayers">
+        <td ng-bind="sportPlayer.Sport.Caption" uniHref="#/sports/{{sportPlayer.SportId}}"></td>
+    </tr>
+</table>
 
 <h3>Answered meetings</h3>
 <table class="table table-striped">
@@ -22,13 +17,13 @@
             <th>Sport</th>
             <th>Meeting</th>
             <th>Answer</th>
-            <th>Time</th>
+            <th>Answer time</th>
         </tr>
     </thead>
     <tr ng-repeat="meetingPlayer in player.MeetingPlayers">
         <td ng-bind="meetingPlayer.Meeting.Sport.Caption"></td>
         <td ng-bind="meetingPlayer.Meeting.Timestamp | date : 'EEE d. M. yyyy'"></td>
-        <td ng-bind="meetingPlayer.IsAttending"></td>
+        <td ng-bind="meetingPlayer.IsAttending ? 'Yes' : 'No'"></td>
         <td ng-bind="meetingPlayer.Timestamp| date : 'EEE d. M. yyyy hh:mm'"></td>
     </tr>
 </table>

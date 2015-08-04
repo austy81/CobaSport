@@ -1,12 +1,10 @@
-﻿using System;
-using System.Data.Common;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
 using System.Text;
-using OAuth2.Models;
+using CobaSports.Models;
 
-namespace CobaSports.Models
+namespace CobaSports
 {
     public class CobaSportsContext : DbContext
     {
@@ -14,10 +12,10 @@ namespace CobaSports.Models
         public CobaSportsContext()
             : base("CobaSports")
         {
-            this.Configuration.ProxyCreationEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
 
-            if (!this.Database.Exists())
-                this.Database.Create();
+            if (!Database.Exists())
+                Database.Create();
 
             //if (!this.Database.CompatibleWithModel(true))
             //{
@@ -35,7 +33,7 @@ namespace CobaSports.Models
         public DbSet<Player> Players { get; set; }
         public DbSet<Sport> Sports { get; set; }
         public DbSet<SportPlayer> SportPlayers { get; set; }
-        public DbSet<UserInfo> LocalUserInfoes { get; set; }
+        public DbSet<UserInfoLocal> LocalUserInfos { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -64,7 +62,7 @@ namespace CobaSports.Models
 
                 throw new DbEntityValidationException(
                     "Entity Validation Failed - errors follow:\n" +
-                    sb.ToString(), ex
+                    sb, ex
                     ); // Add the original exception as the innerException
             }
         }

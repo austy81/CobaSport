@@ -6,7 +6,7 @@ var key = { Id: '@_Id' };
 var oDataUrl = '/odata/';
 var idParam = '(:Id)';
 
-angular.module('app.services', [])
+angular.module('app.dataServices', [])
     .factory('Sport', function ($resource) {
     return $resource(oDataUrl + 'Sports' + idParam, key, dataActions);
     }).factory('Player', function ($resource) {

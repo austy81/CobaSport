@@ -920,6 +920,7 @@
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\npm.js" />
     <Content Include="views\auth\authController.js" />
+    <Content Include="views\auth\sessionService.js" />
     <Content Include="views\formHeader.html" />
     <Content Include="views\formHeaderDirective.js" />
     <Content Include="views\header.html" />
@@ -957,7 +958,7 @@
     <Compile Include="Controllers\PlayersController.cs" />
     <Compile Include="Controllers\SportPlayersController.cs" />
     <Compile Include="Controllers\SportsController.cs" />
-    <Compile Include="Models\CobaSportsContext.cs" />
+    <Compile Include="App_Start\CobaSportsContext.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.Infrastructure;
+﻿using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -124,6 +125,9 @@ namespace CobaSports.Controllers
             {
                 return NotFound();
             }
+
+            IEnumerable<UserInfoLocal> userInfoes = db.LocalUserInfos.Where(x => x.PlayerId == player.Id);
+            db.LocalUserInfos.RemoveRange(userInfoes);
 
             db.Players.Remove(player);
             await db.SaveChangesAsync();

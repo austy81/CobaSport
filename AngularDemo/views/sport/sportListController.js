@@ -1,4 +1,4 @@
-﻿angular.module('app').controller('sportListController', ['$scope', '$modal', 'Sport', '$auth', function ($scope, $modal, Sport, $auth) {
+﻿angular.module('app').controller('sportListController', ['$scope', '$modal', 'Sport', function ($scope, $modal, Sport) {
 
     $scope.sportsList = [];
 

@@ -26,27 +26,27 @@ namespace CobaSports.Controllers
         private readonly CobaSportsContext db = new CobaSportsContext();
 
         [Route("auth/login"), HttpPost]
-        public IHttpActionResult Authenticate([FromBody] AuthResponse authResponse)
+        public async Task<IHttpActionResult> Authenticate([FromBody] AuthResponse authResponse)
         {
             if (authResponse == null) return BadRequest();
-            Random rnd = new Random();
-            var demoToken = new ServerSessionObject()
-            {
-                token = rnd.Next(100, 999).ToString(),
-                //sessionId = Guid.NewGuid().ToString(),
-                userInfo = new UserInfo()
-                {
-                    Email = "hausterlitz@gmail.com",
-                    FirstName = "Honza",
-                    LastName = "Austerlitz",
-                    Id = Guid.NewGuid().ToString(),
-                    ProviderName = "Google"
-                },
-                player = db.Players.FirstOrDefault(x=>x.Email=="hausterlitz@gmail.com")
-            };
-            SessionCache.AddOrUpdate(demoToken);
-            return Ok(SessionCache.GetClientSessionObject(demoToken.token));
-            
+            //Random rnd = new Random();
+            //var demoToken = new ServerSessionObject()
+            //{
+            //    token = rnd.Next(100, 999).ToString(),
+            //    //sessionId = Guid.NewGuid().ToString(),
+            //    userInfo = new UserInfo()
+            //    {
+            //        Email = "hausterlitz@gmail.com",
+            //        FirstName = "Honza",
+            //        LastName = "Austerlitz",
+            //        Id = Guid.NewGuid().ToString(),
+            //        ProviderName = "Google"
+            //    },
+            //    player = db.Players.FirstOrDefault(x=>x.Email=="hausterlitz@gmail.com")
+            //};
+            //SessionCache.AddOrUpdate(demoToken);
+            //return Ok(SessionCache.GetClientSessionObject(demoToken.token));
+
 
             var authRoot = new AuthorizationRoot();
 
@@ -55,7 +55,7 @@ namespace CobaSports.Controllers
             {
                 client = (OAuth2Client) authRoot.Clients.Single(c => c.Configuration.ClientId == authResponse.clientId);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return InternalServerError(ex);
             }
@@ -79,20 +79,21 @@ namespace CobaSports.Controllers
             {
                 return InternalServerError(ex);
             }
+            //userInfo = await GetUserInfoGoogle(tokenRequest);
 
             var serverSessionObject = new ServerSessionObject()
-                {
-                    //sessionId = Guid.NewGuid().ToString(),
-                    token = client.AccessToken,
-                    userInfo = userInfo
-                };
+            {
+                //sessionId = Guid.NewGuid().ToString(),
+                token = client.AccessToken,
+                userInfo = userInfo
+            };
 
             if (userInfo != null)
             {
                 Player player =
                     db.Players.FirstOrDefault(
-                        x => x.UserInfos.Any(ui => 
-                            ui.ProviderName.ToLower() == client.Name.ToLower() && 
+                        x => x.UserInfos.Any(ui =>
+                            ui.ProviderName.ToLower() == client.Name.ToLower() &&
                             ui.Id == userInfo.Id));
 
                 serverSessionObject.player = player;
@@ -125,7 +126,6 @@ namespace CobaSports.Controllers
                 LastName = serverSessionObject.userInfo.LastName,
                 UserInfos = new List<UserInfo>() {serverSessionObject.userInfo},
             };
-            
 
             db.Players.Add(player);
             db.SaveChanges();
@@ -136,28 +136,19 @@ namespace CobaSports.Controllers
             return Ok(SessionCache.GetClientSessionObject(clientSession.token));
         }
 
-    }
 
 
-        //[Route("auth/google")]
-        //public async Task<Player> AuthenticateGoogle([FromBody] GoogleAuth auth)
+        //private async Task<UserInfo> GetUserInfoGoogle(NameValueCollection googleTokenRequest)
         //{
-        //    var googleTokenRequest = new NameValueCollection();
-        //    googleTokenRequest.Add("client_id",auth.clientId);
-        //    googleTokenRequest.Add("code", auth.code);
-        //    googleTokenRequest.Add("client_secret", "lOMh8456jeSTDgbGea4hzCOR");
-        //    googleTokenRequest.Add("grant_type", "authorization_code");
-        //    googleTokenRequest.Add("redirect_uri", "http://localhost:56513");
-        //    googleTokenRequest.Add("scope", "");
+        //    string requestPayload = String.Join("&",
+        //        googleTokenRequest.AllKeys.Select(a => a + "=" + HttpUtility.UrlEncode(googleTokenRequest[a])));
 
-        //    string requestPayload = String.Join("&", googleTokenRequest.AllKeys.Select(a => a + "=" + HttpUtility.UrlEncode(googleTokenRequest[a])));
-            
         //    using (var client = new HttpClient())
         //    {
         //        HttpContent content = new StringContent(requestPayload);
         //        content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
         //        client.BaseAddress = new Uri("https://www.googleapis.com/");
-                
+
         //        HttpResponseMessage responseToken = await client.PostAsync("oauth2/v3/token", content);
         //        if (responseToken.IsSuccessStatusCode)
         //        {
@@ -166,20 +157,20 @@ namespace CobaSports.Controllers
         //            {
         //                try
         //                {
-        //                    var json = (JObject)JsonConvert.DeserializeObject(tokenResponse);
+        //                    var json = (JObject) JsonConvert.DeserializeObject(tokenResponse);
         //                    string token = json["access_token"].ToString();
 
         //                    HttpResponseMessage responseProfile = await client.GetAsync("plus/v1/people/" + token);
         //                }
-        //                catch (Exception ex) 
-        //                { 
+        //                catch (Exception ex)
+        //                {
         //                }
         //            }
         //        }
 
         //    }
-
-        //    return db.Players.FirstOrDefault(x => x.Email == "");
+        //    return null;
         //}
-    //}
+    }
 }
+
