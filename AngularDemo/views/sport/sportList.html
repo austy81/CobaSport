@@ -15,8 +15,8 @@
             <th>Action</th>
         </tr>
         </thead>
-        <tr ng-repeat="sport in sportsList | filter: searchText" unihref="sports/{{sport.Id}}">
-            <td><div ng-bind="sport.Caption"></div></td>
+        <tr ng-repeat="sport in sportsList | filter: searchText">
+            <td unihref="sports/{{sport.Id}}"><div ng-bind="sport.Caption"></div></td>
             <td ng-bind="sport.Meetings.length"></td>
             <td ng-bind="sport.SportPlayers.length"></td>
             <td>

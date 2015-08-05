@@ -1,5 +1,5 @@
-﻿angular.module('app').controller('meetingDetailController', ['$scope', '$http', '$routeParams', '$location', 'SportPlayer', 'MeetingPlayer', 'Meeting', 'Sport',
-    function ($scope, $http, $routeParams, $location, SportPlayer, MeetingPlayer, Meeting, Sport) {
+﻿angular.module('app').controller('meetingDetailController', ['$scope', '$http', '$routeParams', '$location', 'SportPlayer', 'MeetingPlayer', 'Meeting',
+    function ($scope, $http, $routeParams, $location, SportPlayer, MeetingPlayer, Meeting) {
 
         $scope.meetingId = $routeParams.meetingId;
         $scope.selectedMeeting = {};
@@ -9,7 +9,6 @@
         $scope.totalDontKnowers = 0;
         $scope.totalNoers = 0;
         $scope.playersEmails = '';
-        
 
         $scope.$watch('selectedMeeting', function (newValue, oldValue) {
             if (newValue.Id) {
@@ -187,6 +186,10 @@
         //        }
         //    }
         //};
+
+        $scope.absUrl = function() {
+            return $location.absUrl();
+        };
 
         getMeeting($scope.meetingId);
 

@@ -8,7 +8,7 @@ using CobaSports.Models;
 
 namespace CobaSports.Controllers
 {
-    [AuthWebApi("GET")]
+    [AuthWebApi("GET","POST")]
     public class SportsController : ODataController
     {
         private CobaSportsContext db = new CobaSportsContext();

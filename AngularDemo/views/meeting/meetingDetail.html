@@ -7,27 +7,22 @@
     </label>
 </h3>
 
-<div>
-    <div>Create email for players:</div>
-    <a ng-href="mailto:{{playersEmails}}">Link to email</a>
-</div>
-
 <input class="form-inline col-md-8" ng-model="$parent.searchText" placeholder="filter" />
 <button class="btn btn-sm btn-danger btn-sm" style="margin-left: 10px" ng-click="$parent.searchText = ''">X</button>
 
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>First name</th>
-            <th>Last name</th>
+            <th>Player</th>
             <th>Updated</th>
             <th>Status</th>
             <th>Attendance</th>
         </tr>
     </thead>
     <tr ng-repeat="player in sportAndMeetingPlayers | filter:searchText" ng-class="getAttendanceClass(player.Id)">
-        <td ng-bind="player.FirstName"/>
-        <td ng-bind="player.LastName"/>
+        <td unihref="/players/{{player.Id}}">
+            <div ng-bind="player.FirstName + ', ' + player.LastName"></div>
+        </td>
         <td ng-bind="getMeetingPlayer(player.Id).Timestamp | date : 'EEE d. M. yyyy H:mm:ss'"/>
         <td ng-bind="getAttendanceLabel(player.Id)"/>
         <td>
@@ -57,4 +52,8 @@
             <td>Not Answered</td><td ng-bind="totalNotAnswered"></td>
         </tr>
     </table>
+    <div class="spacer">
+        <div>Email reminder for players:</div>
+        <a ng-href="mailto:{{playersEmails}}?subject=Reminder for {{meeting.Sport.Caption}} {{meeting.Timestamp | date : 'EEE d. M. yyyy'}}&body=Hi!%0D%0ADon't forget to click YES!%0D%0A{{absUrl()}}%0D%0A%0D%0ACheers,%0D%0AYours CoBa Sports">Prepare email</a>
+    </div>
 </div>

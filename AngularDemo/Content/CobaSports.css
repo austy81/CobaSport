@@ -6,3 +6,7 @@
     cursor: pointer;
     cursor: hand;
 }
+
+.clickable :hover{
+        text-decoration:underline;
+}

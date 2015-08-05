@@ -1,4 +1,5 @@
-﻿angular.module('app').controller('sportDetailController', ['$scope', '$http', '$routeParams', '$modal', 'Sport', 'Meeting', 'Player', 'SportPlayer', function ($scope, $http, $routeParams, $modal, Sport, Meeting, Player, SportPlayer) {
+﻿angular.module('app').controller('sportDetailController', ['$scope', '$http', '$routeParams', '$modal', 'Sport', 'Meeting', 'Player', 'SportPlayer', '$session',
+    function ($scope, $http, $routeParams, $modal, Sport, Meeting, Player, SportPlayer, $session) {
 
         $scope.selectboxPlayers = [];
         $scope.sport = {};
@@ -163,6 +164,13 @@
                 if (meetingPlayer.IsAttending == null) return 'warning';
             }
             return 'active';
+        };
+
+        $scope.isLoggedIn = function () {
+            if ($session.loggedInPlayer()) {
+                return true;
+            }
+            return false;
         };
 
         getSport();
