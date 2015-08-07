@@ -1,4 +1,4 @@
-﻿angular.module('app.sessionServices', []) // ['$auth', '$cookies', '$http']
+﻿angular.module('app.sessionServices', [])
     .factory('$session', function ($auth, $cookies, $http, $confirm) {
         var sessionInstance = {};
     

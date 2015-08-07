@@ -1,4 +1,14 @@
-﻿angular.module('app', ['ngRoute', 'ui.bootstrap', 'ngResource', 'app.dataServices', 'ngAnimate', 'angular-loading-bar', 'satellizer', 'ngCookies', 'app.sessionServices']);
+﻿angular.module('app', [
+    'ngRoute',
+    'ui.bootstrap',
+    'ngResource',
+    'app.dataServices',
+    'ngAnimate',
+    'angular-loading-bar',
+    'satellizer',
+    'ngCookies',
+    'app.sessionServices',
+    'angular-confirm']);
 
 angular.module('app')
     .config([
@@ -67,5 +77,4 @@ angular.module('app')
         //    clientId: 'MTCEJ3NGW2PNNB31WOSBFDSAD4MTHYVAZ1UKIULXZ2CVFC2K',
         //    authorizationEndpoint: 'https://foursquare.com/oauth2/authenticate'
         //});
-
     });
