@@ -18,8 +18,14 @@
     </div>
 
     <div class="col-md-12">
-        <h2>Meetings</h2>
-        <button class="btn btn-success btn-sm" ng-click="upsertMeeting()" ng-show="isLoggedIn()">Create a new meeting</button>
+        <h2>
+            <div class="col-md-8">Meetings</div>
+            <div class="col-md-4">
+                <button class="btn btn-success btn-sm" ng-click="upsertMeeting()" ng-show="isLoggedIn()">Create a new meeting</button>
+            </div>
+            
+        </h2>
+        
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
@@ -46,8 +52,10 @@
 <div class="col-md-6">
     <div class="col-md-12 spacer">
         <h2>
-            Sport players&nbsp;
-            <button class="btn btn-success btn-sm" ng-click="insertSportPlayer()">Assign a new player</button>
+            <div class="col-md-8">Sport players</div>
+            <div class="col-md-4">
+                <button class="btn btn-success btn-sm" ng-click="insertSportPlayer()">Assign a new player</button>
+            </div>
         </h2>
         
         <script type="text/ng-template" id="sportPlayerInsert.html">

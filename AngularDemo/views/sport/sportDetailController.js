@@ -109,7 +109,7 @@
             });
 
             var success = function (data) {
-                entity.Id = data.Id;
+                getSport();
             };
 
             var error = function () {

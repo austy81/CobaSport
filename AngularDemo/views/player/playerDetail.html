@@ -1,30 +1,36 @@
-﻿<h2>
-    <div ng-bind="player.FirstName + ' ' + player.LastName"></div>
-    <small ng-bind="player.Email"></small>
-</h2>
+﻿<div class="col-md-12">
+    <img class="img-circle col-md-2" width="120" height="120" ng-src="{{player.PhotoUri}}" alt="Avatar photo" />
+    <h2 class="col-md-10">
+        <div class="col-md-12" ng-bind="player.FirstName + ' ' + player.LastName"></div>
+        <small class="col-md-12" ng-bind="player.Email"></small>
+    </h2>
+</div>
 
-<h3 class="spacer">Assigned sports</h3>
-<table class="table table-striped">
-    <tr class="h3" ng-repeat="sportPlayer in player.SportPlayers">
-        <td ng-bind="sportPlayer.Sport.Caption" uniHref="#/sports/{{sportPlayer.SportId}}"></td>
-    </tr>
-</table>
-
-<h3>Answered meetings</h3>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Sport</th>
-            <th>Meeting</th>
-            <th>Answer</th>
-            <th>Answer time</th>
+<div class="col-md-12">
+    <h3 class="spacer">Assigned sports</h3>
+    <table class="table table-striped">
+        <tr class="h3" ng-repeat="sportPlayer in player.SportPlayers">
+            <td ng-bind="sportPlayer.Sport.Caption" uniHref="#/sports/{{sportPlayer.SportId}}"></td>
         </tr>
-    </thead>
-    <tr ng-repeat="meetingPlayer in player.MeetingPlayers">
-        <td ng-bind="meetingPlayer.Meeting.Sport.Caption"></td>
-        <td ng-bind="meetingPlayer.Meeting.Timestamp | date : 'EEE d. M. yyyy'"></td>
-        <td ng-bind="meetingPlayer.IsAttending ? 'Yes' : 'No'"></td>
-        <td ng-bind="meetingPlayer.Timestamp| date : 'EEE d. M. yyyy hh:mm'"></td>
-    </tr>
-</table>
+    </table>
+</div>
 
+<div class="col-md-12">
+    <h3>Answered meetings</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Sport</th>
+                <th>Meeting</th>
+                <th>Answer</th>
+                <th>Answer time</th>
+            </tr>
+        </thead>
+        <tr ng-repeat="meetingPlayer in player.MeetingPlayers">
+            <td ng-bind="meetingPlayer.Meeting.Sport.Caption"></td>
+            <td ng-bind="meetingPlayer.Meeting.Timestamp | date : 'EEE d. M. yyyy'"></td>
+            <td ng-bind="meetingPlayer.IsAttending ? 'Yes' : 'No'"></td>
+            <td ng-bind="meetingPlayer.Timestamp| date : 'EEE d. M. yyyy hh:mm'"></td>
+        </tr>
+    </table>
+</div>

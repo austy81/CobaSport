@@ -33,7 +33,7 @@ namespace CobaSports
         public DbSet<Player> Players { get; set; }
         public DbSet<Sport> Sports { get; set; }
         public DbSet<SportPlayer> SportPlayers { get; set; }
-        public DbSet<UserInfoLocal> LocalUserInfos { get; set; }
+        public DbSet<UserInfoLocal> UserInfoLocals { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

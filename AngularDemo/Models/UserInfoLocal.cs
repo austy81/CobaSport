@@ -17,6 +17,8 @@ namespace CobaSports.Models
 
         public string PhotoUri { get; set; }
 
+        public string Token { get; set; }
+
         [ForeignKey("Player")]
         public int PlayerId { get; set; }
         public virtual Player Player { get; set; }

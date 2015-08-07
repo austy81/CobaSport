@@ -17,8 +17,13 @@ namespace CobaSports.Models
         [MaxLength(254), EmailAddress]
         public string Email { get; set; }
 
+        [MaxLength(254)]
+        public string PhotoUri { get; set; }
+
+
+
         public virtual ICollection<SportPlayer> SportPlayers { get; set; }
         public virtual ICollection<MeetingPlayer> MeetingPlayers { get; set; }
-        public virtual ICollection<UserInfo> UserInfos { get; set; }
+        public virtual ICollection<UserInfoLocal> UserInfos { get; set; }
     }
 }

@@ -49,7 +49,7 @@ namespace CobaSports
         {
             if (request.Headers.Authorization == null) return false;
             string tokenValue = request.Headers.Authorization.Parameter;
-            if (tokenValue == null) return false;
+            if(string.IsNullOrEmpty(tokenValue)) return false;
 
             ServerSessionObject sessionObject = SessionCache.GetServerSessionObject(tokenValue);
             if (sessionObject != null)

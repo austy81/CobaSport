@@ -4,7 +4,7 @@
         $scope.playerId = $routeParams.playerId;
 
         Player.query({
-            $select: 'Id,FirstName,LastName,Email',
+            $select: 'Id,FirstName,LastName,Email,PhotoUri',
             $expand: 'SportPlayers($expand=Sport),MeetingPlayers($expand=Meeting($expand=Sport))',
             $filter: 'Id eq ' + $scope.playerId
         }, function (data) {

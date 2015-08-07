@@ -126,8 +126,8 @@ namespace CobaSports.Controllers
                 return NotFound();
             }
 
-            IEnumerable<UserInfoLocal> userInfoes = db.LocalUserInfos.Where(x => x.PlayerId == player.Id);
-            db.LocalUserInfos.RemoveRange(userInfoes);
+            IEnumerable<UserInfoLocal> userInfoes = db.UserInfoLocals.Where(x => x.PlayerId == player.Id);
+            db.UserInfoLocals.RemoveRange(userInfoes);
 
             db.Players.Remove(player);
             await db.SaveChangesAsync();

@@ -16,10 +16,10 @@ namespace CobaSports
 
         public static void AddOrUpdate(ServerSessionObject serverSessionObject)
         {
-            if (cache.Contains(serverSessionObject.token))
-                cache.Remove(serverSessionObject.token);
+            if (cache.Contains(serverSessionObject.userInfo.Token))
+                cache.Remove(serverSessionObject.userInfo.Token);
 
-            cache.Add(serverSessionObject.token,serverSessionObject,policy);
+            cache.Add(serverSessionObject.userInfo.Token,serverSessionObject,policy);
         }
 
         public static ServerSessionObject GetServerSessionObject(string token)
@@ -35,7 +35,7 @@ namespace CobaSports
             if (serverSessionObject == null) return null;
 
             var clientSessionObject = new ClientSessionObject();
-            clientSessionObject.token = serverSessionObject.token;
+            clientSessionObject.token = serverSessionObject.userInfo.Token;
             //clientSessionObject.sessionId = serverSessionObject.sessionId;
             clientSessionObject.player = serverSessionObject.player;
             

@@ -29,24 +29,25 @@ namespace CobaSports.Controllers
         public async Task<IHttpActionResult> Authenticate([FromBody] AuthResponse authResponse)
         {
             if (authResponse == null) return BadRequest();
-            //Random rnd = new Random();
-            //var demoToken = new ServerSessionObject()
-            //{
-            //    token = rnd.Next(100, 999).ToString(),
-            //    //sessionId = Guid.NewGuid().ToString(),
-            //    userInfo = new UserInfo()
-            //    {
-            //        Email = "hausterlitz@gmail.com",
-            //        FirstName = "Honza",
-            //        LastName = "Austerlitz",
-            //        Id = Guid.NewGuid().ToString(),
-            //        ProviderName = "Google"
-            //    },
-            //    player = db.Players.FirstOrDefault(x=>x.Email=="hausterlitz@gmail.com")
-            //};
-            //SessionCache.AddOrUpdate(demoToken);
-            //return Ok(SessionCache.GetClientSessionObject(demoToken.token));
 
+            Random rnd = new Random();
+            var demoToken = new ServerSessionObject();
+
+                //sessionId = Guid.NewGuid().ToString(),
+            demoToken.userInfo = new UserInfoLocal()
+            {
+                Email = "hausterlitz666@gmail.com",
+                FirstName = "Honza",
+                LastName = "666",
+                Id = "666x666", //Guid.NewGuid().ToString(),
+                ProviderName = "Google",
+                Token = "666",
+                PhotoUri = "https://lh6.googleusercontent.com/-weRLlt_6cA8/AAAAAAAAAAI/AAAAAAAAAAA/ALKYnAVqLSQ/s64-c/photo.jpg"
+            };
+            demoToken.player = db.Players.FirstOrDefault(x => x.Email == demoToken.userInfo.Email);
+
+            SessionCache.AddOrUpdate(demoToken);
+            return Ok(SessionCache.GetClientSessionObject(demoToken.userInfo.Token));
 
             var authRoot = new AuthorizationRoot();
 
@@ -81,14 +82,23 @@ namespace CobaSports.Controllers
             }
             //userInfo = await GetUserInfoGoogle(tokenRequest);
 
-            var serverSessionObject = new ServerSessionObject()
+            UserInfoLocal userInfoLocal = new UserInfoLocal()
             {
-                //sessionId = Guid.NewGuid().ToString(),
-                token = client.AccessToken,
-                userInfo = userInfo
+                Id = userInfo.Id,
+                ProviderName = userInfo.ProviderName,
+                Email = userInfo.Email,
+                FirstName = userInfo.FirstName,
+                LastName = userInfo.LastName,
+                PhotoUri = userInfo.PhotoUri,
+                Token = client.AccessToken
             };
 
-            if (userInfo != null)
+            var serverSessionObject = new ServerSessionObject()
+            {
+                userInfo = userInfoLocal
+            };
+
+            if (!String.IsNullOrEmpty(userInfo.Id))
             {
                 Player player =
                     db.Players.FirstOrDefault(
@@ -99,7 +109,7 @@ namespace CobaSports.Controllers
                 serverSessionObject.player = player;
             }
             SessionCache.AddOrUpdate(serverSessionObject);
-            return Ok(SessionCache.GetClientSessionObject(serverSessionObject.token));
+            return Ok(SessionCache.GetClientSessionObject(serverSessionObject.userInfo.Token));
         }
 
         [Route("auth/logout"), HttpPost]
@@ -124,7 +134,8 @@ namespace CobaSports.Controllers
                 Email = serverSessionObject.userInfo.Email,
                 FirstName = serverSessionObject.userInfo.FirstName,
                 LastName = serverSessionObject.userInfo.LastName,
-                UserInfos = new List<UserInfo>() {serverSessionObject.userInfo},
+                PhotoUri = serverSessionObject.userInfo.PhotoUri,
+                UserInfos = new List<UserInfoLocal>() {serverSessionObject.userInfo},
             };
 
             db.Players.Add(player);
