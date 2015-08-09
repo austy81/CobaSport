@@ -18,9 +18,8 @@ namespace CobaSports
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            //config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling = 
-            //    Newtonsoft.Json.PreserveReferencesHandling.Objects;
-
+            config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling =
+                Newtonsoft.Json.PreserveReferencesHandling.Objects;
             config.Formatters.Remove(config.Formatters.XmlFormatter);
 
 

@@ -46,7 +46,8 @@ angular.module('app')
         //    clientId: '624059410963642'
         //});
         $authProvider.google({
-            clientId: '815231347440-p39g1jdncc1fju23o5nm4n4ho94t72g3.apps.googleusercontent.com',
+            //clientId: '815231347440-p39g1jdncc1fju23o5nm4n4ho94t72g3.apps.googleusercontent.com',
+            clientId: '815231347440-53sfdf6q7u9q489ln8ch8nno289dagf2.apps.googleusercontent.com',
             url: '/auth/login'
         });
 
