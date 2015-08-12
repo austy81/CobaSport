@@ -30,24 +30,24 @@ namespace CobaSports.Controllers
         {
             if (authResponse == null) return BadRequest();
 
-            //Random rnd = new Random();
-            //var demoToken = new ServerSessionObject();
+            Random rnd = new Random();
+            var demoToken = new ServerSessionObject();
 
-            //    //sessionId = Guid.NewGuid().ToString(),
-            //demoToken.userInfo = new UserInfoLocal()
-            //{
-            //    Email = "hausterlitz666@gmail.com",
-            //    FirstName = "Honza",
-            //    LastName = "666",
-            //    Id = "666x666", //Guid.NewGuid().ToString(),
-            //    ProviderName = "Google",
-            //    Token = "666",
-            //    PhotoUri = "https://lh6.googleusercontent.com/-weRLlt_6cA8/AAAAAAAAAAI/AAAAAAAAAAA/ALKYnAVqLSQ/s64-c/photo.jpg"
-            //};
-            //demoToken.player = db.Players.FirstOrDefault(x => x.Email == demoToken.userInfo.Email);
+            //sessionId = Guid.NewGuid().ToString(),
+            demoToken.userInfo = new UserInfoLocal()
+            {
+                Email = "hausterlitz666@gmail.com",
+                FirstName = "Honza",
+                LastName = "666",
+                Id = "666x666", //Guid.NewGuid().ToString(),
+                ProviderName = "Google",
+                Token = "666",
+                PhotoUri = "https://lh6.googleusercontent.com/-weRLlt_6cA8/AAAAAAAAAAI/AAAAAAAAAAA/ALKYnAVqLSQ/s64-c/photo.jpg"
+            };
+            demoToken.player = db.Players.FirstOrDefault(x => x.Email == demoToken.userInfo.Email);
 
-            //SessionCache.AddOrUpdate(demoToken);
-            //return Ok(SessionCache.GetClientSessionObject(demoToken.userInfo.Token));
+            SessionCache.AddOrUpdate(demoToken);
+            return Ok(SessionCache.GetClientSessionObject(demoToken.userInfo.Token));
 
             var authRoot = new AuthorizationRoot();
 
