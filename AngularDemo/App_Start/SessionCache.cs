@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.Caching;
 using CobaSports.Models.oauth;
 
@@ -8,6 +9,7 @@ namespace CobaSports
     {
         private static MemoryCache cache { get; set; }
         private static readonly CacheItemPolicy policy = new CacheItemPolicy() {SlidingExpiration = new TimeSpan(0, 1, 0, 0)};
+        private static CobaSportsContext db = new CobaSportsContext();
 
         static SessionCache()
         {
@@ -16,6 +18,7 @@ namespace CobaSports
 
         public static void AddOrUpdate(ServerSessionObject serverSessionObject)
         {
+            
             if (cache.Contains(serverSessionObject.userInfo.Token))
                 cache.Remove(serverSessionObject.userInfo.Token);
 
@@ -26,6 +29,22 @@ namespace CobaSports
         {
             if (token == null) return null;
             var serverSessionObject = (ServerSessionObject)cache.Get(token);
+            if (serverSessionObject == null)
+            {
+                var userInfo = db.UserInfoLocals.SingleOrDefault(x => x.Token == token);
+                if (userInfo != null)
+                {
+                    var player = db.Players.SingleOrDefault(x => x.Id == userInfo.PlayerId);
+                    
+                    serverSessionObject = new ServerSessionObject
+                    {
+                        userInfo = userInfo,
+                        player = player
+                    };
+                    AddOrUpdate(serverSessionObject);
+                }
+
+            }
             return serverSessionObject;
         }
 
@@ -36,7 +55,6 @@ namespace CobaSports
 
             var clientSessionObject = new ClientSessionObject();
             clientSessionObject.token = serverSessionObject.userInfo.Token;
-            //clientSessionObject.sessionId = serverSessionObject.sessionId;
             clientSessionObject.player = serverSessionObject.player;
             
             return (clientSessionObject);
