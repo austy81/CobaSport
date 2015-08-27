@@ -33,21 +33,25 @@ namespace CobaSports.Controllers
             Random rnd = new Random();
             var demoToken = new ServerSessionObject();
 
-            //sessionId = Guid.NewGuid().ToString(),
-            //demoToken.userInfo = new UserInfoLocal()
-            //{
-            //    Email = "hausterlitz666@gmail.com",
-            //    FirstName = "Honza",
-            //    LastName = "666",
-            //    Id = "666x666", //Guid.NewGuid().ToString(),
-            //    ProviderName = "Google",
-            //    Token = "666",
-            //    PhotoUri = "https://lh6.googleusercontent.com/-weRLlt_6cA8/AAAAAAAAAAI/AAAAAAAAAAA/ALKYnAVqLSQ/s64-c/photo.jpg"
-            //};
-            //demoToken.player = db.Players.FirstOrDefault(x => x.Email == demoToken.userInfo.Email);
+            demoToken.player = db.Players.FirstOrDefault(x => x.Email == "hausterlitz666@gmail.com");
+            demoToken.userInfo = new UserInfoLocal()
+            {
+                Email = "hausterlitz666@gmail.com",
+                FirstName = "Honza",
+                LastName = "666",
+                Id = "666x666", //Guid.NewGuid().ToString(),
+                ProviderName = "Google",
+                Token = "666",
+                PhotoUri = "https://lh6.googleusercontent.com/-weRLlt_6cA8/AAAAAAAAAAI/AAAAAAAAAAA/ALKYnAVqLSQ/s64-c/photo.jpg",
+                PlayerId = null
+            };
+            if (demoToken.player != null)
+            {
+                demoToken.userInfo.PlayerId = demoToken.player.Id;
+            }
 
-            //SessionCache.AddOrUpdate(demoToken);
-            //return Ok(SessionCache.GetClientSessionObject(demoToken.userInfo.Token));
+            SessionCache.AddOrUpdate(demoToken);
+            return Ok(SessionCache.GetClientSessionObject(demoToken.userInfo.Token));
 
             var authRoot = new AuthorizationRoot();
 
@@ -82,21 +86,7 @@ namespace CobaSports.Controllers
             }
             //userInfo = await GetUserInfoGoogle(tokenRequest);
 
-            UserInfoLocal userInfoLocal = new UserInfoLocal()
-            {
-                Id = userInfo.Id,
-                ProviderName = userInfo.ProviderName,
-                Email = userInfo.Email,
-                FirstName = userInfo.FirstName,
-                LastName = userInfo.LastName,
-                PhotoUri = userInfo.PhotoUri,
-                Token = client.AccessToken
-            };
-
-            var serverSessionObject = new ServerSessionObject()
-            {
-                userInfo = userInfoLocal
-            };
+            var serverSessionObject = new ServerSessionObject();
 
             if (!String.IsNullOrEmpty(userInfo.Id))
             {
@@ -108,6 +98,19 @@ namespace CobaSports.Controllers
 
                 serverSessionObject.player = player;
             }
+            
+            UserInfoLocal userInfoLocal = new UserInfoLocal()
+            {
+                Id = userInfo.Id,
+                ProviderName = userInfo.ProviderName,
+                Email = userInfo.Email,
+                FirstName = userInfo.FirstName,
+                LastName = userInfo.LastName,
+                PhotoUri = userInfo.PhotoUri,
+                Token = client.AccessToken
+            };
+            serverSessionObject.userInfo = userInfoLocal;
+
             SessionCache.AddOrUpdate(serverSessionObject);
             return Ok(SessionCache.GetClientSessionObject(serverSessionObject.userInfo.Token));
         }
@@ -135,13 +138,20 @@ namespace CobaSports.Controllers
                 FirstName = serverSessionObject.userInfo.FirstName,
                 LastName = serverSessionObject.userInfo.LastName,
                 PhotoUri = serverSessionObject.userInfo.PhotoUri,
-                UserInfos = new List<UserInfoLocal>() {serverSessionObject.userInfo},
             };
-
             db.Players.Add(player);
             db.SaveChanges();
 
+            var userInfoLocal = db.UserInfoLocals.FirstOrDefault(x => x.Token == clientSession.token);
+            if (userInfoLocal != null)
+            {
+                userInfoLocal.PlayerId = player.Id;
+                db.SaveChanges();
+            }
+
             serverSessionObject.player = player;
+            serverSessionObject.userInfo = userInfoLocal;
+
             SessionCache.AddOrUpdate(serverSessionObject);
 
             return Ok(SessionCache.GetClientSessionObject(clientSession.token));

@@ -1,4 +1,4 @@
-﻿angular.module('app').controller('sportListController', ['$scope', '$modal', 'Sport', function ($scope, $modal, Sport) {
+﻿angular.module('app').controller('sportListController', ['$scope', '$modal', 'Sport', '$alertService', function ($scope, $modal, Sport, $alertService) {
 
     $scope.sportsList = [];
 
@@ -15,6 +15,7 @@
 
     $scope.deleteSport = function(id) {
         Sport.delete({ Id: id }, function () { Sport.query(sportsLoaded); });
+        $alertService.add('success', 'Sport was deleted.');
     };
 
     Sport.query({ $expand: 'SportPlayers($select=Id),Meetings($select=Id)' }, sportsLoaded);
@@ -41,10 +42,12 @@
 
         var upsertSuccess = function(data) {
             entity.Id = data.Id;
+            $alertService.add('success', 'Sport was added.');
         };
 
         var upsertError = function() {
             Sport.query(sportsLoaded);
+            $alertService.add('error', 'There were some error during adding of sport.');
         };
 
         modalInstance.result.then(upsertSuccess, upsertError);

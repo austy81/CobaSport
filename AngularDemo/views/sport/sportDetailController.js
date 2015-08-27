@@ -1,5 +1,5 @@
-﻿angular.module('app').controller('sportDetailController', ['$scope', '$http', '$routeParams', '$modal', 'Sport', 'Meeting', 'Player', 'SportPlayer', '$session',
-    function ($scope, $http, $routeParams, $modal, Sport, Meeting, Player, SportPlayer, $session) {
+﻿angular.module('app').controller('sportDetailController', ['$scope', '$http', '$routeParams', '$modal', 'Sport', 'Meeting', 'Player', 'SportPlayer', '$session', '$alertService', '$filter',
+    function ($scope, $http, $routeParams, $modal, Sport, Meeting, Player, SportPlayer, $session, $alertService, $filter) {
 
         $scope.selectboxPlayers = [];
         $scope.sport = {};
@@ -74,13 +74,15 @@
         };
 
         $scope.deleteMeeting = function(id) {
-            Meeting.delete({ Id: id }, function() {
+            Meeting.delete({ Id: id }, function () {
+                $alertService.add('success', 'Meeting was deleted.');
                 getSport();
             });
         };
 
         $scope.deleteSportPlayer = function (id) {
-            SportPlayer.delete({ Id: id }, function() {
+            SportPlayer.delete({ Id: id }, function () {
+                $alertService.add('success', 'Meeting player was unassigned from this sport.');
                 getSport();
                 getSelectboxPlayers();
             });
@@ -109,10 +111,12 @@
             });
 
             var success = function (data) {
+                $alertService.add('success', 'Meeting ' + $filter('date')(data.Timestamp, 'EEE d. M. yyyy') + ' was added to sport ' + $scope.sport.Caption + '.');
                 getSport();
             };
 
             var error = function () {
+                $alertService.add('error', 'There were some error during meeting adding.');
                 getSport();
             };
 
@@ -122,7 +126,7 @@
         $scope.insertSportPlayer = function () {
 
             if ($scope.selectboxPlayers.length == 0) {
-                alert('There are no more players which are not assigned to this sport. You need to create them first.');
+                $alertService.add('warning', 'There are no more players which are not assigned to this sport. You need to create them first.');
                 return;
             }
 
@@ -145,11 +149,13 @@
             });
 
             var success = function (data) {
+                $alertService.add('success', 'Player was assigned to ' + $scope.sport.Caption + '.');
                 getSport();
                 getSelectboxPlayers();
             };
 
             var error = function () {
+                $alertService.add('error', 'Some error occured during player assigning to sport ' + $scope.sport.Caption + '.');
                 getSport();
             };
 

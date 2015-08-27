@@ -8,6 +8,7 @@
     'angular-loading-bar',
     'satellizer',
     'ngCookies',
+    'app.alertServices',
     'app.sessionServices',
     'angular-confirm']);
 

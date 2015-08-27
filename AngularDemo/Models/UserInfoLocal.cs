@@ -20,7 +20,7 @@ namespace CobaSports.Models
         public string Token { get; set; }
 
         [ForeignKey("Player")]
-        public int PlayerId { get; set; }
+        public int? PlayerId { get; set; }
         public virtual Player Player { get; set; }
     }
 }

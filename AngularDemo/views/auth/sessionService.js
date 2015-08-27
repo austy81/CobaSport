@@ -1,5 +1,5 @@
 ﻿angular.module('app.sessionServices', [])
-    .factory('$session', function ($auth, $cookies, $http, $confirm) {
+    .factory('$session', function ($auth, $cookies, $http, $confirm, $alertService) {
         var sessionInstance = {};
     
         sessionInstance.logout = function () {
@@ -8,9 +8,11 @@
                 $http.post('/auth/logout', $cookies.getObject('session'))
                     .success(function () {
                         $cookies.remove('session');
+                        $alertService.add('warning', 'You were logged out. Remember, you can stay logged in as long as you want.');
                     })
                     .error(function () {
                         $cookies.remove('session');
+                        $alertService.add('error', 'There were some error but anyway, you were logged out.');
                     });
             }
             );
@@ -31,7 +33,7 @@
                         if (response.data.token) {
                             $cookies.putObject('session', response.data);
                             if (response.data.player) {
-                                alert("Welcome back!");
+                                $alertService.add('success', "Welcome back " + response.data.player.FirstName + "!");
                             } else {
                                 $confirm({ text: "Welcome!!! Do you want access to CoBa Sports application?" })
                                     .then(function () {
@@ -40,9 +42,9 @@
                                                 if (session) {
                                                     $cookies.remove('session');
                                                     $cookies.putObject('session', session);
-                                                    alert('Player ' + session.player.FirstName + ' ' + session.player.LastName + ' has been successfully created.');
+                                                    $alertService.add('success', 'Player ' + session.player.FirstName + ' ' + session.player.LastName + ' has been successfully created.');
                                                 } else {
-                                                    alert('Oups!!! Something went wrong. :-(');
+                                                    $alertService.add('error', 'Oups!!! Something went wrong. :-(');
                                                 }
                                             });
                                     });
@@ -50,9 +52,9 @@
                             return;
                         }
                     }
-                    alert("Authentication was not successfull.");
+                    $alertService.add('error', 'Oups!!! Something went wrong. :-(');
                 });
         };
 
     return sessionInstance;
-});
+    });

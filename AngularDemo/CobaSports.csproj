@@ -917,6 +917,7 @@
     <Content Include="Scripts\loading-bar.js" />
     <Content Include="Scripts\loading-bar.min.js" />
     <Content Include="Scripts\satellizer.min.js" />
+    <Content Include="views\alertService.js" />
     <Content Include="views\app.js" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />

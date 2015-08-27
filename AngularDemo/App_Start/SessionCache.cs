@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Runtime.Caching;
+using CobaSports.Models;
 using CobaSports.Models.oauth;
 
 namespace CobaSports
@@ -18,11 +20,22 @@ namespace CobaSports
 
         public static void AddOrUpdate(ServerSessionObject serverSessionObject)
         {
-            
+            AddOrUpdateServerCache(serverSessionObject);
+            AddOrUpdateDatabase(serverSessionObject);
+        }
+
+        private static void AddOrUpdateDatabase(ServerSessionObject serverSessionObject)
+        {
+            db.Set<UserInfoLocal>().AddOrUpdate(serverSessionObject.userInfo);
+            db.SaveChanges();
+        }
+
+        public static void AddOrUpdateServerCache(ServerSessionObject serverSessionObject)
+        {
             if (cache.Contains(serverSessionObject.userInfo.Token))
                 cache.Remove(serverSessionObject.userInfo.Token);
 
-            cache.Add(serverSessionObject.userInfo.Token,serverSessionObject,policy);
+            cache.Add(serverSessionObject.userInfo.Token, serverSessionObject, policy);            
         }
 
         public static ServerSessionObject GetServerSessionObject(string token)
@@ -41,7 +54,7 @@ namespace CobaSports
                         userInfo = userInfo,
                         player = player
                     };
-                    AddOrUpdate(serverSessionObject);
+                    AddOrUpdateServerCache(serverSessionObject);
                 }
 
             }
@@ -66,6 +79,13 @@ namespace CobaSports
             if (!cache.Contains(token)) return false;
 
             cache.Remove(token);
+            var userInfoLocal = db.UserInfoLocals.FirstOrDefault(x => x.Token == token);
+            if (userInfoLocal != null)
+            {
+                userInfoLocal.Token = null;
+                db.SaveChanges();
+            }
+
             return true;
         }
 

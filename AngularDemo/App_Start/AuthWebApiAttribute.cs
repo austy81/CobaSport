@@ -26,17 +26,14 @@ namespace CobaSports
 
         public Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
         {
-            if (IsAuthorized(context.Request))
-            {
+            if (_allowedAnonymousActions.Contains(context.Request.Method.Method)) return Task.FromResult(0);
 
-            }
-            else
+            if (!IsAuthorized(context.Request))
             {
-                if (_allowedAnonymousActions.Contains(context.Request.Method.Method)) return Task.FromResult(0);
                 context.ErrorResult = new UnauthorizedResult(new[] { new AuthenticationHeaderValue("ExtAuth") }, context.Request);
             }
+            
             return Task.FromResult(0);
-
         }
 
         public Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)

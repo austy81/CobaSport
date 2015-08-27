@@ -14,8 +14,10 @@
     <script src="Scripts/angular-cookies.min.js"></script>
     <script src="Scripts/satellizer.min.js"></script>
     <script src="Scripts/angular-confirm.js"></script>
+    <script src="Scripts/angular-animate.min.js"></script>
 
     <script src="appConfig" type="application/javascript"></script>
+    <script src="views/alertService.js"></script>
     <script src="views/auth/sessionService.js"></script>
     <script src="views/dataServices.js"></script>
 
@@ -43,14 +45,19 @@
             </div>
         </header>
         <div class="container" style="margin-bottom: 80px">
-            <div ng-view>
+            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alert.close()" ng-animate="'animate'">{{alert.msg}}</alert>
+            <button ng-show="alerts.length > 1" ng-click="clearAllAlerts()" class="btn btn-success glyphicon glyphicon-remove">Clear all</button>
 
+            <div ng-view>
+                
             </div>
+
             <h1 ng-show="false">
                 This browser is not supported. Use something sane. Preferably Chrome or Firefox. IE 10 or later is also acceptable.
             </h1>
 
         </div>
+
         <footer>
             <div class="navbar navbar-fixed-bottom panel-footer">
                 <div class="container">
