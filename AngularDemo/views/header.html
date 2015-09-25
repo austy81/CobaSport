@@ -1,22 +1,48 @@
 ﻿<nav class="navbar navbar-default">
     <div class="container" ng-controller="authController">
         <h1>Coba Sports</h1>
-        <div class="col-md-11">
+        <div class="col-md-5">
             <a type="button" class="btn btn-primary navbar-btn" href="#/sports">Sports</a>
             <a type="button" class="btn btn-primary navbar-btn" href="#/players">Players</a>
             <a type="button" class="btn btn-success navbar-btn" ng-show="loggedInPlayer().Id" ng-href="#/players/{{loggedInPlayer().Id}}">My page</a>
         </div>
 
+        <div class="col-md-6">
+            <div class="bs-docs-grid">
+                <div class="row-fluid" ng-repeat="alert in alerts">
+                    <div class="span12 ">
+                        <alert type="{{alert.type}}" close="alert.close()" ng-animate="'animate'">{{alert.msg}}</alert>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="col-md-1">
-            <a type="button" class="btn btn-success navbar-btn" ng-click="authenticate('google')" ng-show="!loggedInPlayer()">Sign in with Google</a>
-            <!--<a type="button" class="btn btn-default navbar-btn" ng-click="authenticate('facebook')">Sign in with Facebook</button>-->
-            <!--<a type="button" class="btn btn-default navbar-btn" ng-click="authenticate('github')">Sign in with GitHub</button>
+            <div class="btn-group" role="group" aria-label="Acount">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" ng-show="!loggedInPlayer().Id" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sign in
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a ng-click="authenticate('google')">Google</a></li>
+                        <li><a ng-click="authenticate('facebook')">Facebook</a></li>
+                        <!--'github', 'linkedin', 'twitter', 'foursquare', 'yahoo','live', 'github'-->
+                    </ul>
+                    <a type="button" class="btn btn-default" ng-click="logout()" ng-show="loggedInPlayer().Id">Logout</a>
+                </div>
+            </div>
+        </div>
+
+<!--
+        <div class="col-md-1">
+            <a type="button" class="btn btn-default navbar-btn" ng-click="authenticate('github')">Sign in with GitHub</button>
             <a type="button" class="btn btn-default navbar-btn" ng-click="authenticate('linkedin')">Sign in with LinkedIn</button>
             <a type="button" class="btn btn-default navbar-btn" ng-click="authenticate('twitter')">Sign in with Twitter</button>
             <a type="button" class="btn btn-default navbar-btn" ng-click="authenticate('foursquare')">Sign in with Foursquare</button>
             <a type="button" class="btn btn-default navbar-btn" ng-click="authenticate('yahoo')">Sign in with Yahoo</button>
-            <a type="button" class="btn btn-default navbar-btn" ng-click="authenticate('live')">Sign in with Windows Live</button>-->
-            <a type="button" class="btn btn-warning navbar-btn" ng-click="logout()" ng-show="loggedInPlayer().Id">Logout</a>
+            <a type="button" class="btn btn-default navbar-btn" ng-click="authenticate('live')">Sign in with Windows Live</button>
         </div>
+-->
     </div>
 </nav>

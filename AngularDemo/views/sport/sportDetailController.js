@@ -116,7 +116,7 @@
             };
 
             var error = function () {
-                $alertService.add('error', 'There were some error during meeting adding.');
+                $alertService.add('danger', 'There were some error during meeting adding.');
                 getSport();
             };
 

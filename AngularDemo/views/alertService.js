@@ -5,8 +5,14 @@
         // create an array of alerts available globally
         $rootScope.alerts = [];
 
-        alertService.add = function(type, msg) {
-            $rootScope.alerts.push({ 'type': type, 'msg': msg, close: function() { alertService.closeAlert(this); } });
+        //types: info, warning, danger, success, 
+        alertService.add = function (type, msg) {
+            $rootScope.alerts = [];
+            $rootScope.alerts.push({ 'type': type, 'msg': msg, close: function () { alertService.closeAlert(this); } });
+            setTimeout(function() {
+                $rootScope.alerts.shift();
+                $rootScope.$apply();
+            }, 8000);
         };
 
         alertService.closeAlert = function(alert) {

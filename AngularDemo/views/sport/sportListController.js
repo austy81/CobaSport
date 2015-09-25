@@ -15,7 +15,7 @@
 
     $scope.deleteSport = function(id) {
         Sport.delete({ Id: id }, function () { Sport.query(sportsLoaded); });
-        $alertService.add('success', 'Sport was deleted.');
+        $alertService.add('info', 'Sport was deleted.');
     };
 
     Sport.query({ $expand: 'SportPlayers($select=Id),Meetings($select=Id)' }, sportsLoaded);
@@ -42,12 +42,12 @@
 
         var upsertSuccess = function(data) {
             entity.Id = data.Id;
-            $alertService.add('success', 'Sport was added.');
+            $alertService.add('success', 'Sport ' + data.Caption + ' was added.');
         };
 
         var upsertError = function() {
             Sport.query(sportsLoaded);
-            $alertService.add('error', 'There were some error during adding of sport.');
+            $alertService.add('danger', 'There were some error during adding of sport.');
         };
 
         modalInstance.result.then(upsertSuccess, upsertError);

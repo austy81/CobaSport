@@ -15,7 +15,8 @@ namespace CobaSports.Controllers
         public HttpResponseMessage appConfig()
         {
             var authRoot = new AuthorizationRoot();
-            string clientId = authRoot.Clients.Single(x => x.Configuration.ClientTypeName == "GoogleClient").Configuration.ClientId;
+            string googleClientId = authRoot.Clients.Single(x => x.Configuration.ClientTypeName == "GoogleClient").Configuration.ClientId;
+            string facebookClientId = authRoot.Clients.Single(x => x.Configuration.ClientTypeName == "FacebookClient").Configuration.ClientId;
 
             string js = @"
 angular.module('app.config',[])
@@ -24,9 +25,15 @@ angular.module('app.config',[])
             //https://github.com/sahat/satellizer
             authProvider: {
                 google: {
-                    clientId: '" + clientId + @"',
+                    clientId: '" + googleClientId + @"',
+                    url: '/auth/login'
+                },
+
+                facebook: {
+                    clientId: '" + facebookClientId + @"',
                     url: '/auth/login'
                 }
+
             }
         }
     )

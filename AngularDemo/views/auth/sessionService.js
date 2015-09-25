@@ -12,7 +12,7 @@
                     })
                     .error(function () {
                         $cookies.remove('session');
-                        $alertService.add('error', 'There were some error but anyway, you were logged out.');
+                        $alertService.add('danger', 'There were some error but anyway, you were logged out.');
                     });
             }
             );
@@ -44,7 +44,7 @@
                                                     $cookies.putObject('session', session);
                                                     $alertService.add('success', 'Player ' + session.player.FirstName + ' ' + session.player.LastName + ' has been successfully created.');
                                                 } else {
-                                                    $alertService.add('error', 'Oups!!! Something went wrong. :-(');
+                                                    $alertService.add('danger', 'Oups!!! Something went wrong. :-(');
                                                 }
                                             });
                                     });
@@ -52,7 +52,7 @@
                             return;
                         }
                     }
-                    $alertService.add('error', 'Oups!!! Something went wrong. :-(');
+                    $alertService.add('danger', 'Oups!!! Something went wrong. :-(');
                 });
         };
 

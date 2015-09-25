@@ -1,5 +1,5 @@
-﻿angular.module('app').controller('meetingDetailController', ['$scope', '$http', '$routeParams', '$location', 'SportPlayer', 'MeetingPlayer', 'Meeting',
-    function ($scope, $http, $routeParams, $location, SportPlayer, MeetingPlayer, Meeting) {
+﻿angular.module('app').controller('meetingDetailController', ['$scope', '$http', '$routeParams', '$location', 'SportPlayer', 'MeetingPlayer', 'Meeting', '$alertService',
+    function ($scope, $http, $routeParams, $location, SportPlayer, MeetingPlayer, Meeting, $alertService) {
 
         $scope.meetingId = $routeParams.meetingId;
         $scope.selectedMeeting = {};
@@ -120,23 +120,20 @@
             } else {
                 entity =  {
                     PlayerId: player.Id,
-                    MeetingId: $scope.meeting.Id,
+                    MeetingId: $scope.meeting.Id
                 };
 
             }
             entity.IsAttending = isAttending;
 
-            //entity = {
-            //    Id: player.Id,
-            //    PlayerId: player.PlayerId,
-            //    MeetingId: player.MeetingId,
-            //};
-
             var success = function(entity) {
                 getMeeting($scope.meeting.Id);
+                if (entity.IsAttending === true) $alertService.add('success', "Looking forward to se you there!");
+                if (entity.IsAttending === false) $alertService.add('danger', "It's a pity :-(. Hopefully, you will make it next time!");
+                if (entity.IsAttending === null) $alertService.add('warning', "Let's see later... Please let us know whne you will be sure.");
             };
             var error = function (data) {
-                alert(data.statusText);
+                $alertService.add('danger', 'Oups, some error with saving your answer.');
             };
 
             if (entity.Id) {

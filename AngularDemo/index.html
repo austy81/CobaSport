@@ -38,14 +38,12 @@
 
 </head>
     <body>
-        <header>
-            <div ng-include="'views/header.html'">
+    <header>
+        <div ng-include="'views/header.html'">
 
-            </div>
-        </header>
+        </div>
+    </header>
         <div class="container" style="margin-bottom: 80px">
-            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alert.close()" ng-animate="'animate'">{{alert.msg}}</alert>
-            <button ng-show="alerts.length > 1" ng-click="clearAllAlerts()" class="btn btn-success glyphicon glyphicon-remove">Clear all</button>
 
             <div ng-view>
                 
@@ -59,8 +57,10 @@
 
         <footer>
             <div class="navbar navbar-fixed-bottom panel-footer">
+
                 <div class="container">
-                    by <a href="mailto:jan.austerlitz@commerzbank.com">Jan Austerlitz</a>
+                    <div class="col-md-12">by <a href="mailto:jan.austerlitz@commerzbank.com">Jan Austerlitz</a>
+                    </div>
                 </div>
             </div>
         </footer>
