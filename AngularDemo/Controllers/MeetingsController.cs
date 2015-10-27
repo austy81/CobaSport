@@ -3,12 +3,13 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
 using System.Web.OData;
 using CobaSports.Models;
 
 namespace CobaSports.Controllers
 {
-    [AuthWebApi("GET","POST")]
+    [AuthWebApi("GET", "POST"), ApiExplorerSettings(IgnoreApi = false)]
     public class MeetingsController : ODataController
     {
         private CobaSportsContext db = new CobaSportsContext();
