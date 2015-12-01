@@ -30,28 +30,26 @@ namespace CobaSports.Controllers
         {
             if (authResponse == null) return BadRequest();
 
-            Random rnd = new Random();
-            var demoToken = new ServerSessionObject();
-
-            demoToken.player = db.Players.FirstOrDefault(x => x.Email == "hausterlitz666@gmail.com");
-            demoToken.userInfo = new UserInfoLocal()
-            {
-                Email = "hausterlitz666@gmail.com",
-                FirstName = "Honza",
-                LastName = "666",
-                Id = "666x666", //Guid.NewGuid().ToString(),
-                ProviderName = "Google",
-                Token = "666",
-                PhotoUri = "https://lh6.googleusercontent.com/-weRLlt_6cA8/AAAAAAAAAAI/AAAAAAAAAAA/ALKYnAVqLSQ/s64-c/photo.jpg",
-                PlayerId = null
-            };
-            if (demoToken.player != null)
-            {
-                demoToken.userInfo.PlayerId = demoToken.player.Id;
-            }
-
-            SessionCache.AddOrUpdate(demoToken);
-            return Ok(SessionCache.GetClientSessionObject(demoToken.userInfo.Token));
+            //Random rnd = new Random();
+            //var demoToken = new ServerSessionObject();
+            //demoToken.player = db.Players.FirstOrDefault(x => x.Email == "hausterlitz666@gmail.com");
+            //demoToken.userInfo = new UserInfoLocal()
+            //{
+            //    Email = "hausterlitz666@gmail.com",
+            //    FirstName = "Honza",
+            //    LastName = "666",
+            //    Id = "666x666", //Guid.NewGuid().ToString(),
+            //    ProviderName = "Google",
+            //    Token = "666",
+            //    PhotoUri = "https://lh6.googleusercontent.com/-weRLlt_6cA8/AAAAAAAAAAI/AAAAAAAAAAA/ALKYnAVqLSQ/s64-c/photo.jpg",
+            //    PlayerId = null
+            //};
+            //if (demoToken.player != null)
+            //{
+            //    demoToken.userInfo.PlayerId = demoToken.player.Id;
+            //}
+            //SessionCache.AddOrUpdate(demoToken);
+            //return Ok(SessionCache.GetClientSessionObject(demoToken.userInfo.Token));
 
             var authRoot = new AuthorizationRoot();
 
