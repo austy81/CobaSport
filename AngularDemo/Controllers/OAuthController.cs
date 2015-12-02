@@ -21,11 +21,12 @@ using OAuth2.Client;
 
 namespace CobaSports.Controllers
 {
+    [Authorize]
     public class OAuthController : ApiController
     {
         private readonly CobaSportsContext db = new CobaSportsContext();
 
-        [Route("auth/login"), HttpPost]
+        [Route("auth/login"), HttpPost, AuthWebApi("GET", "POST")]
         public async Task<IHttpActionResult> Authenticate([FromBody] AuthResponse authResponse)
         {
             if (authResponse == null) return BadRequest();

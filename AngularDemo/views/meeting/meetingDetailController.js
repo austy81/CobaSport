@@ -128,9 +128,9 @@
 
             var success = function(entity) {
                 getMeeting($scope.meeting.Id);
-                if (entity.IsAttending === true) $alertService.add('success', "Looking forward to se you there!");
+                if (entity.IsAttending === true) $alertService.add('success', "Looking forward to seeing you there!");
                 if (entity.IsAttending === false) $alertService.add('danger', "It's a pity :-(. Hopefully, you will make it next time!");
-                if (entity.IsAttending === null) $alertService.add('warning', "Let's see later... Please let us know whne you will be sure.");
+                if (entity.IsAttending === null) $alertService.add('warning', "Let's see later... Please let us know when you will be sure.");
             };
             var error = function (data) {
                 $alertService.add('danger', 'Oups, some error with saving your answer.');
@@ -167,22 +167,6 @@
             return emails;
 
         }
-        
-
-        //var mergeSportsPlayersWithMeetingPlayers = function (meetingPlayers) {
-        //    $scope.totalAttenders = 0;
-        //    for (var meetingIndex = 0; meetingIndex < meetingPlayers.length; meetingIndex++) {
-        //        var meetingPlayer = meetingPlayers[meetingIndex];
-        //        for (var sportIndex = 0; sportIndex < $scope.sportPlayers.length; sportIndex++)
-        //        {
-        //            var sportPlayer = $scope.sportPlayers[sportIndex];
-        //            if (sportPlayer.Id == meetingPlayer.PlayerId) {
-        //                sportPlayer.meetingPlayer = meetingPlayer;
-        //                if (meetingPlayer.IsAttending) $scope.totalAttenders++;
-        //            }
-        //        }
-        //    }
-        //};
 
         $scope.absUrl = function() {
             return $location.absUrl();

@@ -16,16 +16,6 @@ namespace CobaSports
 
             if (!Database.Exists())
                 Database.Create();
-
-            //if (!this.Database.CompatibleWithModel(true))
-            //{
-            //    this.Database.Delete();
-            //    this.Database.Create();
-            //    //throw new InvalidOperationException("The database is not compatible with the entity model.");
-            //}
-
-            //this.Configuration.AutoDetectChangesEnabled = false;
-
         }
 
         public DbSet<MeetingPlayer> MeetingPlayers { get; set; }
